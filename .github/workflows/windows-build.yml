@@ -10,7 +10,6 @@ on:
       - 'pubspec.yaml'
       - 'lib/**'
 
-
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -34,7 +33,7 @@ jobs:
         run: flutter build windows --release
 
       - name: Locate and rename exe to Earon.exe
-        shell: powershell
+        shell: pwsh
         run: |
           $dir = "build/windows/x64/runner/Release"
           if (!(Test-Path $dir)) { $dir = "build/windows/runner/Release" }
@@ -49,6 +48,5 @@ jobs:
       - name: Build installer (.exe)
         shell: pwsh
         run: |
-        $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
           & "$iscc" "installer/windows/inno.iss"
-
