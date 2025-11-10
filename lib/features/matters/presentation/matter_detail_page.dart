@@ -37,7 +37,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
   late final MatterRepo _repo;
 
   // Helper per accedere ai token del tema
-  double get _spacing => Theme.of(context).extension<DefaultTokens>()!.spacingUnit;
+  double get _spacing =>
+      Theme.of(context).extension<DefaultTokens>()!.spacingUnit;
 
   Matter? _matter;
   bool _loading = true;
@@ -230,7 +231,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                           SelectGroupData(
                             label: 'Stato (modificabile)',
                             items: [
-                              ..._statusSuggestions.map((s) => SelectItemData(value: s, label: s)),
+                              ..._statusSuggestions.map(
+                                  (s) => SelectItemData(value: s, label: s)),
                             ],
                           ),
                         ],
@@ -268,27 +270,32 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                   spacing: _spacing,
                   runSpacing: _spacing,
                   children: [
-                    AppButton(variant: AppButtonVariant.secondary, 
+                    AppButton(
+                      variant: AppButtonVariant.secondary,
                       leading: Icon(AppIcons.edit),
                       child: const Text('Modifica'),
                       onPressed: () => _openEditSheet(m),
                     ),
-                    AppButton(variant: AppButtonVariant.secondary, 
+                    AppButton(
+                      variant: AppButtonVariant.secondary,
                       leading: Icon(AppIcons.switchAccount),
                       child: const Text('Cambia cliente'),
                       onPressed: () => _openChangeClientDialog(),
                     ),
-                    AppButton(variant: AppButtonVariant.default_, 
+                    AppButton(
+                      variant: AppButtonVariant.default_,
                       leading: Icon(AppIcons.checkCircle),
                       child: const Text('Chiudi pratica'),
                       onPressed: () => _confirmClose(),
                     ),
-                    AppButton(variant: AppButtonVariant.default_, 
+                    AppButton(
+                      variant: AppButtonVariant.default_,
                       leading: Icon(AppIcons.restart),
                       child: const Text('Riapri'),
                       onPressed: () => _confirmReopen(),
                     ),
-                    AppButton(variant: AppButtonVariant.destructive, 
+                    AppButton(
+                      variant: AppButtonVariant.destructive,
                       leading: Icon(AppIcons.delete),
                       child: const Text('Elimina'),
                       onPressed: () => _confirmDelete(),
@@ -298,7 +305,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                 SizedBox(height: _spacing),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: AppButton(variant: AppButtonVariant.default_, 
+                  child: AppButton(
+                    variant: AppButtonVariant.default_,
                     onPressed: _saveOverview,
                     leading: Icon(AppIcons.save),
                     child: const Text('Salva'),
@@ -378,7 +386,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
         children: [
           const AppDialogHeader(
             title: AppDialogTitle('Chiudere pratica?'),
-            description: AppDialogDescription('Confermi la chiusura della pratica?'),
+            description:
+                AppDialogDescription('Confermi la chiusura della pratica?'),
           ),
           AppDialogFooter(
             children: [
@@ -422,7 +431,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
         children: [
           const AppDialogHeader(
             title: AppDialogTitle('Riaprire pratica?'),
-            description: AppDialogDescription('Confermi la riapertura della pratica?'),
+            description:
+                AppDialogDescription('Confermi la riapertura della pratica?'),
           ),
           AppDialogFooter(
             children: [
@@ -514,7 +524,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                 children: [
                   Text('Parti', style: Theme.of(context).textTheme.titleMedium),
                   const Spacer(),
-                  AppButton(variant: AppButtonVariant.secondary, 
+                  AppButton(
+                    variant: AppButtonVariant.secondary,
                     onPressed: _openAddPartyDialog,
                     leading: Icon(AppIcons.personAdd),
                     child: const Text('Nuova parte'),
@@ -538,8 +549,7 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                               SizedBox(height: _spacing),
                               for (final r in entry.value)
                                 AppListTile(
-                                  leading:
-                                      const Icon(AppIcons.accountCircle),
+                                  leading: const Icon(AppIcons.accountCircle),
                                   title: Text(r['name'] ?? ''),
                                   subtitle: Text([
                                     r['tax_code'],
@@ -548,13 +558,14 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                                       .where((e) =>
                                           (e ?? '').toString().isNotEmpty)
                                       .join(' • ')),
-                                  trailing:
-                                      Wrap(spacing: _spacing, children: [
-                                    AppButton(size: AppButtonSize.icon, 
+                                  trailing: Wrap(spacing: _spacing, children: [
+                                    AppButton(
+                                      size: AppButtonSize.icon,
                                       leading: Icon(AppIcons.edit),
                                       onPressed: () => _openEditPartyDialog(r),
                                     ),
-                                    AppButton(size: AppButtonSize.icon, 
+                                    AppButton(
+                                      size: AppButtonSize.icon,
                                       leading: Icon(AppIcons.delete),
                                       onPressed: () => _confirmDeleteParty(r),
                                     ),
@@ -608,57 +619,61 @@ class _MatterDetailPageState extends State<MatterDetailPage>
     final nameCtrl = TextEditingController();
     String role = 'actor';
     final confirmed = await AppDialog.show<bool>(
-      context,
-      barrierDismissible: false,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setStateDialog) => AppDialogContent(
-          children: [
-            const AppDialogHeader(
-              title: AppDialogTitle('Nuova parte'),
-              description: AppDialogDescription('Crea una nuova parte associata alla pratica.'),
-            ),
-            SizedBox(height: _spacing),
-            AppInput(
-              controller: nameCtrl,
-              hintText: 'Nome',
-            ),
-            SizedBox(height: _spacing),
-            ShadcnSelect(
-              value: role,
-              placeholder: 'Ruolo',
-              width: double.infinity,
-              groups: const [
-                SelectGroupData(
-                  label: 'Ruolo',
-                  items: [
-                    SelectItemData(value: 'actor', label: 'Attore'),
-                    SelectItemData(value: 'counterparty', label: 'Controparte'),
-                    SelectItemData(value: 'third', label: 'Terzo'),
+          context,
+          barrierDismissible: false,
+          builder: (ctx) => StatefulBuilder(
+            builder: (ctx, setStateDialog) => AppDialogContent(
+              children: [
+                const AppDialogHeader(
+                  title: AppDialogTitle('Nuova parte'),
+                  description: AppDialogDescription(
+                      'Crea una nuova parte associata alla pratica.'),
+                ),
+                SizedBox(height: _spacing),
+                AppInput(
+                  controller: nameCtrl,
+                  hintText: 'Nome',
+                ),
+                SizedBox(height: _spacing),
+                ShadcnSelect(
+                  value: role,
+                  placeholder: 'Ruolo',
+                  width: double.infinity,
+                  groups: const [
+                    SelectGroupData(
+                      label: 'Ruolo',
+                      items: [
+                        SelectItemData(value: 'actor', label: 'Attore'),
+                        SelectItemData(
+                            value: 'counterparty', label: 'Controparte'),
+                        SelectItemData(value: 'third', label: 'Terzo'),
+                      ],
+                    ),
+                  ],
+                  onChanged: (v) =>
+                      setStateDialog(() => role = v.isEmpty ? role : v),
+                ),
+                AppDialogFooter(
+                  children: [
+                    AppButton(
+                      variant: AppButtonVariant.ghost,
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                      child: const Text('Annulla'),
+                    ),
+                    AppButton(
+                      variant: AppButtonVariant.default_,
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      child: const Text('Crea'),
+                    ),
                   ],
                 ),
               ],
-              onChanged: (v) => setStateDialog(() => role = v.isEmpty ? role : v),
             ),
-            AppDialogFooter(
-              children: [
-                AppButton(
-                  variant: AppButtonVariant.ghost,
-                  onPressed: () => Navigator.of(ctx).pop(false),
-                  child: const Text('Annulla'),
-                ),
-                AppButton(
-                  variant: AppButtonVariant.default_,
-                  onPressed: () => Navigator.of(ctx).pop(true),
-                  child: const Text('Crea'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ) ?? false;
+          ),
+        ) ??
+        false;
     if (confirmed) {
-      // TODO: inserimento reale nel repository
+      // NOTE: inserimento reale nel repository
       _refreshTab(() {});
     }
     nameCtrl.dispose();
@@ -668,57 +683,61 @@ class _MatterDetailPageState extends State<MatterDetailPage>
     final nameCtrl = TextEditingController(text: party['name'] ?? '');
     String role = (party['role'] ?? 'actor').toString();
     final confirmed = await AppDialog.show<bool>(
-      context,
-      barrierDismissible: false,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setStateDialog) => AppDialogContent(
-          children: [
-            const AppDialogHeader(
-              title: AppDialogTitle('Modifica parte'),
-              description: AppDialogDescription('Aggiorna le informazioni della parte selezionata.'),
-            ),
-            SizedBox(height: _spacing),
-            AppInput(
-              controller: nameCtrl,
-              hintText: 'Nome',
-            ),
-            SizedBox(height: _spacing),
-            ShadcnSelect(
-              value: role,
-              placeholder: 'Ruolo',
-              width: double.infinity,
-              groups: const [
-                SelectGroupData(
-                  label: 'Ruolo',
-                  items: [
-                    SelectItemData(value: 'actor', label: 'Attore'),
-                    SelectItemData(value: 'counterparty', label: 'Controparte'),
-                    SelectItemData(value: 'third', label: 'Terzo'),
+          context,
+          barrierDismissible: false,
+          builder: (ctx) => StatefulBuilder(
+            builder: (ctx, setStateDialog) => AppDialogContent(
+              children: [
+                const AppDialogHeader(
+                  title: AppDialogTitle('Modifica parte'),
+                  description: AppDialogDescription(
+                      'Aggiorna le informazioni della parte selezionata.'),
+                ),
+                SizedBox(height: _spacing),
+                AppInput(
+                  controller: nameCtrl,
+                  hintText: 'Nome',
+                ),
+                SizedBox(height: _spacing),
+                ShadcnSelect(
+                  value: role,
+                  placeholder: 'Ruolo',
+                  width: double.infinity,
+                  groups: const [
+                    SelectGroupData(
+                      label: 'Ruolo',
+                      items: [
+                        SelectItemData(value: 'actor', label: 'Attore'),
+                        SelectItemData(
+                            value: 'counterparty', label: 'Controparte'),
+                        SelectItemData(value: 'third', label: 'Terzo'),
+                      ],
+                    ),
+                  ],
+                  onChanged: (v) =>
+                      setStateDialog(() => role = v.isEmpty ? role : v),
+                ),
+                AppDialogFooter(
+                  children: [
+                    AppButton(
+                      variant: AppButtonVariant.ghost,
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                      child: const Text('Annulla'),
+                    ),
+                    AppButton(
+                      variant: AppButtonVariant.default_,
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                      child: const Text('Salva'),
+                    ),
                   ],
                 ),
               ],
-              onChanged: (v) => setStateDialog(() => role = v.isEmpty ? role : v),
             ),
-            AppDialogFooter(
-              children: [
-                AppButton(
-                  variant: AppButtonVariant.ghost,
-                  onPressed: () => Navigator.of(ctx).pop(false),
-                  child: const Text('Annulla'),
-                ),
-                AppButton(
-                  variant: AppButtonVariant.default_,
-                  onPressed: () => Navigator.of(ctx).pop(true),
-                  child: const Text('Salva'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ) ?? false;
+          ),
+        ) ??
+        false;
     if (confirmed) {
-      // TODO: aggiornamento reale nel repository
+      // NOTE: aggiornamento reale nel repository
       _refreshTab(() {});
     }
     nameCtrl.dispose();
@@ -758,7 +777,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
             children: [
               Text('Documenti', style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
-              AppButton(variant: AppButtonVariant.secondary, 
+              AppButton(
+                variant: AppButtonVariant.secondary,
                 onPressed: null,
                 leading: Icon(AppIcons.upload),
                 child: const Text('Carica'),
@@ -786,11 +806,13 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                     title: const Text('Esempio.pdf'),
                     subtitle: const Text('placeholder'),
                     trailing: Wrap(spacing: _spacing, children: [
-                      AppButton(size: AppButtonSize.icon, 
+                      AppButton(
+                        size: AppButtonSize.icon,
                         leading: Icon(AppIcons.driveFileRename),
                         onPressed: null,
                       ),
-                      AppButton(size: AppButtonSize.icon, 
+                      AppButton(
+                        size: AppButtonSize.icon,
                         leading: Icon(AppIcons.delete),
                         onPressed: null,
                       ),
@@ -804,10 +826,6 @@ class _MatterDetailPageState extends State<MatterDetailPage>
       ),
     );
   }
-
-
-
-  
 
   // -------- HOURS TAB --------
   Widget _buildHoursTab() {
@@ -833,8 +851,10 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                 children: [
                   Text('Totale ore: ${sumHours.toStringAsFixed(2)}'),
                   const Spacer(),
-                  AppButton(variant: AppButtonVariant.secondary, 
-                    onPressed: null, // disabilitato finché la feature non è disponibile
+                  AppButton(
+                    variant: AppButtonVariant.secondary,
+                    onPressed:
+                        null, // disabilitato finché la feature non è disponibile
                     leading: Icon(AppIcons.addAlarm),
                     child: const Text('Aggiungi'),
                   ),
@@ -891,7 +911,6 @@ class _MatterDetailPageState extends State<MatterDetailPage>
     }
   }
 
-
   // -------- EXPENSES TAB --------
   Widget _buildExpensesTab() {
     return FutureBuilder<Map<String, num>>(
@@ -909,8 +928,10 @@ class _MatterDetailPageState extends State<MatterDetailPage>
                 children: [
                   Text(header),
                   const Spacer(),
-                  AppButton(variant: AppButtonVariant.secondary, 
-                    onPressed: null, // disabilitato finché la feature non è disponibile
+                  AppButton(
+                    variant: AppButtonVariant.secondary,
+                    onPressed:
+                        null, // disabilitato finché la feature non è disponibile
                     leading: Icon(AppIcons.addCircle),
                     child: const Text('Aggiungi'),
                   ),
@@ -1017,7 +1038,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
           child: Row(
             children: [
               const Spacer(),
-              AppButton(variant: AppButtonVariant.secondary, 
+              AppButton(
+                variant: AppButtonVariant.secondary,
                 onPressed: _openNewTaskModal,
                 leading: Icon(AppIcons.addTask),
                 child: const Text('Nuova task'),
@@ -1092,7 +1114,8 @@ class _MatterDetailPageState extends State<MatterDetailPage>
           child: Row(
             children: [
               const Spacer(),
-              AppButton(variant: AppButtonVariant.secondary, 
+              AppButton(
+                variant: AppButtonVariant.secondary,
                 onPressed: _openNewHearingModal,
                 leading: Icon(AppIcons.event),
                 child: const Text('Nuova udienza'),
@@ -1191,8 +1214,10 @@ class _MatterDetailPageState extends State<MatterDetailPage>
               Text('Righe fatturabili',
                   style: Theme.of(context).textTheme.titleMedium),
               const Spacer(),
-              AppButton(variant: AppButtonVariant.secondary, 
-                onPressed: null, // disabilitato finché la feature non è disponibile
+              AppButton(
+                variant: AppButtonVariant.secondary,
+                onPressed:
+                    null, // disabilitato finché la feature non è disponibile
                 leading: Icon(AppIcons.playlistAdd),
                 child: const Text('Aggiungi a fattura'),
               ),
@@ -1260,5 +1285,4 @@ class _MatterDetailPageState extends State<MatterDetailPage>
       return Future.error(e);
     }
   }
-
 }

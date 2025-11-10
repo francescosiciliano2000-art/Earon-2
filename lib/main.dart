@@ -4,6 +4,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'dart:async' show unawaited;
+import 'dart:io' show Platform;
+import 'package:auto_updater/auto_updater.dart';
 
 import 'app_router.dart';
 // import 'theme/app_theme.dart';
@@ -11,6 +14,16 @@ import 'design system/theme/themes.dart';
 import 'design system/theme/theme_builder.dart';
 import 'design system/components/sonner.dart';
 import 'core/supa_env.dart';
+
+Future<void> setupAutoUpdater() async {
+  if (!(Platform.isMacOS || Platform.isWindows)) return;
+
+  const feedURL = String.fromEnvironment('APPCAST_URL', defaultValue: '');
+  if (feedURL.isEmpty) return;
+
+  await autoUpdater.setFeedURL(feedURL);
+  await autoUpdater.checkForUpdates();
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +35,8 @@ Future<void> main() async {
     debugPrint('[Config] dotenv loaded from assets .env');
   } catch (e) {
     // Non bloccare l’avvio: useremo i valori di compile-time (SupaEnv)
-    debugPrint('[Config] dotenv load failed: $e — fallback to --dart-define (SupaEnv)');
+    debugPrint(
+        '[Config] dotenv load failed: $e — fallback to --dart-define (SupaEnv)');
   }
 
   // Inizializza dati di localizzazione per Intl (mesi/giorni in italiano)
@@ -38,14 +52,17 @@ Future<void> main() async {
 
   // Sorgente valori: preferisci dotenv, altrimenti compile-time (SupaEnv)
   final envUrl = dotenvLoaded ? (dotenv.env['SUPABASE_URL']?.trim() ?? '') : '';
-  final envAnon = dotenvLoaded ? (dotenv.env['SUPABASE_ANON_KEY']?.trim() ?? '') : '';
+  final envAnon =
+      dotenvLoaded ? (dotenv.env['SUPABASE_ANON_KEY']?.trim() ?? '') : '';
   final ctUrl = SupaEnv.url.trim();
   final ctAnon = SupaEnv.anonKey.trim();
   final supabaseUrl = envUrl.isNotEmpty ? envUrl : ctUrl;
   final supabaseAnon = envAnon.isNotEmpty ? envAnon : ctAnon;
 
-  debugPrint('[Config] Supabase URL source=${envUrl.isNotEmpty ? 'dotenv:SUPABASE_URL' : 'fromEnvironment:SUPABASE_URL/SB_URL'}');
-  debugPrint('[Config] Supabase anon key source=${envAnon.isNotEmpty ? 'dotenv:SUPABASE_ANON_KEY' : 'fromEnvironment:SUPABASE_ANON_KEY/SB_ANON'}');
+  debugPrint(
+      '[Config] Supabase URL source=${envUrl.isNotEmpty ? 'dotenv:SUPABASE_URL' : 'fromEnvironment:SUPABASE_URL/SB_URL'}');
+  debugPrint(
+      '[Config] Supabase anon key source=${envAnon.isNotEmpty ? 'dotenv:SUPABASE_ANON_KEY' : 'fromEnvironment:SUPABASE_ANON_KEY/SB_ANON'}');
 
   if (supabaseUrl.isEmpty || supabaseAnon.isEmpty) {
     throw StateError(
@@ -74,12 +91,16 @@ Future<void> main() async {
   final lightTheme = DefaultTheme.apply(lightWithTokens);
   final darkTheme = DefaultTheme.apply(darkWithTokens);
   runApp(GestionaleApp(lightTheme: lightTheme, darkTheme: darkTheme));
+
+  // avvia il controllo update senza bloccare la UI
+  unawaited(setupAutoUpdater());
 }
 
 class GestionaleApp extends StatelessWidget {
   final ThemeData lightTheme;
   final ThemeData darkTheme;
-  const GestionaleApp({super.key, required this.lightTheme, required this.darkTheme});
+  const GestionaleApp(
+      {super.key, required this.lightTheme, required this.darkTheme});
 
   @override
   Widget build(BuildContext context) {

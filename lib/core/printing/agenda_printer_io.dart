@@ -9,7 +9,8 @@ Future<void> agendaPrintWeb() async {
   // Su piattaforme non-Web non facciamo nulla.
 }
 
-Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async {
+Future<void> agendaPrintPdf(
+    String title, List<Map<String, String>> rows) async {
   // Carica font Google per garantire copertura dei glifi (es. U+2014 em dash)
   final baseFont = await PdfGoogleFonts.notoSansRegular();
   final boldFont = await PdfGoogleFonts.notoSansBold();
@@ -32,7 +33,13 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
       );
 
   // Header della tabella
-  final tableHeaders = <String>['Tipo', 'Titolo', 'Scadenza', 'Pratica', 'Assegnatario'];
+  final tableHeaders = <String>[
+    'Tipo',
+    'Titolo',
+    'Scadenza',
+    'Pratica',
+    'Assegnatario'
+  ];
 
   // Costruiamo le righe della tabella con eventuale line-through per completati
   List<pw.TableRow> buildTableRows() {
@@ -44,7 +51,8 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
         decoration: const pw.BoxDecoration(color: PdfColors.grey200),
         children: tableHeaders
             .map((h) => pw.Padding(
-                  padding: const pw.EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                  padding:
+                      const pw.EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                   child: pw.Text(h, style: headerStyle),
                 ))
             .toList(),
@@ -54,29 +62,37 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
     for (final r in rows) {
       final done = (r['done'] ?? 'false').toLowerCase() == 'true';
       final style = done
-          ? pw.TextStyle(font: baseFont, fontSize: 11, decoration: pw.TextDecoration.lineThrough)
+          ? pw.TextStyle(
+              font: baseFont,
+              fontSize: 11,
+              decoration: pw.TextDecoration.lineThrough)
           : bodyStyle;
       children.add(
         pw.TableRow(
           children: [
             pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              padding:
+                  const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               child: pw.Text(r['type'] ?? '', style: style),
             ),
             pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              padding:
+                  const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               child: pw.Text(r['title'] ?? '', style: style),
             ),
             pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              padding:
+                  const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               child: pw.Text(r['due'] ?? '', style: style),
             ),
             pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              padding:
+                  const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               child: pw.Text(r['matter'] ?? '', style: style),
             ),
             pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+              padding:
+                  const pw.EdgeInsets.symmetric(vertical: 4, horizontal: 4),
               child: pw.Text(r['assignee'] ?? '', style: style),
             ),
           ],
@@ -93,7 +109,9 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
       build: (context) => [
         buildHeader(),
         pw.SizedBox(height: 12),
-        pw.Table(border: pw.TableBorder.all(color: PdfColors.grey500, width: 0.5), children: buildTableRows()),
+        pw.Table(
+            border: pw.TableBorder.all(color: PdfColors.grey500, width: 0.5),
+            children: buildTableRows()),
       ],
     ),
   );
@@ -103,7 +121,7 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
 
 class AgendaPrinter {
   Future<void> printAgenda(List<Map<String, dynamic>> rows) async {
-    // TODO: implementazione desktop (es. package:printing/pdf) già presente altrove.
+    // NOTE: implementazione desktop (es. package:printing/pdf) già presente altrove.
     // Placeholder per separare le piattaforme.
   }
 }

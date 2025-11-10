@@ -80,7 +80,8 @@ class _TasksListPageState extends State<TasksListPage> {
 
   Future<void> _openCreateTask() async {
     final ctx = context;
-    final res = await AppDialog.show(ctx, builder: (_) => const TaskCreateDialog());
+    final res =
+        await AppDialog.show(ctx, builder: (_) => const TaskCreateDialog());
     if (!ctx.mounted) return;
     if (res != null) {
       AppToaster.of(ctx).success('Task creata');
@@ -117,9 +118,12 @@ class _TasksListPageState extends State<TasksListPage> {
         final right = [client, counter].where((s) => s.isNotEmpty).join(' / ');
         String label;
         if (code.isNotEmpty) {
-          label = right.isNotEmpty ? '$code — $right' : [code, m.title.trim()].where((s) => s.isNotEmpty).join(' — ');
+          label = right.isNotEmpty
+              ? '$code — $right'
+              : [code, m.title.trim()].where((s) => s.isNotEmpty).join(' — ');
         } else {
-          label = [m.title.trim(), right].where((s) => s.isNotEmpty).join(' — ');
+          label =
+              [m.title.trim(), right].where((s) => s.isNotEmpty).join(' — ');
         }
         if (id.isNotEmpty) mLabels[id] = label.isNotEmpty ? label : id;
       }
@@ -130,14 +134,17 @@ class _TasksListPageState extends State<TasksListPage> {
     } catch (_) {}
   }
 
-  Future<void> _loadMissingLabelsFromTasks(List<Map<String, dynamic>> list) async {
+  Future<void> _loadMissingLabelsFromTasks(
+      List<Map<String, dynamic>> list) async {
     final Set<String> missingMatter = {};
     final Set<String> missingAssign = {};
     for (final t in list) {
       final mid = '${t['matter_id'] ?? ''}';
-      if (mid.isNotEmpty && !_matterLabels.containsKey(mid)) missingMatter.add(mid);
+      if (mid.isNotEmpty && !_matterLabels.containsKey(mid))
+        missingMatter.add(mid);
       final uid = '${t['assigned_to'] ?? ''}';
-      if (uid.isNotEmpty && !_assigneeLabels.containsKey(uid)) missingAssign.add(uid);
+      if (uid.isNotEmpty && !_assigneeLabels.containsKey(uid))
+        missingAssign.add(uid);
     }
     if (missingMatter.isNotEmpty) {
       try {
@@ -167,15 +174,21 @@ class _TasksListPageState extends State<TasksListPage> {
               } else if (kind == 'company') {
                 final companyName = '${c['name'] ?? ''}'.trim();
                 final companyType = '${c['company_type'] ?? ''}'.trim();
-                return [companyName, companyType].where((e) => e.isNotEmpty).join(' ');
+                return [companyName, companyType]
+                    .where((e) => e.isNotEmpty)
+                    .join(' ');
               }
             }
             return '';
           }
+
           final client = clientName();
-          final right = [client, counter].where((s) => s.isNotEmpty).join(' / ');
+          final right =
+              [client, counter].where((s) => s.isNotEmpty).join(' / ');
           final label = code.isNotEmpty
-              ? (right.isNotEmpty ? '$code — $right' : [code, title].where((s) => s.isNotEmpty).join(' — '))
+              ? (right.isNotEmpty
+                  ? '$code — $right'
+                  : [code, title].where((s) => s.isNotEmpty).join(' — '))
               : [title, right].where((s) => s.isNotEmpty).join(' — ');
           if (id.isNotEmpty) _matterLabels[id] = label.isNotEmpty ? label : id;
         }
@@ -204,13 +217,17 @@ class _TasksListPageState extends State<TasksListPage> {
     });
     try {
       final fid = await getCurrentFirmId();
-      if (fid == null || fid.isEmpty) throw Exception('Nessuno studio selezionato.');
+      if (fid == null || fid.isEmpty)
+        throw Exception('Nessuno studio selezionato.');
       var qb = _sb
           .from('tasks')
-          .select('task_id, title, start_at, due_at, done, priority, assigned_to, matter_id, type')
+          .select(
+              'task_id, title, start_at, due_at, done, priority, assigned_to, matter_id, type')
           .eq('firm_id', fid);
-      if ((_filterMatterId ?? '').isNotEmpty) qb = qb.eq('matter_id', _filterMatterId!);
-      if ((_filterAssigneeId ?? '').isNotEmpty) qb = qb.eq('assigned_to', _filterAssigneeId!);
+      if ((_filterMatterId ?? '').isNotEmpty)
+        qb = qb.eq('matter_id', _filterMatterId!);
+      if ((_filterAssigneeId ?? '').isNotEmpty)
+        qb = qb.eq('assigned_to', _filterAssigneeId!);
       // Filtro tipo (scrivere/onere)
       if ((_filterType ?? '').isNotEmpty) qb = qb.eq('type', _filterType!);
       // Filtro scadenza (singola data) – considera tutto il giorno locale
@@ -224,7 +241,8 @@ class _TasksListPageState extends State<TasksListPage> {
       }
       // (Legacy) Supporto al vecchio filtro priorità se ancora presente: manteniamo per compatibilità
       if ((_filterPriority ?? '').isNotEmpty) {
-        qb = qb.eq('priority', _priorityToInt(_filterPriority) ?? _filterPriority!);
+        qb = qb.eq(
+            'priority', _priorityToInt(_filterPriority) ?? _filterPriority!);
       }
       if (!_showCompleted) qb = qb.eq('done', false);
       final rows = await qb.order('due_at', ascending: true, nullsFirst: true);
@@ -275,15 +293,19 @@ class _TasksListPageState extends State<TasksListPage> {
   /// - onere → blu
   /// - scrivere → arancione
   /// Allinea lo stile a quello usato nella vista principale.
-  Widget _buildTypeBadge(BuildContext context, String type, {bool done = false}) {
-    final ty = Theme.of(context).extension<ShadcnTypography>() ?? ShadcnTypography.defaults();
+  Widget _buildTypeBadge(BuildContext context, String type,
+      {bool done = false}) {
+    final ty = Theme.of(context).extension<ShadcnTypography>() ??
+        ShadcnTypography.defaults();
     final String label = switch (type.toLowerCase()) {
       'scrivere' => 'Scrivere',
       'onere' => 'Onere',
       _ => type,
     };
     final Color fgBase = Colors.white;
-    final Color fg = done ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6) : fgBase;
+    final Color fg = done
+        ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)
+        : fgBase;
     final Color bg = switch (type.toLowerCase()) {
       'scrivere' => Colors.orange.shade600,
       'onere' => Colors.blue.shade600,
@@ -318,7 +340,9 @@ class _TasksListPageState extends State<TasksListPage> {
       case 'priority':
         return _priorityWeight(b['priority']) - _priorityWeight(a['priority']);
       case 'title':
-        return ((a['title'] ?? '').toString()).toLowerCase().compareTo(((b['title'] ?? '').toString()).toLowerCase());
+        return ((a['title'] ?? '').toString())
+            .toLowerCase()
+            .compareTo(((b['title'] ?? '').toString()).toLowerCase());
       case 'due_at':
       default:
         return _compareDueAsc(a, b);
@@ -335,43 +359,6 @@ class _TasksListPageState extends State<TasksListPage> {
     } catch (_) {
       return '—';
     }
-  }
-
-  // Prepara righe stampabili per PDF desktop (macOS/Windows/Linux)
-  List<Map<String, String>> _toPrintableRows(List<Map<String, dynamic>> src) {
-    return src.map((t) {
-      final typeRaw = (t['type'] ?? '').toString();
-      final type = switch (typeRaw.toLowerCase()) {
-        'writing' => 'Scrivere',
-        'scrivere' => 'Scrivere',
-        'onere' => 'Onere',
-        _ => typeRaw,
-      };
-      final title = (t['title'] ?? '').toString();
-      final dueIso = t['due_at'];
-      String due = '';
-      if (dueIso != null) {
-        try {
-          final d = DateTime.parse('$dueIso').toLocal();
-          final dd = d.day.toString().padLeft(2, '0');
-          final mm = d.month.toString().padLeft(2, '0');
-          due = '$dd-$mm-${d.year}';
-        } catch (_) {}
-      }
-      final assigneeId = (t['assigned_to'] ?? '').toString();
-      final matterId = (t['matter_id'] ?? '').toString();
-      final assignee = assigneeId.isNotEmpty ? (_assigneeLabels[assigneeId] ?? '') : '';
-      final matter = matterId.isNotEmpty ? (_matterLabels[matterId] ?? '') : '';
-      final done = ((t['done'] ?? false) == true).toString();
-      return {
-        'type': type,
-        'title': title,
-        'due': due,
-        'matter': matter,
-        'assignee': assignee,
-        'done': done,
-      };
-    }).toList();
   }
 
   int? _priorityToInt(String? p) {
@@ -397,7 +384,8 @@ class _TasksListPageState extends State<TasksListPage> {
     await AppAlertDialog.show<void>(
       ctx,
       title: 'Elimina task',
-      description: 'Confermi l\'eliminazione di questa task?\nL\'operazione non può essere annullata.',
+      description:
+          'Confermi l\'eliminazione di questa task?\nL\'operazione non può essere annullata.',
       cancelText: 'Annulla',
       confirmText: 'Elimina',
       destructive: true,
@@ -420,7 +408,8 @@ class _TasksListPageState extends State<TasksListPage> {
 
   Future<void> _openEditTask(Map<String, dynamic> t) async {
     final ctx = context;
-    final res = await AppDialog.show(ctx, builder: (_) => TaskEditDialog(taskId: (t['task_id']).toString()));
+    final res = await AppDialog.show(ctx,
+        builder: (_) => TaskEditDialog(taskId: (t['task_id']).toString()));
     if (!ctx.mounted) return;
     if (res != null) {
       AppToaster.of(ctx).success('Task aggiornata');
@@ -475,10 +464,12 @@ class _TasksListPageState extends State<TasksListPage> {
                         popoverMatchWidestRow: true,
                         items: [
                           const ComboboxItem(value: '', label: 'Tutte'),
-                          ..._matterLabels.entries.map((e) => ComboboxItem(value: e.key, label: e.value)),
+                          ..._matterLabels.entries.map((e) =>
+                              ComboboxItem(value: e.key, label: e.value)),
                         ],
                         onChanged: (v) {
-                          setState(() => _filterMatterId = (v == null || v.isEmpty) ? null : v);
+                          setState(() => _filterMatterId =
+                              (v == null || v.isEmpty) ? null : v);
                           _loadTasks();
                         },
                       ),
@@ -493,13 +484,15 @@ class _TasksListPageState extends State<TasksListPage> {
                             items: [
                               const SelectItemData(value: '', label: 'Tutti'),
                               ..._assigneeLabels.entries.map(
-                                (e) => SelectItemData(value: e.key, label: e.value),
+                                (e) => SelectItemData(
+                                    value: e.key, label: e.value),
                               ),
                             ],
                           ),
                         ],
                         onChanged: (v) {
-                          setState(() => _filterAssigneeId = v.isEmpty ? null : v);
+                          setState(
+                              () => _filterAssigneeId = v.isEmpty ? null : v);
                           _loadTasks();
                         },
                       ),
@@ -514,7 +507,8 @@ class _TasksListPageState extends State<TasksListPage> {
                             label: 'Tipo',
                             items: [
                               SelectItemData(value: '', label: 'Tutti'),
-                              SelectItemData(value: 'scrivere', label: 'Scrivere'),
+                              SelectItemData(
+                                  value: 'scrivere', label: 'Scrivere'),
                               SelectItemData(value: 'onere', label: 'Onere'),
                             ],
                           ),
@@ -562,7 +556,8 @@ class _TasksListPageState extends State<TasksListPage> {
                             },
                           ),
                           const SizedBox(width: 8),
-                          Text('Mostra completati', style: Theme.of(context).textTheme.bodyMedium),
+                          Text('Mostra completati',
+                              style: Theme.of(context).textTheme.bodyMedium),
                         ],
                       ),
                     ],
@@ -586,7 +581,8 @@ class _TasksListPageState extends State<TasksListPage> {
           if (_loading) const AppProgressBar(),
           if (_error != null) ...[
             SizedBox(height: spacing),
-            Text('Errore: $_error', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+            Text('Errore: $_error',
+                style: TextStyle(color: Theme.of(context).colorScheme.error)),
           ],
 
           if (_printMode) ...[
@@ -599,7 +595,10 @@ class _TasksListPageState extends State<TasksListPage> {
                 final String yyyy = ref.year.toString();
                 return Text(
                   'Agenda del $dd-$mm-$yyyy',
-                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                  style: Theme.of(ctx)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 );
               }),
             ),
@@ -615,11 +614,13 @@ class _TasksListPageState extends State<TasksListPage> {
                       selectionInFirstCell: !_printMode,
                       selectable: !_printMode,
                       allSelected: visibleRows.isNotEmpty &&
-                          visibleRows.every((t) => _selectedIds.contains('${t['task_id'] ?? ''}')),
+                          visibleRows.every((t) =>
+                              _selectedIds.contains('${t['task_id'] ?? ''}')),
                       onToggleAll: () {
                         setState(() {
                           final all = visibleRows.isNotEmpty &&
-                              visibleRows.every((t) => _selectedIds.contains('${t['task_id'] ?? ''}'));
+                              visibleRows.every((t) => _selectedIds
+                                  .contains('${t['task_id'] ?? ''}'));
                           if (all) {
                             _selectedIds.clear();
                           } else {
@@ -630,7 +631,8 @@ class _TasksListPageState extends State<TasksListPage> {
                         });
                       },
                       selectedRows: [
-                        for (final t in visibleRows) _selectedIds.contains('${t['task_id'] ?? ''}')
+                        for (final t in visibleRows)
+                          _selectedIds.contains('${t['task_id'] ?? ''}')
                       ],
                       onToggleRow: (i, v) {
                         final id = '${visibleRows[i]['task_id'] ?? ''}';
@@ -689,8 +691,12 @@ class _TasksListPageState extends State<TasksListPage> {
                         final type = (t['type'] ?? '').toString();
                         final assigneeId = (t['assigned_to'] ?? '').toString();
                         final matterId = (t['matter_id'] ?? '').toString();
-                        final assigneeLabel = assigneeId.isNotEmpty ? (_assigneeLabels[assigneeId] ?? '') : '';
-                        final matterLabel = matterId.isNotEmpty ? (_matterLabels[matterId] ?? '') : '';
+                        final assigneeLabel = assigneeId.isNotEmpty
+                            ? (_assigneeLabels[assigneeId] ?? '')
+                            : '';
+                        final matterLabel = matterId.isNotEmpty
+                            ? (_matterLabels[matterId] ?? '')
+                            : '';
                         final done = (t['done'] ?? false) == true;
                         final TextStyle strike = TextStyle(
                           decoration: done ? TextDecoration.lineThrough : null,
@@ -703,7 +709,8 @@ class _TasksListPageState extends State<TasksListPage> {
                                 ? const Text('—')
                                 : _buildTypeBadge(context, type, done: done),
                             // Titolo
-                            Text(title.isEmpty ? '—' : title, overflow: TextOverflow.ellipsis, style: strike),
+                            Text(title.isEmpty ? '—' : title,
+                                overflow: TextOverflow.ellipsis, style: strike),
                             // Scadenza
                             Text(due, style: strike),
                             // Pratica
@@ -713,7 +720,8 @@ class _TasksListPageState extends State<TasksListPage> {
                               style: strike,
                             ),
                             // Assegnatario
-                            Text(assigneeLabel.isEmpty ? '—' : assigneeLabel, style: strike),
+                            Text(assigneeLabel.isEmpty ? '—' : assigneeLabel,
+                                style: strike),
                           ],
                           rowMenu: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -722,7 +730,8 @@ class _TasksListPageState extends State<TasksListPage> {
                                 variant: AppButtonVariant.outline,
                                 size: AppButtonSize.iconSm,
                                 circular: true,
-                                onPressed: id.isEmpty ? null : () => _openEditTask(t),
+                                onPressed:
+                                    id.isEmpty ? null : () => _openEditTask(t),
                                 child: const Icon(AppIcons.edit),
                               ),
                               SizedBox(width: spacing),
@@ -730,7 +739,8 @@ class _TasksListPageState extends State<TasksListPage> {
                                 variant: AppButtonVariant.destructive,
                                 size: AppButtonSize.iconSm,
                                 circular: true,
-                                onPressed: id.isEmpty ? null : () => _deleteTask(t),
+                                onPressed:
+                                    id.isEmpty ? null : () => _deleteTask(t),
                                 child: const Icon(AppIcons.delete),
                               ),
                             ],
@@ -745,7 +755,8 @@ class _TasksListPageState extends State<TasksListPage> {
           if (!_printMode)
             // Footer: paginazione
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: spacing * 2, vertical: spacing),
+              padding: EdgeInsets.symmetric(
+                  horizontal: spacing * 2, vertical: spacing),
               child: Row(
                 children: [
                   Text('$total task totali'),
@@ -754,14 +765,19 @@ class _TasksListPageState extends State<TasksListPage> {
                     child: PaginationContent(
                       children: [
                         PaginationPrevious(
-                          onPressed: _page > 0 ? () => setState(() => _page -= 1) : null,
+                          onPressed: _page > 0
+                              ? () => setState(() => _page -= 1)
+                              : null,
                           label: 'Precedente',
                         ),
                         PaginationItem(
-                          child: PaginationLink(isActive: true, child: Text('${_page + 1}')),
+                          child: PaginationLink(
+                              isActive: true, child: Text('${_page + 1}')),
                         ),
                         PaginationNext(
-                          onPressed: ((_page + 1) * _pageSize < total) ? () => setState(() => _page += 1) : null,
+                          onPressed: ((_page + 1) * _pageSize < total)
+                              ? () => setState(() => _page += 1)
+                              : null,
                           label: 'Successiva',
                         ),
                       ],

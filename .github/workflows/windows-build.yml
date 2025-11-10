@@ -1,7 +1,15 @@
 name: Windows EXE (Inno Setup)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/windows-build.yml'
+      - 'windows/**'
+      - 'pubspec.yaml'
+      - 'lib/**'
+
 
 jobs:
   build-windows:
