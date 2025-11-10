@@ -10,29 +10,19 @@
 
     <!-- Release più recente -->
     <item>
-      <title>v{{VERSION}}</title>
-      <sparkle:releaseNotesLink>https://github.com/TUO-UTENTE/Earon-2/releases/tag/v{{VERSION}}</sparkle:releaseNotesLink>
-      <pubDate>{{PUBDATE_RFC2822}}</pubDate>
+  <title>v0.1.0</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.0</sparkle:releaseNotesLink>
+  <pubDate>Mon, 10 Nov 2025 17:30:00 +0100</pubDate>
 
-      <!-- macOS DMG -->
-      <enclosure
-        url="https://github.com/TUO-UTENTE/Earon-2/releases/download/v{{VERSION}}/Gestionale-{{VERSION}}.dmg"
-        sparkle:os="macos"
-        sparkle:version="{{BUILD_NUMBER_OR_SEMVER}}"
-        sparkle:shortVersionString="{{VERSION}}"
-        length="{{BYTES_DMG}}"
-        type="application/octet-stream"
-        sparkle:edSignature="{{EDDSA_SIGNATURE_BASE64_OR_EMPTY}}" />
-
-      <!-- Windows EXE -->
-      <enclosure
-        url="https://github.com/TUO-UTENTE/Earon-2/releases/download/v{{VERSION}}/Gestionale-Setup-{{VERSION}}.exe"
-        sparkle:os="windows"
-        sparkle:version="{{BUILD_NUMBER_OR_SEMVER}}"
-        sparkle:shortVersionString="{{VERSION}}"
-        length="{{BYTES_EXE}}"
-        type="application/octet-stream"
-        sparkle:sha256="{{SHA256_EXE}}" />
-    </item>
+  <!-- macOS DMG -->
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.0/Earon-0.1.0.dmg"
+    sparkle:os="macos"
+    sparkle:version="0.1.0"
+    sparkle:shortVersionString="0.1.0"
+    length="22576728"
+    type="application/octet-stream"
+    sparkle:sha256="e14fe1a6625f544e39613dcde67dbf45494c1f4d3d74d423e1be7506d0f10512" />
+</item>
   </channel>
 </rss>
