@@ -20,12 +20,9 @@ dependencies:
   intl: ^0.20.2
   file_picker: ^10.3.3
   csv: ^6.0.0
-  flex_color_scheme: ^8.3.0
   adaptive_breakpoints: ^0.1.6
-  data_table_2: ^2.5.10
   google_fonts: ^6.2.1
   phosphor_flutter: ^2.1.0
-  table_calendar: ^3.0.9
   fl_chart: ^0.68.0
   printing: ^5.14.2
   pdf: ^3.11.3
