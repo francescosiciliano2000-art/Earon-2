@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Gestionale – Aggiornamenti</title>
+    <link>https://raw.githubusercontent.com/TUO-UTENTE/Earon-2/main/updates/appcast.xml</link>
+    <description>Feed aggiornamenti per macOS (.dmg) e Windows (.exe)</description>
+    <language>it</language>
+
+    <!-- Release più recente -->
+    <item>
+  <title>v0.1.0</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.0</sparkle:releaseNotesLink>
+  <pubDate>Mon, 10 Nov 2025 17:30:00 +0100</pubDate>
+
+  <!-- macOS DMG -->
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.0/Earon-0.1.0.dmg"
+    sparkle:os="macos"
+    sparkle:version="0.1.0"
+    sparkle:shortVersionString="0.1.0"
+    length="22576728"
+    type="application/octet-stream"
+    sparkle:sha256="e14fe1a6625f544e39613dcde67dbf45494c1f4d3d74d423e1be7506d0f10512" />
+</item>
+  </channel>
+</rss>
