@@ -36,3 +36,22 @@ node_modules/
 .env
 .env.*
 *.log
+
+# Flutter plugins cache
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# macOS CocoaPods & generati
+macos/Pods/
+macos/.symlinks/
+macos/Flutter/ephemeral/
+
+# Linux generati (se abilitato)
+linux/flutter/ephemeral/
+
+# Android NDK cache (se presente)
+android/**/.cxx/
+
+# iOS/macOS lockfiles (opzionale, se NON vuoi bloccarli in repo)
+# ios/Podfile.lock
+# macos/Podfile.lock
