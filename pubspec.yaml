@@ -27,6 +27,7 @@ dependencies:
   printing: ^5.14.2
   pdf: ^3.11.3
   web: ^1.1.1
+  auto_updater: ^1.0.0
 
 
 dev_dependencies:
@@ -37,7 +38,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - .env
     - lib/design system/theme/colors/neutral_inline.json
     - lib/design system/theme/colors/neutral_rgb.json
     # Asset con l'elenco dei tribunali/fori raggruppati per regione
