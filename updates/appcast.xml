@@ -9,6 +9,22 @@
     <language>it</language>
 
     <!-- Release più recente -->
+
+  <item>
+  <title>v0.1.1</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.1</sparkle:releaseNotesLink>
+  <pubDate>Mon, 10 Nov 2025 17:40:00 +0100</pubDate>
+
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.1/Earon-0.1.1.dmg"
+    sparkle:os="macos"
+    sparkle:version="0.1.1"
+    sparkle:shortVersionString="0.1.1"
+    length="23570976"
+    type="application/octet-stream"
+    sparkle:sha256="c04c9f982cb43ee3989ddb572fcd34bd2aea686835254e5c3eb6d5ff23a3949a" />
+</item>
+
     <item>
   <title>v0.1.0</title>
   <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.0</sparkle:releaseNotesLink>
