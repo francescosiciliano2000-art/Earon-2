@@ -3,7 +3,7 @@
 #define MyExeName "Earon.exe"
 
 [Setup]
-AppId={{E3EDC4C9-3C8B-4C8C-9F7D-EE0000E1A1E1}
+AppId={{E3EDC4C9-3C8B-4C8C-9F7D-EE0000E1A1E1}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 DefaultDirName={pf}\{#MyAppName}

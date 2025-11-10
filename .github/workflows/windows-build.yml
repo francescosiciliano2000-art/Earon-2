@@ -29,8 +29,21 @@ jobs:
       - name: Pub get
         run: flutter pub get
 
+      - name: Validate required secrets
+        shell: pwsh
+        run: |
+          $u = "${{ secrets.SUPABASE_URL }}"
+          $k = "${{ secrets.SUPABASE_ANON_KEY }}"
+          if ([string]::IsNullOrWhiteSpace($u)) { Write-Error "Missing SUPABASE_URL secret"; exit 1 }
+          if ([string]::IsNullOrWhiteSpace($k)) { Write-Error "Missing SUPABASE_ANON_KEY secret"; exit 1 }
+          Write-Host "Secrets are present. Proceeding with build."
+
       - name: Build Windows Release
-        run: flutter build windows --release
+        run: >-
+          flutter build windows --release
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          --dart-define=APPCAST_URL=${{ secrets.APPCAST_URL }}
 
       - name: Locate and rename exe to Earon.exe
         shell: pwsh
@@ -64,7 +77,11 @@ jobs:
           path: build/windows/x64/runner/Release/**
       
       - name: Build Windows Debug (console)
-        run: flutter build windows --debug
+        run: >-
+          flutter build windows --debug
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          --dart-define=APPCAST_URL=${{ secrets.APPCAST_URL }}
 
       - name: Upload portable Debug (console)
         uses: actions/upload-artifact@v4
