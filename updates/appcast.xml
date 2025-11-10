@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Gestionale – Aggiornamenti</title>
+    <link>https://raw.githubusercontent.com/TUO-UTENTE/Earon-2/main/updates/appcast.xml</link>
+    <description>Feed aggiornamenti per macOS (.dmg) e Windows (.exe)</description>
+    <language>it</language>
+
+    <!-- Release più recente -->
+    <item>
+      <title>v{{VERSION}}</title>
+      <sparkle:releaseNotesLink>https://github.com/TUO-UTENTE/Earon-2/releases/tag/v{{VERSION}}</sparkle:releaseNotesLink>
+      <pubDate>{{PUBDATE_RFC2822}}</pubDate>
+
+      <!-- macOS DMG -->
+      <enclosure
+        url="https://github.com/TUO-UTENTE/Earon-2/releases/download/v{{VERSION}}/Gestionale-{{VERSION}}.dmg"
+        sparkle:os="macos"
+        sparkle:version="{{BUILD_NUMBER_OR_SEMVER}}"
+        sparkle:shortVersionString="{{VERSION}}"
+        length="{{BYTES_DMG}}"
+        type="application/octet-stream"
+        sparkle:edSignature="{{EDDSA_SIGNATURE_BASE64_OR_EMPTY}}" />
+
+      <!-- Windows EXE -->
+      <enclosure
+        url="https://github.com/TUO-UTENTE/Earon-2/releases/download/v{{VERSION}}/Gestionale-Setup-{{VERSION}}.exe"
+        sparkle:os="windows"
+        sparkle:version="{{BUILD_NUMBER_OR_SEMVER}}"
+        sparkle:shortVersionString="{{VERSION}}"
+        length="{{BYTES_EXE}}"
+        type="application/octet-stream"
+        sparkle:sha256="{{SHA256_EXE}}" />
+    </item>
+  </channel>
+</rss>
