@@ -20,11 +20,11 @@ class ClienteRepo {
     int limit = 50,
     int offset = 0,
   }) async {
+    // Base query
     PostgrestFilterBuilder qf = sb
         .from('clients')
         .select('*')
-        .eq('firm_id', firmId)
-        .eq('status', 'active'); // Filtra solo clienti attivi
+        .eq('firm_id', firmId);
 
     if (q != null && q.trim().isNotEmpty) {
       final term = q.trim();
@@ -46,8 +46,7 @@ class ClienteRepo {
     }
     // kind/tags non sono presenti nello schema corrente: ignoriamo il filtro lato DB
 
-    final qt =
-        qf.order(orderBy, ascending: asc).range(offset, offset + limit - 1);
+    final qt = qf.order(orderBy, ascending: asc).range(offset, offset + limit - 1);
     final res = await qt;
     return List<Map<String, dynamic>>.from(res as List);
   }
@@ -60,36 +59,34 @@ class ClienteRepo {
     List<String> tagsAny = const [], // mantenuto per compatibilità UI
     List<String> tagsAll = const [], // mantenuto per compatibilità UI
   }) async {
-    // Costruisco condizioni nello stile PostgREST per l'header Content-Range
-    final conds = <String>['firm_id.eq.$firmId'];
-    // Ripristino filtro attivi
-    conds.add('status.eq.active');
-    String? orCond;
+    // Usa il conteggio nativo PostgREST via Supabase con FetchOptions(count: CountOption.exact)
+    // per ottenere il totale esatto senza dipendenze dal .env/API esterna.
+    PostgrestFilterBuilder qf = sb
+        .from('clients')
+        .select('client_id')
+        .eq('firm_id', firmId);
+
     if (q != null && q.trim().isNotEmpty) {
-      final term = q.trim().replaceAll('(', '').replaceAll(')', '');
+      final term = q.trim();
       final tokens = term.split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
       final t1 = tokens.isNotEmpty ? tokens.first : null;
       final t2 = tokens.length > 1 ? tokens.last : null;
-      // Ricerca avanzata per il count (PostgREST or/and):
-      // name ILIKE *term* OR surname ILIKE *term* OR (name ILIKE *t1* AND surname ILIKE *t2*) OR (name ILIKE *t2* AND surname ILIKE *t1*)
-      final parts = <String>[
+      final buf = <String>[
         'name.ilike.*$term*',
         'surname.ilike.*$term*',
         if (t1 != null && t2 != null) 'and(name.ilike.*$t1*,surname.ilike.*$t2*)',
         if (t1 != null && t2 != null) 'and(name.ilike.*$t2*,surname.ilike.*$t1*)',
       ];
-      orCond = parts.isEmpty ? null : parts.join(',');
+      qf = qf.or(buf.join(','));
     }
-    // kind/tags non sono presenti nello schema corrente: ignoriamo lato DB
 
-    final query = <String, dynamic>{
-      'select': 'client_id',
-      if (conds.isNotEmpty) 'and': '(${conds.join(',')})',
-      if (orCond != null) 'or': '($orCond)',
-    };
-
-    final total = await api.count('clients', query: query);
-    return total;
+    // Esegui query headless; il valore viene ritornato nell'oggetto risposta.
+    final res = await qf.count(CountOption.exact);
+    try {
+      return res.count;
+    } catch (_) {
+      return 0;
+    }
   }
 
   // CREA (ritorna id)

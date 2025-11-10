@@ -19,7 +19,7 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
 class AgendaPrinter {
   Future<void> printAgenda(List<Map<String, dynamic>> rows) async {
     final text = rows.map((e) => e.toString()).join('\n');
-    final url = 'data:text/plain;charset=utf-8,' + Uri.encodeComponent(text);
+    final url = 'data:text/plain;charset=utf-8,${Uri.encodeComponent(text)}';
     web.window.open(url, '_blank');
   }
 }

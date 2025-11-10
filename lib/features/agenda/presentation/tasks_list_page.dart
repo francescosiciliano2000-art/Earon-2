@@ -140,11 +140,13 @@ class _TasksListPageState extends State<TasksListPage> {
     final Set<String> missingAssign = {};
     for (final t in list) {
       final mid = '${t['matter_id'] ?? ''}';
-      if (mid.isNotEmpty && !_matterLabels.containsKey(mid))
+      if (mid.isNotEmpty && !_matterLabels.containsKey(mid)) {
         missingMatter.add(mid);
+      }
       final uid = '${t['assigned_to'] ?? ''}';
-      if (uid.isNotEmpty && !_assigneeLabels.containsKey(uid))
+      if (uid.isNotEmpty && !_assigneeLabels.containsKey(uid)) {
         missingAssign.add(uid);
+      }
     }
     if (missingMatter.isNotEmpty) {
       try {
@@ -217,17 +219,20 @@ class _TasksListPageState extends State<TasksListPage> {
     });
     try {
       final fid = await getCurrentFirmId();
-      if (fid == null || fid.isEmpty)
+      if (fid == null || fid.isEmpty) {
         throw Exception('Nessuno studio selezionato.');
+      }
       var qb = _sb
           .from('tasks')
           .select(
               'task_id, title, start_at, due_at, done, priority, assigned_to, matter_id, type')
           .eq('firm_id', fid);
-      if ((_filterMatterId ?? '').isNotEmpty)
+      if ((_filterMatterId ?? '').isNotEmpty) {
         qb = qb.eq('matter_id', _filterMatterId!);
-      if ((_filterAssigneeId ?? '').isNotEmpty)
+      }
+      if ((_filterAssigneeId ?? '').isNotEmpty) {
         qb = qb.eq('assigned_to', _filterAssigneeId!);
+      }
       // Filtro tipo (scrivere/onere)
       if ((_filterType ?? '').isNotEmpty) qb = qb.eq('type', _filterType!);
       // Filtro scadenza (singola data) – considera tutto il giorno locale

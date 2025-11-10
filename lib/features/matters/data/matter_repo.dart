@@ -189,20 +189,23 @@ class MatterRepo {
       throw RepoException('Nessuno studio selezionato.');
     }
 
-    final conds = <String>['${Matter.colFirmId}.eq.$fid'];
+    // Usa il conteggio nativo PostgREST via Supabase passando FetchOptions(count: CountOption.exact)
+    // per ottenere il totale senza dipendere da ApiClient/.env
+    PostgrestFilterBuilder qf = sb
+        .from('matters')
+        .select(Matter.colId)
+        .eq(Matter.colFirmId, fid);
+
     if (status.isNotEmpty) {
-      String quote(String s) => '"${s.replaceAll('"', '')}"';
-      final items = status.map(quote).join(',');
-      conds.add('${Matter.colStatus}.in.($items)');
+      qf = qf.inFilter(Matter.colStatus, status);
     }
     if (clientId != null && clientId.isNotEmpty) {
-      conds.add('${Matter.colClientId}.eq.$clientId');
+      qf = qf.eq(Matter.colClientId, clientId);
     }
     if (courtId != null && courtId.isNotEmpty) {
-      conds.add('${Matter.colCourt}.eq.$courtId');
+      qf = qf.eq(Matter.colCourt, courtId);
     }
 
-    String? orStr;
     if (search != null && search.trim().isNotEmpty) {
       final like = '*${search.trim()}*';
       final fields = (searchFields == null || searchFields.isEmpty)
@@ -238,17 +241,17 @@ class MatterRepo {
         } catch (_) {}
       }
 
-      if (parts.isNotEmpty) orStr = parts.join(',');
+      if (parts.isNotEmpty) {
+        qf = qf.or(parts.join(','));
+      }
     }
 
-    final Map<String, dynamic> query = {
-      'select': Matter.colId,
-      if (conds.isNotEmpty) 'and': '(${conds.join(',')})',
-      if (orStr != null) 'or': '($orStr)',
-    };
-
-    final total = await api.count('matters', query: query);
-    return total;
+    final res = await qf.count(CountOption.exact);
+    try {
+      return res.count;
+    } catch (_) {
+      return 0;
+    }
   }
 
   /// Ottieni una pratica per id
