@@ -1,0 +1,29 @@
+{
+  "table_name": "matters",
+  "columns": [
+    {"name": "matter_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "primary_key": true},
+    {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+    {"name": "client_id", "type": "uuid", "nullable": false, "default": null},
+    {"name": "title", "type": "text", "nullable": false, "default": null},
+    {"name": "description", "type": "text", "nullable": true, "default": null},
+    {"name": "matter_number", "type": "text", "nullable": true, "default": null},
+    {"name": "legacy_client_id", "type": "text", "nullable": true, "default": null},
+    {"name": "court", "type": "text", "nullable": true, "default": null},
+    {"name": "judge", "type": "text", "nullable": true, "default": null},
+    {"name": "opposing_party", "type": "text", "nullable": true, "default": null},
+    {"name": "case_value", "type": "numeric", "nullable": true, "default": null},
+    {"name": "hourly_rate", "type": "numeric", "nullable": true, "default": null},
+    {"name": "status", "type": "matter_status", "nullable": true, "default": "'open'::matter_status"},
+    {"name": "opened_at", "type": "date", "nullable": true, "default": "CURRENT_DATE"},
+    {"name": "closed_at", "type": "date", "nullable": true, "default": null},
+    {"name": "notes", "type": "text", "nullable": true, "default": null},
+    {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+    {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+  ],
+  "indexes": ["matters_pkey", "idx_matters_firm_client", "idx_matters_legacy_norm_firm"],
+  "foreign_keys": [
+    {"column": "firm_id", "references": "firms(firm_id)"},
+    {"column": "client_id", "references": "clients(client_id)"}
+  ],
+  "enums_used": ["matter_status"]
+}

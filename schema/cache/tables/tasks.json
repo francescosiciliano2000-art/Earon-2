@@ -1,0 +1,35 @@
+{
+  "table_name": "tasks",
+  "columns": [
+    {"name": "task_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "primary_key": true},
+    {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+    {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+    {"name": "assigned_to", "type": "uuid", "nullable": true, "default": null},
+    {"name": "created_by", "type": "uuid", "nullable": false, "default": null},
+    {"name": "title", "type": "text", "nullable": false, "default": null},
+    {"name": "description", "type": "text", "nullable": true, "default": null},
+    {"name": "priority", "type": "text", "nullable": true, "default": "'medium'"},
+    {"name": "status", "type": "text", "nullable": true, "default": "'pending'"},
+    {"name": "due_date", "type": "date", "nullable": true, "default": null},
+    {"name": "completed_at", "type": "timestamp with time zone", "nullable": true, "default": null},
+    {"name": "estimated_hours", "type": "numeric", "nullable": true, "default": null},
+    {"name": "actual_hours", "type": "numeric", "nullable": true, "default": null},
+    {"name": "tags", "type": "text[]", "nullable": true, "default": null},
+    {"name": "dependencies", "type": "uuid[]", "nullable": true, "default": null},
+    {"name": "attachments", "type": "jsonb", "nullable": true, "default": null},
+    {"name": "comments", "type": "jsonb", "nullable": true, "default": null},
+    {"name": "recurring_pattern", "type": "jsonb", "nullable": true, "default": null},
+    {"name": "parent_task_id", "type": "uuid", "nullable": true, "default": null},
+    {"name": "performed_by", "type": "text", "nullable": true, "default": null},
+    {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+    {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+  ],
+  "indexes": ["tasks_pkey"],
+  "foreign_keys": [
+    {"column": "firm_id", "references": "firms(firm_id)"},
+    {"column": "matter_id", "references": "matters(matter_id)"},
+    {"column": "assigned_to", "references": "profiles(user_id)"},
+    {"column": "created_by", "references": "profiles(user_id)"},
+    {"column": "parent_task_id", "references": "tasks(task_id)"}
+  ]
+}

@@ -1,0 +1,403 @@
+{
+  "schema_name": "public",
+  "generated_at": "2025-01-01T12:00:00Z",
+  "tables": {
+    "audit_log": {
+      "columns": [
+        {"name": "log_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "user_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "action", "type": "text", "nullable": false, "default": null},
+        {"name": "table_name", "type": "text", "nullable": false, "default": null},
+        {"name": "record_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "old_values", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "new_values", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["log_id"],
+      "indexes": ["audit_log_pkey"]
+    },
+    "clients": {
+      "columns": [
+        {"name": "client_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "name", "type": "text", "nullable": false, "default": null},
+        {"name": "tax_code", "type": "text", "nullable": true, "default": null},
+        {"name": "vat_number", "type": "text", "nullable": true, "default": null},
+        {"name": "address", "type": "text", "nullable": true, "default": null},
+        {"name": "city", "type": "text", "nullable": true, "default": null},
+        {"name": "postal_code", "type": "text", "nullable": true, "default": null},
+        {"name": "country", "type": "text", "nullable": true, "default": "'IT'"},
+        {"name": "phone", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["client_id"],
+      "indexes": ["clients_pkey", "idx_clients_firm", "idx_clients_tax_code"]
+    },
+    "contacts": {
+      "columns": [
+        {"name": "contact_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "client_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "name", "type": "text", "nullable": false, "default": null},
+        {"name": "role", "type": "text", "nullable": true, "default": null},
+        {"name": "phone", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["contact_id"],
+      "indexes": ["contacts_pkey", "idx_contacts_client", "idx_contacts_firm"]
+    },
+    "documents": {
+      "columns": [
+        {"name": "doc_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "filename", "type": "text", "nullable": false, "default": null},
+        {"name": "file_path", "type": "text", "nullable": false, "default": null},
+        {"name": "file_size", "type": "bigint", "nullable": true, "default": null},
+        {"name": "mime_type", "type": "text", "nullable": true, "default": null},
+        {"name": "description", "type": "text", "nullable": true, "default": null},
+        {"name": "tags", "type": "text[]", "nullable": true, "default": null},
+        {"name": "uploaded_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["doc_id"],
+      "indexes": ["documents_pkey", "idx_documents_matter"]
+    },
+    "emails": {
+      "columns": [
+        {"name": "email_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "mailbox_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "message_id", "type": "text", "nullable": true, "default": null},
+        {"name": "thread_id", "type": "text", "nullable": true, "default": null},
+        {"name": "from_address", "type": "text", "nullable": false, "default": null},
+        {"name": "to_addresses", "type": "text[]", "nullable": true, "default": null},
+        {"name": "cc_addresses", "type": "text[]", "nullable": true, "default": null},
+        {"name": "bcc_addresses", "type": "text[]", "nullable": true, "default": null},
+        {"name": "subject", "type": "text", "nullable": true, "default": null},
+        {"name": "body_text", "type": "text", "nullable": true, "default": null},
+        {"name": "body_html", "type": "text", "nullable": true, "default": null},
+        {"name": "attachments", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "received_at", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "sent_at", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "is_read", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "is_important", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "labels", "type": "text[]", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["email_id"],
+      "indexes": ["emails_pkey", "idx_emails_matter", "idx_emails_thread"]
+    },
+    "expenses": {
+      "columns": [
+        {"name": "expense_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "user_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "type", "type": "USER-DEFINED", "nullable": false, "default": null},
+        {"name": "description", "type": "text", "nullable": false, "default": null},
+        {"name": "amount", "type": "numeric", "nullable": false, "default": null},
+        {"name": "currency", "type": "text", "nullable": true, "default": "'EUR'"},
+        {"name": "receipt_path", "type": "text", "nullable": true, "default": null},
+        {"name": "billable", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "billed", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "invoice_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "incurred_at", "type": "date", "nullable": false, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["expense_id"],
+      "indexes": ["expenses_pkey", "idx_expenses_matter", "idx_expenses_user"]
+    },
+    "firm_tax_profiles": {
+      "columns": [
+        {"name": "profile_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "regime", "type": "USER-DEFINED", "nullable": false, "default": null},
+        {"name": "vat_rate", "type": "numeric", "nullable": true, "default": "22.0"},
+        {"name": "withholding_rate", "type": "numeric", "nullable": true, "default": "0.0"},
+        {"name": "pension_fund_rate", "type": "numeric", "nullable": true, "default": "0.0"},
+        {"name": "is_active", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "valid_from", "type": "date", "nullable": false, "default": null},
+        {"name": "valid_to", "type": "date", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["profile_id"],
+      "indexes": ["firm_tax_profiles_pkey", "idx_firm_tax_active"]
+    },
+    "firms": {
+      "columns": [
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "name", "type": "text", "nullable": false, "default": null},
+        {"name": "tax_code", "type": "text", "nullable": true, "default": null},
+        {"name": "vat_number", "type": "text", "nullable": true, "default": null},
+        {"name": "address", "type": "text", "nullable": true, "default": null},
+        {"name": "city", "type": "text", "nullable": true, "default": null},
+        {"name": "postal_code", "type": "text", "nullable": true, "default": null},
+        {"name": "country", "type": "text", "nullable": true, "default": "'IT'"},
+        {"name": "phone", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "website", "type": "text", "nullable": true, "default": null},
+        {"name": "logo_path", "type": "text", "nullable": true, "default": null},
+        {"name": "settings", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["firm_id"],
+      "indexes": ["firms_pkey"]
+    },
+    "hearings": {
+      "columns": [
+        {"name": "hearing_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "title", "type": "text", "nullable": false, "default": null},
+        {"name": "description", "type": "text", "nullable": true, "default": null},
+        {"name": "court", "type": "text", "nullable": true, "default": null},
+        {"name": "judge", "type": "text", "nullable": true, "default": null},
+        {"name": "courtroom", "type": "text", "nullable": true, "default": null},
+        {"name": "scheduled_at", "type": "timestamp with time zone", "nullable": false, "default": null},
+        {"name": "duration_minutes", "type": "integer", "nullable": true, "default": "60"},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "outcome", "type": "text", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'active'::record_status"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["hearing_id"],
+      "indexes": ["hearings_pkey", "idx_hearings_matter", "idx_hearings_scheduled"]
+    },
+    "invoice_lines": {
+      "columns": [
+        {"name": "line_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "invoice_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "description", "type": "text", "nullable": false, "default": null},
+        {"name": "quantity", "type": "numeric", "nullable": true, "default": "1.0"},
+        {"name": "unit_price", "type": "numeric", "nullable": false, "default": null},
+        {"name": "vat_rate", "type": "numeric", "nullable": true, "default": "22.0"},
+        {"name": "line_total", "type": "numeric", "nullable": false, "default": null},
+        {"name": "time_entry_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "expense_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["line_id"],
+      "indexes": ["invoice_lines_pkey", "idx_invoice_lines_invoice"]
+    },
+    "invoices": {
+      "columns": [
+        {"name": "invoice_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "client_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "invoice_number", "type": "text", "nullable": false, "default": null},
+        {"name": "issue_date", "type": "date", "nullable": false, "default": null},
+        {"name": "due_date", "type": "date", "nullable": true, "default": null},
+        {"name": "subtotal", "type": "numeric", "nullable": false, "default": "0"},
+        {"name": "vat_amount", "type": "numeric", "nullable": false, "default": "0"},
+        {"name": "withholding_amount", "type": "numeric", "nullable": true, "default": "0"},
+        {"name": "pension_fund_amount", "type": "numeric", "nullable": true, "default": "0"},
+        {"name": "total_amount", "type": "numeric", "nullable": false, "default": "0"},
+        {"name": "currency", "type": "text", "nullable": true, "default": "'EUR'"},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'draft'::invoice_status"},
+        {"name": "pdf_path", "type": "text", "nullable": true, "default": null},
+        {"name": "sent_at", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["invoice_id"],
+      "indexes": ["invoices_pkey", "idx_invoices_client", "idx_invoices_firm", "idx_invoices_number"]
+    },
+    "mailboxes": {
+      "columns": [
+        {"name": "mailbox_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "email_address", "type": "text", "nullable": false, "default": null},
+        {"name": "display_name", "type": "text", "nullable": true, "default": null},
+        {"name": "provider", "type": "text", "nullable": false, "default": null},
+        {"name": "settings", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "is_active", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "last_sync", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["mailbox_id"],
+      "indexes": ["mailboxes_pkey", "mailboxes_email_address_key"]
+    },
+    "matter_parties": {
+      "columns": [
+        {"name": "party_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "matter_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "client_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "name", "type": "text", "nullable": false, "default": null},
+        {"name": "role", "type": "USER-DEFINED", "nullable": false, "default": null},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["party_id"],
+      "indexes": ["matter_parties_pkey", "idx_matter_parties_matter"]
+    },
+    "matters": {
+      "columns": [
+        {"name": "matter_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "client_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "title", "type": "text", "nullable": false, "default": null},
+        {"name": "description", "type": "text", "nullable": true, "default": null},
+        {"name": "matter_number", "type": "text", "nullable": true, "default": null},
+        {"name": "legacy_client_id", "type": "text", "nullable": true, "default": null},
+        {"name": "court", "type": "text", "nullable": true, "default": null},
+        {"name": "judge", "type": "text", "nullable": true, "default": null},
+        {"name": "opposing_party", "type": "text", "nullable": true, "default": null},
+        {"name": "case_value", "type": "numeric", "nullable": true, "default": null},
+        {"name": "hourly_rate", "type": "numeric", "nullable": true, "default": null},
+        {"name": "status", "type": "USER-DEFINED", "nullable": true, "default": "'open'::matter_status"},
+        {"name": "opened_at", "type": "date", "nullable": true, "default": "CURRENT_DATE"},
+        {"name": "closed_at", "type": "date", "nullable": true, "default": null},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["matter_id"],
+      "indexes": ["matters_pkey", "idx_matters_firm_client", "idx_matters_legacy_norm_firm"]
+    },
+    "notifications": {
+      "columns": [
+        {"name": "notif_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "user_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "type", "type": "text", "nullable": false, "default": null},
+        {"name": "title", "type": "text", "nullable": false, "default": null},
+        {"name": "message", "type": "text", "nullable": true, "default": null},
+        {"name": "data", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "is_read", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["notif_id"],
+      "indexes": ["notifications_pkey"]
+    },
+    "payments": {
+      "columns": [
+        {"name": "payment_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "invoice_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "amount", "type": "numeric", "nullable": false, "default": null},
+        {"name": "payment_date", "type": "date", "nullable": false, "default": null},
+        {"name": "payment_method", "type": "text", "nullable": true, "default": null},
+        {"name": "reference", "type": "text", "nullable": true, "default": null},
+        {"name": "notes", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["payment_id"],
+      "indexes": ["payments_pkey", "idx_payments_invoice"]
+    },
+    "profiles": {
+      "columns": [
+        {"name": "user_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "firm_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": false, "default": null},
+        {"name": "first_name", "type": "text", "nullable": true, "default": null},
+        {"name": "last_name", "type": "text", "nullable": true, "default": null},
+        {"name": "role", "type": "USER-DEFINED", "nullable": true, "default": "'guest'::role_type"},
+        {"name": "phone", "type": "text", "nullable": true, "default": null},
+        {"name": "avatar_url", "type": "text", "nullable": true, "default": null},
+        {"name": "settings", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "is_active", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "last_login", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["user_id"],
+      "indexes": ["profiles_pkey", "profiles_email_key"]
+    },
+    "rate_cards": {
+      "columns": [
+        {"name": "rate_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "user_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "client_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "hourly_rate", "type": "numeric", "nullable": false, "default": null},
+        {"name": "currency", "type": "text", "nullable": true, "default": "'EUR'"},
+        {"name": "effective_from", "type": "date", "nullable": false, "default": null},
+        {"name": "effective_to", "type": "date", "nullable": true, "default": null},
+        {"name": "is_active", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["rate_id"],
+      "indexes": ["rate_cards_pkey"]
+    },
+    "tasks": {
+      "columns": [
+        {"name": "task_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "assigned_to", "type": "uuid", "nullable": true, "default": null},
+        {"name": "created_by", "type": "uuid", "nullable": false, "default": null},
+        {"name": "title", "type": "text", "nullable": false, "default": null},
+        {"name": "description", "type": "text", "nullable": true, "default": null},
+        {"name": "priority", "type": "text", "nullable": true, "default": "'medium'"},
+        {"name": "status", "type": "text", "nullable": true, "default": "'pending'"},
+        {"name": "due_date", "type": "date", "nullable": true, "default": null},
+        {"name": "completed_at", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "estimated_hours", "type": "numeric", "nullable": true, "default": null},
+        {"name": "actual_hours", "type": "numeric", "nullable": true, "default": null},
+        {"name": "tags", "type": "text[]", "nullable": true, "default": null},
+        {"name": "dependencies", "type": "uuid[]", "nullable": true, "default": null},
+        {"name": "attachments", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "comments", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "recurring_pattern", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "parent_task_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "performed_by", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["task_id"],
+      "indexes": ["tasks_pkey"]
+    },
+    "time_entries": {
+      "columns": [
+        {"name": "time_id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "firm_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "matter_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "user_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "started_at", "type": "timestamp with time zone", "nullable": false, "default": null},
+        {"name": "minutes", "type": "integer", "nullable": false, "default": null},
+        {"name": "type", "type": "USER-DEFINED", "nullable": true, "default": "'work'::time_type"},
+        {"name": "description", "type": "text", "nullable": true, "default": null},
+        {"name": "rate_used", "type": "numeric", "nullable": true, "default": null},
+        {"name": "billable", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ],
+      "primary_key": ["time_id"],
+      "indexes": ["time_entries_pkey", "idx_time_matter"]
+    }
+  },
+  "enums": {
+    "expense_type": ["court_fee", "postage", "expert", "travel", "other"],
+    "invoice_status": ["draft", "issued", "sent", "paid", "partially_paid", "void"],
+    "matter_status": ["open", "on_hold", "suspended", "closed"],
+    "party_role": ["client", "counterparty", "third_party"],
+    "record_status": ["active", "deleted"],
+    "role_type": ["owner", "partner", "associate", "paralegal", "admin", "billing", "guest"],
+    "tax_regime": ["forfettario", "ordinario", "minimi", "esente"],
+    "time_type": ["work", "meeting", "hearing", "travel", "admin"]
+  }
+}

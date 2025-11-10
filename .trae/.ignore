@@ -1,0 +1,11 @@
+**/node_modules/**
+**/build/**
+**/.dart_tool/**
+**/.git/**
+**/.env
+**/.env.*
+**/secrets/**
+**/*.key
+**/*.pem
+**/ios/Pods/**
+**/android/.gradle/**

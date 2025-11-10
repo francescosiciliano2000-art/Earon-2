@@ -1,0 +1,410 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/services.dart';
+import '../design system/components/sonner.dart';
+import '../design system/components/top_bar.dart';
+import '../design system/components/app_sidebar.dart';
+import '../design system/components/input_group.dart';
+import '../design system/components/button.dart';
+import '../design system/components/dialog.dart';
+import '../design system/components/list_tile.dart';
+import '../design system/components/spinner.dart';
+
+import '../features/dashboard/widgets/status_banner.dart';
+import '../features/search/data/global_search_repo.dart';
+import '../core/supa_helpers.dart';
+import '../core/responsive.dart';
+import '../core/firm_selection_service.dart';
+import '../design system/theme/themes.dart';
+import '../design system/components/topbar_styles.dart';
+import '../design system/icons/app_icons.dart';
+import '../design system/components/sheet.dart';
+import '../features/matters/presentation/matter_detail_sheet.dart';
+import 'dart:async' show unawaited;
+import '../core/audit/audit_service.dart';
+
+class AdaptiveShell extends StatefulWidget {
+  final Widget child;
+  const AdaptiveShell({super.key, required this.child});
+
+  @override
+  State<AdaptiveShell> createState() => _AdaptiveShellState();
+}
+
+class _AdaptiveShellState extends State<AdaptiveShell> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _hasFirm = false;
+
+  List<_NavItem> _navItems() {
+    // Costruisci la lista base
+    final base = <_NavItem>[
+      const _NavItem(
+          index: 0,
+          label: 'Dashboard',
+          route: '/dashboard',
+          icon: AppIcons.dashboard),
+      const _NavItem(
+          index: 1,
+          label: 'Clienti',
+          route: '/clienti',
+          icon: AppIcons.clients),
+    ];
+    // Voci visibili solo se è selezionata una firm
+    final firmRelated = <_NavItem>[
+      const _NavItem(
+          index: 2,
+          label: 'Pratiche',
+          route: '/matters/list',
+          icon: AppIcons.matters),
+      const _NavItem(
+          index: 3,
+          label: 'Agenda',
+          route: '/agenda',
+          icon: AppIcons.calendar),
+      const _NavItem(
+          index: 4,
+          label: 'Udienze',
+          route: '/agenda/udienze',
+          icon: AppIcons.gavel),
+    ];
+    // Assemblaggio finale
+    final items = <_NavItem>[
+      ...base,
+      if (_hasFirm) ...firmRelated,
+    ];
+    return items;
+  }
+
+  int _indexFromLocation(String location) {
+    final items = _navItems();
+    // Preferisci il match più specifico (route più lunga) per evitare che '/agenda' sovrascriva '/agenda/udienze'.
+    int bestIndex = 0;
+    int bestLen = -1;
+    for (int i = 0; i < items.length; i++) {
+      final r = items[i].route;
+      if (location.startsWith(r) && r.length > bestLen) {
+        bestLen = r.length;
+        bestIndex = i;
+      }
+    }
+    return bestIndex;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ensureFirmSelected(context).then((_) => _reloadFirmPresence());
+    });
+    _reloadFirmPresence();
+  }
+
+  Future<void> _reloadFirmPresence() async {
+    final svc = FirmSelectionService();
+    final firm = await svc.loadCurrentFirm();
+    debugPrint('[AdaptiveShell] hasFirm=${firm != null}');
+    if (mounted) setState(() => _hasFirm = firm != null);
+  }
+
+  void _onDestinationSelected(int index) {
+    final item = _navItems()[index];
+    if (GoRouterState.of(context).matchedLocation != item.route) {
+      context.go(item.route);
+    }
+  }
+
+  void _openSearch() {
+    AppDialog.show(context, builder: (_) => const _GlobalSearchDialog());
+  }
+
+
+  void _openNotifications() {
+    // Mostra Sonner info al click su Notifiche
+    toastInfo(context, 'Funzionalità in fasi di sviluppo, arriverà presto');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = isDisplayMobile(context);
+    final isTabletOrDesktop =
+        isDisplayTablet(context) || isDisplayDesktop(context);
+
+    return Shortcuts(
+      shortcuts: {
+        const SingleActivator(LogicalKeyboardKey.keyK, meta: true):
+            const ActivateIntent(),
+        const SingleActivator(LogicalKeyboardKey.keyK, control: true):
+            const ActivateIntent(),
+      },
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          ActivateIntent: CallbackAction<Intent>(onInvoke: (_) {
+            _openSearch();
+            return null;
+          }),
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          // TopBar spostata nel body sotto i banner di stato
+          body: Row(
+            children: [
+              if (isTabletOrDesktop)
+                AppSidebar(
+                  items: [
+                    for (final it in _navItems())
+                      AppSidebarItem(
+                        icon: it.icon,
+                        label: it.label,
+                        onTap: () => _onDestinationSelected(it.index),
+                      ),
+                  ],
+                  selectedIndex: _indexFromLocation(GoRouterState.of(context).matchedLocation),
+                  onSearch: (_) => _openSearch(),
+                  // Al click su Impostazioni: nessuna navigazione, mostra Sonner info
+                  onSettings: () => toastInfo(
+                    context,
+                    'Funzionalità in fasi di sviluppo, arriverà presto',
+                  ),
+                  onProfile: () => context.go('/account/profile'),
+                  onLogout: () async {
+                    await removeCurrentFirmId();
+                    await Supabase.instance.client.auth.signOut();
+                    // Audit: logout
+                    unawaited(AuditService.logEvent(entity: 'auth', action: 'LOGOUT'));
+                  },
+                ),
+              if (isTabletOrDesktop) const VerticalDivider(width: 1),
+              Expanded(
+                child: Column(
+                  children: [
+                    SafeArea(
+                      top: true,
+                      bottom: false,
+                      child: Column(
+                        children: [
+                          const StatusBanner(), // Banner di stato sempre sopra la topbar
+                          TopBar(
+                            leading: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  _navItems()[_indexFromLocation(GoRouterState.of(context).matchedLocation)].icon,
+                                ),
+                                SizedBox(width: Theme.of(context).extension<AppTopBarStyles>()?.leadingGap ?? 8),
+                                Text(
+                                  _navItems()[_indexFromLocation(GoRouterState.of(context).matchedLocation)].label,
+                                  style: Theme.of(context).appBarTheme.titleTextStyle,
+                                ),
+                              ],
+                            ),
+                            showNotifications: false,
+                            actions: [
+                              IconButton(
+                                tooltip: 'Notifiche',
+                                icon: Icon(AppIcons.notifications),
+                                onPressed: _openNotifications,
+                              ),
+                            ],
+                            // Rimosso menu utente con popup; icona profilo spostata nella Sidebar
+                            userMenu: const SizedBox.shrink(),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Expanded(child: widget.child),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: isMobile
+              ? NavigationBar(
+                  selectedIndex: _indexFromLocation(GoRouterState.of(context).matchedLocation),
+                  onDestinationSelected: _onDestinationSelected,
+                  destinations: [
+                    for (final it in _navItems())
+                      NavigationDestination(icon: Icon(it.icon), label: it.label),
+                  ],
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+}
+
+/// --- Global Search dialog (skeleton) ---
+class _GlobalSearchDialog extends StatefulWidget {
+  const _GlobalSearchDialog();
+
+  @override
+  State<_GlobalSearchDialog> createState() => _GlobalSearchDialogState();
+}
+
+class _GlobalSearchDialogState extends State<_GlobalSearchDialog> {
+  final _ctl = TextEditingController();
+  bool _loading = false;
+  Map<String, List<Map<String, dynamic>>> _res = {
+    'clients': [],
+    'matters': [],
+    'invoices': [],
+    'documents': []
+  };
+
+  Future<void> _run(String q) async {
+    setState(() => _loading = true);
+    try {
+      final fid = await getCurrentFirmId();
+      final repo = GlobalSearchRepo(Supabase.instance.client);
+      _res = await repo.searchAll(q, fid);
+    } catch (_) {
+      _res = {'clients': [], 'matters': [], 'invoices': [], 'documents': []};
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final spacing =
+        Theme.of(context).extension<DefaultTokens>()?.spacingUnit ?? 8.0;
+    return AppDialogContent(
+      children: [
+        const AppDialogHeader(
+          title: AppDialogTitle('Cerca'),
+          description: AppDialogDescription(
+            'Trova rapidamente clienti, pratiche, fatture e documenti.',
+          ),
+        ),
+        SizedBox(height: spacing * 2),
+        AppInputGroup(
+          controller: _ctl,
+          hintText: 'Cerca clienti, pratiche, fatture, documenti…',
+          onSubmitted: _run,
+          leading: Icon(AppIcons.search),
+        ),
+        if (_loading)
+          const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: Spinner(size: 20),
+          )
+        else ...[
+          SizedBox(height: spacing * 1.5),
+          _Section(
+            title: 'Clienti',
+            items: _res['clients']!,
+            onTap: (it) {
+              Navigator.of(context).pop();
+              context.go('/clienti');
+            },
+            subtitleKey: 'email',
+            titleKey: 'name',
+          ),
+          _Section(
+            title: 'Pratiche',
+            items: _res['matters']!,
+            onTap: (it) {
+              Navigator.of(context).pop();
+              if ((it['id'] ?? '').toString().isNotEmpty) {
+                showSheet<void>(
+                  context,
+                  builder: (_) => MatterDetailSheet(
+                    matterId: (it['id'] ?? '').toString(),
+                  ),
+                  side: SheetSide.right,
+                  maxWidth: 537,
+                  widthFraction: 0.70,
+                );
+              }
+            },
+            subtitleKey: 'code',
+            titleKey: 'title',
+          ),
+          _Section(
+            title: 'Fatture',
+            items: _res['invoices']!,
+            onTap: (it) {
+              Navigator.of(context).pop();
+            },
+            subtitleKey: 'issue_date',
+            titleKey: 'number',
+          ),
+          _Section(
+            title: 'Documenti',
+            items: _res['documents']!,
+            onTap: (it) {
+              Navigator.of(context).pop();
+            },
+            subtitleKey: 'matter_id',
+            titleKey: 'filename',
+          ),
+        ],
+        AppDialogFooter(
+          children: [
+            AppButton(
+              variant: AppButtonVariant.ghost,
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Chiudi'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _Section extends StatelessWidget {
+  final String title;
+  final List<Map<String, dynamic>> items;
+  final void Function(Map<String, dynamic>) onTap;
+  final String titleKey;
+  final String? subtitleKey;
+
+  const _Section(
+      {required this.title,
+      required this.items,
+      required this.onTap,
+      required this.titleKey,
+      this.subtitleKey});
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 12),
+        Text(title, style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 6),
+        ...items.map((it) => AppListTile(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              title: Text('${it[titleKey]}'),
+              subtitle: subtitleKey != null ? Text('${it[subtitleKey]}') : null,
+              onTap: () => onTap(it),
+            )),
+      ],
+    );
+  }
+}
+
+class _NavItem {
+  final int index;
+  final String label;
+  final String route;
+  final IconData icon;
+  const _NavItem(
+      {required this.index,
+      required this.label,
+      required this.route,
+      required this.icon});
+}

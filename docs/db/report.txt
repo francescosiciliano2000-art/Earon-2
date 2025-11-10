@@ -1,0 +1,382 @@
+      schema      
+------------------
+ auth
+ extensions
+ graphql
+ graphql_public
+ pg_temp_0
+ pg_temp_1
+ pg_temp_12
+ pg_temp_13
+ pg_temp_16
+ pg_temp_17
+ pg_temp_19
+ pg_temp_2
+ pg_temp_21
+ pg_temp_22
+ pg_temp_23
+ pg_temp_25
+ pg_temp_26
+ pg_temp_27
+ pg_temp_28
+ pg_temp_29
+ pg_temp_30
+ pg_temp_31
+ pg_temp_32
+ pg_temp_35
+ pg_temp_37
+ pg_temp_38
+ pg_temp_39
+ pg_temp_40
+ pg_temp_41
+ pg_temp_42
+ pg_temp_43
+ pg_temp_45
+ pg_temp_46
+ pg_temp_47
+ pg_temp_48
+ pg_temp_50
+ pg_temp_51
+ pg_temp_53
+ pg_temp_55
+ pg_temp_56
+ pg_temp_57
+ pg_temp_59
+ pg_temp_6
+ pg_temp_7
+ pg_temp_9
+ pg_toast
+ pg_toast_temp_0
+ pg_toast_temp_1
+ pg_toast_temp_12
+ pg_toast_temp_13
+ pg_toast_temp_16
+ pg_toast_temp_17
+ pg_toast_temp_19
+ pg_toast_temp_2
+ pg_toast_temp_21
+ pg_toast_temp_22
+ pg_toast_temp_23
+ pg_toast_temp_25
+ pg_toast_temp_26
+ pg_toast_temp_27
+ pg_toast_temp_28
+ pg_toast_temp_29
+ pg_toast_temp_30
+ pg_toast_temp_31
+ pg_toast_temp_32
+ pg_toast_temp_35
+ pg_toast_temp_37
+ pg_toast_temp_38
+ pg_toast_temp_39
+ pg_toast_temp_40
+ pg_toast_temp_41
+ pg_toast_temp_42
+ pg_toast_temp_43
+ pg_toast_temp_45
+ pg_toast_temp_46
+ pg_toast_temp_47
+ pg_toast_temp_48
+ pg_toast_temp_50
+ pg_toast_temp_51
+ pg_toast_temp_53
+ pg_toast_temp_55
+ pg_toast_temp_56
+ pg_toast_temp_57
+ pg_toast_temp_59
+ pg_toast_temp_6
+ pg_toast_temp_7
+ pg_toast_temp_9
+ pgbouncer
+ public
+ realtime
+ storage
+ vault
+(92 rows)
+
+    table_name     
+-------------------
+ audit_log
+ clients
+ contacts
+ documents
+ emails
+ expenses
+ firm_tax_profiles
+ firms
+ hearings
+ invoice_lines
+ invoices
+ mailboxes
+ matter_parties
+ matters
+ notifications
+ payments
+ profiles
+ rate_cards
+ tasks
+ time_entries
+(20 rows)
+
+    table_name     |    column_name     |        data_type         | is_nullable 
+-------------------+--------------------+--------------------------+-------------
+ audit_log         | id                 | bigint                   | NO
+ audit_log         | firm_id            | uuid                     | NO
+ audit_log         | actor_id           | uuid                     | YES
+ audit_log         | entity             | text                     | NO
+ audit_log         | entity_id          | uuid                     | YES
+ audit_log         | action             | text                     | NO
+ audit_log         | at                 | timestamp with time zone | YES
+ audit_log         | diff               | jsonb                    | YES
+ clients           | client_id          | uuid                     | NO
+ clients           | firm_id            | uuid                     | NO
+ clients           | kind               | text                     | YES
+ clients           | name               | text                     | NO
+ clients           | tax_code           | text                     | YES
+ clients           | vat_number         | text                     | YES
+ clients           | email              | USER-DEFINED             | YES
+ clients           | phone              | text                     | YES
+ clients           | address            | text                     | YES
+ clients           | city               | text                     | YES
+ clients           | zip                | text                     | YES
+ clients           | country            | text                     | YES
+ clients           | billing_notes      | text                     | YES
+ clients           | created_at         | timestamp with time zone | YES
+ clients           | tags               | ARRAY                    | NO
+ contacts          | contact_id         | uuid                     | NO
+ contacts          | firm_id            | uuid                     | NO
+ contacts          | client_id          | uuid                     | YES
+ contacts          | name               | text                     | NO
+ contacts          | email              | USER-DEFINED             | YES
+ contacts          | phone              | text                     | YES
+ contacts          | role_hint          | text                     | YES
+ contacts          | created_at         | timestamp with time zone | YES
+ documents         | doc_id             | uuid                     | NO
+ documents         | firm_id            | uuid                     | NO
+ documents         | matter_id          | uuid                     | YES
+ documents         | kind               | USER-DEFINED             | YES
+ documents         | title              | text                     | NO
+ documents         | storage_key        | text                     | NO
+ documents         | mime               | text                     | YES
+ documents         | size_bytes         | bigint                   | YES
+ documents         | version            | integer                  | YES
+ documents         | tags               | ARRAY                    | YES
+ documents         | ocr_text           | tsvector                 | YES
+ documents         | created_by         | uuid                     | YES
+ documents         | created_at         | timestamp with time zone | YES
+ emails            | email_id           | uuid                     | NO
+ emails            | firm_id            | uuid                     | NO
+ emails            | mailbox_id         | uuid                     | YES
+ emails            | matter_id          | uuid                     | YES
+ emails            | message_id         | text                     | YES
+ emails            | subject            | text                     | YES
+ emails            | from_addr          | text                     | YES
+ emails            | to_addr            | ARRAY                    | YES
+ emails            | date               | timestamp with time zone | YES
+ emails            | storage_key        | text                     | YES
+ emails            | parsed             | boolean                  | YES
+ emails            | created_at         | timestamp with time zone | YES
+ expenses          | expense_id         | uuid                     | NO
+ expenses          | firm_id            | uuid                     | NO
+ expenses          | matter_id          | uuid                     | YES
+ expenses          | type               | USER-DEFINED             | NO
+ expenses          | description        | text                     | YES
+ expenses          | amount             | numeric                  | NO
+ expenses          | vat_rate           | numeric                  | YES
+ expenses          | cpa_rate           | numeric                  | YES
+ expenses          | date               | date                     | YES
+ expenses          | billable           | boolean                  | YES
+ expenses          | receipt_doc_id     | uuid                     | YES
+ expenses          | created_at         | timestamp with time zone | YES
+ firm_tax_profiles | firm_id            | uuid                     | NO
+ firm_tax_profiles | default_vat_rate   | numeric                  | YES
+ firm_tax_profiles | cpa_rate           | numeric                  | YES
+ firm_tax_profiles | ritenuta_rate      | numeric                  | YES
+ firm_tax_profiles | bollo_threshold    | numeric                  | YES
+ firm_tax_profiles | bollo_amount       | numeric                  | YES
+ firm_tax_profiles | split_payment      | boolean                  | YES
+ firm_tax_profiles | updated_at         | timestamp with time zone | YES
+ firms             | firm_id            | uuid                     | NO
+ firms             | name               | text                     | NO
+ firms             | vat_number         | text                     | YES
+ firms             | tax_regime         | USER-DEFINED             | YES
+ firms             | pec_email          | USER-DEFINED             | YES
+ firms             | address            | text                     | YES
+ firms             | city               | text                     | YES
+ firms             | zip                | text                     | YES
+ firms             | country            | text                     | YES
+ firms             | created_at         | timestamp with time zone | YES
+ hearings          | hearing_id         | uuid                     | NO
+ hearings          | firm_id            | uuid                     | NO
+ hearings          | matter_id          | uuid                     | NO
+ hearings          | type               | text                     | YES
+ hearings          | starts_at          | timestamp with time zone | NO
+ hearings          | ends_at            | timestamp with time zone | YES
+ hearings          | courtroom          | text                     | YES
+ hearings          | notes              | text                     | YES
+ hearings          | created_at         | timestamp with time zone | YES
+ invoice_lines     | line_id            | uuid                     | NO
+ invoice_lines     | invoice_id         | uuid                     | NO
+ invoice_lines     | matter_id          | uuid                     | YES
+ invoice_lines     | source_type        | text                     | YES
+ invoice_lines     | description        | text                     | NO
+ invoice_lines     | qty                | numeric                  | YES
+ invoice_lines     | unit_price         | numeric                  | NO
+ invoice_lines     | vat_rate           | numeric                  | YES
+ invoice_lines     | cpa_rate           | numeric                  | YES
+ invoice_lines     | ritenuta_rate      | numeric                  | YES
+ invoice_lines     | total_ex_vat       | numeric                  | YES
+ invoice_lines     | created_at         | timestamp with time zone | YES
+ invoices          | invoice_id         | uuid                     | NO
+ invoices          | firm_id            | uuid                     | NO
+ invoices          | client_id          | uuid                     | NO
+ invoices          | number             | text                     | YES
+ invoices          | issue_date         | date                     | YES
+ invoices          | status             | USER-DEFINED             | YES
+ invoices          | notes              | text                     | YES
+ invoices          | currency           | character                | YES
+ invoices          | totals             | jsonb                    | YES
+ invoices          | created_at         | timestamp with time zone | YES
+ mailboxes         | mailbox_id         | uuid                     | NO
+ mailboxes         | firm_id            | uuid                     | NO
+ mailboxes         | type               | text                     | YES
+ mailboxes         | address            | USER-DEFINED             | NO
+ mailboxes         | host               | text                     | YES
+ mailboxes         | port               | integer                  | YES
+ mailboxes         | username           | text                     | YES
+ mailboxes         | encrypted_password | text                     | YES
+ mailboxes         | active             | boolean                  | YES
+ mailboxes         | created_at         | timestamp with time zone | YES
+ matter_parties    | party_id           | uuid                     | NO
+ matter_parties    | firm_id            | uuid                     | NO
+ matter_parties    | matter_id          | uuid                     | NO
+ matter_parties    | name               | text                     | NO
+ matter_parties    | role               | USER-DEFINED             | NO
+ matter_parties    | tax_code           | text                     | YES
+ matter_parties    | vat_number         | text                     | YES
+ matters           | matter_id          | uuid                     | NO
+ matters           | firm_id            | uuid                     | NO
+ matters           | client_id          | uuid                     | NO
+ matters           | code               | text                     | NO
+ matters           | title              | text                     | NO
+ matters           | status             | USER-DEFINED             | YES
+ matters           | area               | text                     | YES
+ matters           | court              | text                     | YES
+ matters           | judge              | text                     | YES
+ matters           | description        | text                     | YES
+ matters           | opened_at          | date                     | YES
+ matters           | closed_at          | date                     | YES
+ matters           | created_at         | timestamp with time zone | YES
+ notifications     | notif_id           | uuid                     | NO
+ notifications     | firm_id            | uuid                     | NO
+ notifications     | user_id            | uuid                     | YES
+ notifications     | kind               | text                     | YES
+ notifications     | payload            | jsonb                    | YES
+ notifications     | read               | boolean                  | YES
+ notifications     | created_at         | timestamp with time zone | YES
+ payments          | payment_id         | uuid                     | NO
+ payments          | firm_id            | uuid                     | NO
+ payments          | invoice_id         | uuid                     | NO
+ payments          | date               | date                     | YES
+ payments          | method             | text                     | YES
+ payments          | amount             | numeric                  | NO
+ payments          | reference          | text                     | YES
+ profiles          | user_id            | uuid                     | NO
+ profiles          | firm_id            | uuid                     | NO
+ profiles          | full_name          | text                     | YES
+ profiles          | email              | USER-DEFINED             | YES
+ profiles          | role               | USER-DEFINED             | NO
+ profiles          | hourly_default     | numeric                  | YES
+ profiles          | is_active          | boolean                  | YES
+ profiles          | created_at         | timestamp with time zone | YES
+ rate_cards        | rate_id            | uuid                     | NO
+ rate_cards        | firm_id            | uuid                     | NO
+ rate_cards        | name               | text                     | NO
+ rate_cards        | hourly             | numeric                  | NO
+ rate_cards        | effective_from     | date                     | YES
+ rate_cards        | effective_to       | date                     | YES
+ tasks             | task_id            | uuid                     | NO
+ tasks             | firm_id            | uuid                     | NO
+ tasks             | matter_id          | uuid                     | YES
+ tasks             | title              | text                     | NO
+ tasks             | due_at             | timestamp with time zone | YES
+ tasks             | assigned_to        | uuid                     | YES
+ tasks             | priority           | integer                  | YES
+ tasks             | done               | boolean                  | YES
+ tasks             | created_at         | timestamp with time zone | YES
+ time_entries      | time_id            | uuid                     | NO
+ time_entries      | firm_id            | uuid                     | NO
+ time_entries      | matter_id          | uuid                     | NO
+ time_entries      | user_id            | uuid                     | NO
+ time_entries      | started_at         | timestamp with time zone | NO
+ time_entries      | minutes            | integer                  | NO
+ time_entries      | type               | USER-DEFINED             | YES
+ time_entries      | description        | text                     | YES
+ time_entries      | rate_used          | numeric                  | YES
+ time_entries      | billable           | boolean                  | YES
+ time_entries      | created_at         | timestamp with time zone | YES
+(195 rows)
+
+       table       |             index             |                                              definition                                              
+-------------------+-------------------------------+------------------------------------------------------------------------------------------------------
+ audit_log         | audit_log_pkey                | CREATE UNIQUE INDEX audit_log_pkey ON public.audit_log USING btree (id)
+ audit_log         | idx_audit_firm_at             | CREATE INDEX idx_audit_firm_at ON public.audit_log USING btree (firm_id, at DESC)
+ clients           | clients_pkey                  | CREATE UNIQUE INDEX clients_pkey ON public.clients USING btree (client_id)
+ clients           | idx_clients_firm_name         | CREATE INDEX idx_clients_firm_name ON public.clients USING btree (firm_id, name)
+ clients           | idx_clients_tags_gin          | CREATE INDEX idx_clients_tags_gin ON public.clients USING gin (tags)
+ contacts          | contacts_pkey                 | CREATE UNIQUE INDEX contacts_pkey ON public.contacts USING btree (contact_id)
+ documents         | documents_pkey                | CREATE UNIQUE INDEX documents_pkey ON public.documents USING btree (doc_id)
+ documents         | idx_docs_fts                  | CREATE INDEX idx_docs_fts ON public.documents USING gin (ocr_text)
+ documents         | idx_docs_matter               | CREATE INDEX idx_docs_matter ON public.documents USING btree (matter_id)
+ documents         | idx_docs_tags                 | CREATE INDEX idx_docs_tags ON public.documents USING gin (tags)
+ emails            | emails_firm_id_message_id_key | CREATE UNIQUE INDEX emails_firm_id_message_id_key ON public.emails USING btree (firm_id, message_id)
+ emails            | emails_pkey                   | CREATE UNIQUE INDEX emails_pkey ON public.emails USING btree (email_id)
+ expenses          | expenses_pkey                 | CREATE UNIQUE INDEX expenses_pkey ON public.expenses USING btree (expense_id)
+ expenses          | idx_exp_matter                | CREATE INDEX idx_exp_matter ON public.expenses USING btree (matter_id, date)
+ firm_tax_profiles | firm_tax_profiles_pkey        | CREATE UNIQUE INDEX firm_tax_profiles_pkey ON public.firm_tax_profiles USING btree (firm_id)
+ firms             | firms_pkey                    | CREATE UNIQUE INDEX firms_pkey ON public.firms USING btree (firm_id)
+ hearings          | hearings_pkey                 | CREATE UNIQUE INDEX hearings_pkey ON public.hearings USING btree (hearing_id)
+ invoice_lines     | invoice_lines_pkey            | CREATE UNIQUE INDEX invoice_lines_pkey ON public.invoice_lines USING btree (line_id)
+ invoices          | invoices_firm_id_number_key   | CREATE UNIQUE INDEX invoices_firm_id_number_key ON public.invoices USING btree (firm_id, number)
+ invoices          | invoices_pkey                 | CREATE UNIQUE INDEX invoices_pkey ON public.invoices USING btree (invoice_id)
+ mailboxes         | mailboxes_pkey                | CREATE UNIQUE INDEX mailboxes_pkey ON public.mailboxes USING btree (mailbox_id)
+ matter_parties    | idx_parties_matter            | CREATE INDEX idx_parties_matter ON public.matter_parties USING btree (matter_id)
+ matter_parties    | matter_parties_pkey           | CREATE UNIQUE INDEX matter_parties_pkey ON public.matter_parties USING btree (party_id)
+ matters           | idx_matters_firm_client       | CREATE INDEX idx_matters_firm_client ON public.matters USING btree (firm_id, client_id)
+ matters           | matters_firm_id_code_key      | CREATE UNIQUE INDEX matters_firm_id_code_key ON public.matters USING btree (firm_id, code)
+ matters           | matters_pkey                  | CREATE UNIQUE INDEX matters_pkey ON public.matters USING btree (matter_id)
+ notifications     | notifications_pkey            | CREATE UNIQUE INDEX notifications_pkey ON public.notifications USING btree (notif_id)
+ payments          | idx_payments_invoice          | CREATE INDEX idx_payments_invoice ON public.payments USING btree (invoice_id)
+ payments          | payments_pkey                 | CREATE UNIQUE INDEX payments_pkey ON public.payments USING btree (payment_id)
+ profiles          | profiles_email_key            | CREATE UNIQUE INDEX profiles_email_key ON public.profiles USING btree (email)
+ profiles          | profiles_pkey                 | CREATE UNIQUE INDEX profiles_pkey ON public.profiles USING btree (user_id)
+ rate_cards        | rate_cards_pkey               | CREATE UNIQUE INDEX rate_cards_pkey ON public.rate_cards USING btree (rate_id)
+ tasks             | tasks_pkey                    | CREATE UNIQUE INDEX tasks_pkey ON public.tasks USING btree (task_id)
+ time_entries      | idx_time_matter               | CREATE INDEX idx_time_matter ON public.time_entries USING btree (matter_id, started_at)
+ time_entries      | time_entries_pkey             | CREATE UNIQUE INDEX time_entries_pkey ON public.time_entries USING btree (time_id)
+(35 rows)
+
+ schema |       table       | rls_enabled 
+--------+-------------------+-------------
+ public | audit_log         | t
+ public | clients           | t
+ public | contacts          | t
+ public | documents         | t
+ public | emails            | t
+ public | expenses          | t
+ public | firm_tax_profiles | t
+ public | firms             | t
+ public | hearings          | t
+ public | invoice_lines     | t
+ public | invoices          | t
+ public | mailboxes         | t
+ public | matter_parties    | t
+ public | matters           | t
+ public | notifications     | t
+ public | payments          | t
+ public | profiles          | t
+ public | rate_cards        | t
+ public | tasks             | t
+ public | time_entries      | t
+(20 rows)
+

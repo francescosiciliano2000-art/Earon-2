@@ -1,0 +1,38 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub-cache/
+build/
+coverage/
+**/*.g.dart
+
+# Android
+android/.gradle/
+android/local.properties
+android/**/build/
+android/**/captures/
+*.keystore
+*.jks
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/**/build/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Node (se presente)
+node_modules/
+
+# Config / Log
+.env
+.env.*
+*.log

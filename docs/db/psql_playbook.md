@@ -1,0 +1,1 @@
+# psql Playbook — Supabase Introspection
