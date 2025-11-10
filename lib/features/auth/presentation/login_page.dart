@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async' show unawaited;
+import 'dart:io' show HandshakeException;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/audit/audit_service.dart';
 import '../../../app_router.dart';
@@ -119,6 +120,10 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         error = rawMsg.isNotEmpty ? rawMsg : 'Errore di autenticazione.';
       }
+    } on HandshakeException catch (_) {
+      // Errore tipico su Windows quando mancano le CA di sistema o proxy aziendale.
+      error =
+          'Errore di connessione sicura (TLS). Aggiorna i certificati di Windows o verifica il proxy aziendale.';
     } catch (_) {
       error = 'Connessione non disponibile.';
     } finally {
