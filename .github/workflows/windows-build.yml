@@ -25,12 +25,14 @@ jobs:
       - name: Build Windows Release
         run: flutter build windows --release
 
-      - name: Rename exe to Earon.exe
+      - name: Locate and rename exe to Earon.exe
         shell: powershell
         run: |
-          $exe = "build/windows/runner/Release/gestionale_desktop.exe"
-          if (!(Test-Path $exe)) { $exe = "build/windows/runner/Release/*.exe" }
-          Rename-Item -Path $exe -NewName "Earon.exe"
+          $dir = "build/windows/x64/runner/Release"
+          if (!(Test-Path $dir)) { $dir = "build/windows/runner/Release" }
+          $exe = Get-ChildItem -Path $dir -Filter *.exe | Select-Object -First 1
+          if ($null -eq $exe) { Write-Error "EXE not found in $dir"; exit 1 }
+          Rename-Item -Path $exe.FullName -NewName "Earon.exe"
 
       - name: Install Inno Setup
         run: choco install innosetup -y

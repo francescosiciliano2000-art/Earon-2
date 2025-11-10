@@ -14,7 +14,7 @@ OutputDir=output
 OutputBaseFilename={#MyAppName}-Setup-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
-SetupIconFile=icon.ico
+; SetupIconFile=icon.ico
 ArchitecturesInstallIn64BitMode=x64
 PrivilegesRequired=admin
 
@@ -26,8 +26,7 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "desktopicon"; Description: "Crea un'icona sul Desktop"; GroupDescription: "Icone:"; Flags: unchecked
 
 [Files]
-; Copia tutti i binari buildati da Flutter (runner Release) nella cartella di installazione
-Source: "build\windows\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
+Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyExeName}"
