@@ -100,3 +100,10 @@ Future<void> agendaPrintPdf(String title, List<Map<String, String>> rows) async 
 
   await Printing.layoutPdf(onLayout: (format) async => doc.save());
 }
+
+class AgendaPrinter {
+  Future<void> printAgenda(List<Map<String, dynamic>> rows) async {
+    // TODO: implementazione desktop (es. package:printing/pdf) già presente altrove.
+    // Placeholder per separare le piattaforme.
+  }
+}

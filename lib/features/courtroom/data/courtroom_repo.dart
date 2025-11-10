@@ -47,16 +47,15 @@ class CourtroomRepo {
     Timer? timer;
     String? lastFingerprint;
 
-    String _fingerprint(List<ComboboxGroupData> groups) {
+    String fingerprint(List<ComboboxGroupData> groups) {
       return groups
-          .map((g) => '${g.label.toLowerCase()}|' +
-              g.items.map((i) => i.label.toLowerCase()).join(','))
+          .map((g) => '${g.label.toLowerCase()}|${g.items.map((i) => i.label.toLowerCase()).join(',')}')
           .join('||');
     }
 
     Future<void> emit() async {
       final groups = await loadGroups();
-      final fp = _fingerprint(groups);
+      final fp = fingerprint(groups);
       if (lastFingerprint != fp) {
         lastFingerprint = fp;
         controller.add(groups);

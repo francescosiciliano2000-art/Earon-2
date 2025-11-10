@@ -67,8 +67,9 @@ class _HearingCreateDialogState extends State<HearingCreateDialog> {
     final counter = (m.counterpartyName ?? '').trim();
     String right = '';
     if (client.isNotEmpty) right = client;
-    if (counter.isNotEmpty)
+    if (counter.isNotEmpty) {
       right = right.isNotEmpty ? '$right / $counter' : counter;
+    }
     if (right.isEmpty) {
       // fallback: usa il titolo della pratica
       right = (m.title).trim();

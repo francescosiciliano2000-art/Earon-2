@@ -273,8 +273,9 @@ class _HearingsCalendarPageState extends State<HearingsCalendarPage> {
     });
     try {
       final fid = await getCurrentFirmId();
-      if (fid == null || fid.isEmpty)
+      if (fid == null || fid.isEmpty) {
         throw Exception('Nessuno studio selezionato.');
+      }
 
       // Determina il mese da caricare: default al mese visibile (o selezionato)
       final baseMonth = month ?? _selectedDay;
