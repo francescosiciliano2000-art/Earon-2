@@ -22,9 +22,7 @@ import '../../../design system/components/sonner.dart';
 import '../../../design system/components/date_picker.dart';
 import 'package:gestionale_desktop/features/agenda/presentation/task_edit_dialog.dart';
 import 'package:gestionale_desktop/features/agenda/presentation/task_create_dialog.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 // Per stampa su web
-import 'package:gestionale_desktop/core/printing/agenda_printer.dart';
 
 /// Vista elenco/tabellare per Agenda (Tasks)
 class TasksListPage extends StatefulWidget {
@@ -61,7 +59,7 @@ class _TasksListPageState extends State<TasksListPage> {
   int _page = 0;
   final int _pageSize = 20;
   // Modalità stampa: mostra tutte le righe e un header dedicato, poi invoca window.print()
-  bool _printMode = false;
+  final bool _printMode = false;
 
   @override
   void initState() {
