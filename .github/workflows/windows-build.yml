@@ -56,3 +56,8 @@ jobs:
         with:
           name: Earon-Windows-Installer
           path: installer/windows/output/*.exe
+            - name: Upload portable build (Release folder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Earon-portable-Release
+          path: build/windows/x64/runner/Release/**
