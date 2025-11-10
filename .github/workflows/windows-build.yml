@@ -62,3 +62,12 @@ jobs:
         with:
           name: Earon-portable-Release
           path: build/windows/x64/runner/Release/**
+      
+            - name: Build Windows Debug (console)
+        run: flutter build windows --debug
+
+      - name: Upload portable Debug (console)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Earon-portable-Debug
+          path: build/windows/x64/runner/Debug/**
