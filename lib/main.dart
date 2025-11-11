@@ -20,8 +20,12 @@ import 'core/supa_env.dart';
 Future<void> setupAutoUpdater() async {
   if (!(Platform.isMacOS || Platform.isWindows)) return;
 
-  const feedURL = String.fromEnvironment('APPCAST_URL', defaultValue: '');
-  if (feedURL.isEmpty) return;
+  const feedURLFromEnv =
+      String.fromEnvironment('APPCAST_URL', defaultValue: '');
+  // Fallback: se il secrets APPCAST_URL non è configurato, usa l’URL raw del repo
+  const defaultFeedURL =
+      'https://raw.githubusercontent.com/francescosiciliano2000-art/Earon-2/main/updates/appcast.xml';
+  final feedURL = feedURLFromEnv.isNotEmpty ? feedURLFromEnv : defaultFeedURL;
 
   await autoUpdater.setFeedURL(feedURL);
   await autoUpdater.checkForUpdates();
