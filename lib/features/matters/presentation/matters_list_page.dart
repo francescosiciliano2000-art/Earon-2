@@ -26,6 +26,7 @@ import 'package:gestionale_desktop/core/supa_helpers.dart';
 // import 'matter_create_sheet.dart';
 import 'matter_detail_sheet.dart';
 import 'new_matter_dialog.dart';
+import '../../firms/presentation/select_firm_placeholder.dart';
 
 class MattersListPage extends StatefulWidget {
   const MattersListPage({super.key});
@@ -40,6 +41,7 @@ class _MattersListPageState extends State<MattersListPage> {
 
   bool _loading = true;
   String? _error;
+  String? _firmId; // firm selezionata
   List<Matter> _rows = [];
   // Selezione righe + ordinamento
   final Set<String> _selectedIds = <String>{};
@@ -119,8 +121,10 @@ class _MattersListPageState extends State<MattersListPage> {
     try {
       await _loadPrefs();
       final fid = await getCurrentFirmId();
+      _firmId = fid;
       if (fid == null || fid.isEmpty) {
-        throw Exception('Nessuno studio selezionato.');
+        // Gate: nessuno studio selezionato → non caricare lista, mostra placeholder in build
+        return;
       }
       if (mounted) {
         setState(() {
@@ -255,11 +259,15 @@ class _MattersListPageState extends State<MattersListPage> {
   Widget build(BuildContext context) {
     final double su =
         Theme.of(context).extension<DefaultTokens>()?.spacingUnit ?? 8.0;
+    final fid = _firmId ?? '';
+    final gate = (fid.isEmpty)
+        ? const SelectFirmPlaceholder()
+        : null;
     return Scaffold(
       // rimosso TopBar: titolo, cerca, aggiorna, utente
       body: Padding(
         padding: EdgeInsets.all(su * 3),
-        child: Column(
+        child: gate ?? Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Header con pulsante Nuova in alto a destra (come Clienti)

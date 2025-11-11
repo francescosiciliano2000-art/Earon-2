@@ -24,6 +24,7 @@ import 'import_wizard.dart';
 import '../../clienti/data/cliente_repo.dart';
 import 'cliente_detail_sheet.dart';
 import '../../../design system/components/alert_dialog.dart';
+import '../../firms/presentation/select_firm_placeholder.dart';
 
 class ClientiPage extends StatefulWidget {
   const ClientiPage({super.key});
@@ -531,9 +532,13 @@ class _ClientiPageState extends State<ClientiPage> {
 
   @override
   Widget build(BuildContext context) {
+    final fid = _firmId ?? '';
+    final body = (fid.isEmpty)
+        ? const SelectFirmPlaceholder()
+        : contentColumn();
     return Padding(
       padding: EdgeInsets.all(su * 3),
-      child: contentColumn(),
+      child: body,
     );
   }
 }

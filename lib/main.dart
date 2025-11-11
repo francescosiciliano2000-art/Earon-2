@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,17 @@ Future<void> setupAutoUpdater() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   debugPrint('[App] start');
+
+  // Logga le eccezioni in release per evitare schermate bianche silenziose
+  FlutterError.onError = (FlutterErrorDetails details) {
+    if (kReleaseMode) {
+      debugPrint('[FlutterError] ${details.exceptionAsString()}');
+      final st = details.stack?.toString() ?? '';
+      if (st.isNotEmpty) debugPrint(st);
+    } else {
+      FlutterError.presentError(details);
+    }
+  };
 
   // 1) Carica .env
   try {

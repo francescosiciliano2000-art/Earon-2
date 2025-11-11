@@ -83,7 +83,13 @@ class ClienteRepo {
     // Esegui query headless; il valore viene ritornato nell'oggetto risposta.
     final res = await qf.count(CountOption.exact);
     try {
-      return res.count;
+      // Accesso dinamico per evitare warning su nullability
+      final dynamic dyn = res;
+      final c = dyn.count;
+      if (c is int) return c;
+      final data = dyn.data;
+      if (data is List) return data.length;
+      return 0;
     } catch (_) {
       return 0;
     }
