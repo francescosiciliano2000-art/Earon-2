@@ -1,22 +1,43 @@
 import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'env.dart';
+import 'supa_env.dart';
 
 class ApiClient {
   final Dio _dio;
   ApiClient._(this._dio);
 
   static ApiClient create() {
+    // Determina la baseUrl PostgREST in modo robusto:
+    // 1) Preferisci SUPABASE_URL (compile-time via --dart-define)
+    // 2) Fallback su API_BASE_URL da .env se disponibile
+    final supaUrl = SupaEnv.url.trim();
+    String baseUrl;
+    if (supaUrl.isNotEmpty) {
+      baseUrl = supaUrl.endsWith('/') ? '${supaUrl}rest/v1/' : '$supaUrl/rest/v1/';
+    } else {
+      // Evita eccezioni se dotenv non è inizializzato
+      try {
+        baseUrl = Env.apiBase; // es.: https://...supabase.co/rest/v1/
+      } catch (_) {
+        baseUrl = '';
+      }
+    }
+    if (baseUrl.isEmpty) {
+      throw StateError('Config mancante: imposta SUPABASE_URL via --dart-define oppure API_BASE_URL nel .env');
+    }
+
+    // Chiave anon per header apikey e fallback Authorization
+    final anon = SupaEnv.anonKey.trim();
     final headers = <String, String>{
       'Content-Type': 'application/json',
       'Accept-Profile': 'public',
       'Content-Profile': 'public',
-      // apikey serve sempre, anche con token utente
-      if (Env.supabaseAnon != null) 'apikey': Env.supabaseAnon!,
+      if (anon.isNotEmpty) 'apikey': anon,
     };
 
     final dio = Dio(BaseOptions(
-      baseUrl: Env.apiBase, // es.: https://...supabase.co/rest/v1/
+      baseUrl: baseUrl,
       headers: headers,
       validateStatus: (s) => s != null && s < 500,
     ));
@@ -37,8 +58,8 @@ class ApiClient {
           final userToken = session?.accessToken;
           if (userToken != null && userToken.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $userToken';
-          } else if ((Env.supabaseAnon ?? '').isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer ${Env.supabaseAnon}';
+          } else if (anon.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $anon';
           } else {
             options.headers.remove('Authorization');
           }
