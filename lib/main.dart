@@ -31,6 +31,28 @@ Future<void> setupAutoUpdater() async {
   await autoUpdater.checkForUpdates();
 }
 
+/// Prova a caricare automaticamente il file .env in debug da diversi percorsi
+/// comuni. Non blocca l'avvio in caso di fallimento.
+Future<bool> _loadDotenvAdaptive() async {
+  const candidates = [
+    '.env', // root progetto (flutter run)
+    'assets/.env', // se preferisci mantenerlo in assets
+    '../.env', // avvio da sottocartelle
+    '../../.env',
+  ];
+  for (final p in candidates) {
+    try {
+      await dotenv.load(fileName: p);
+      debugPrint('[Config] dotenv loaded from $p');
+      return true;
+    } catch (_) {
+      // tenta prossimo percorso
+    }
+  }
+  debugPrint('[Config] dotenv load failed in all candidates: $candidates');
+  return false;
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
@@ -47,15 +69,8 @@ Future<void> main() async {
     }
   };
 
-  // 1) Carica .env
-  try {
-    await dotenv.load(fileName: '.env');
-    debugPrint('[Config] dotenv loaded from assets .env');
-  } catch (e) {
-    // Non bloccare l’avvio: useremo i valori di compile-time (SupaEnv)
-    debugPrint(
-        '[Config] dotenv load failed: $e — fallback to --dart-define (SupaEnv)');
-  }
+  // 1) Carica .env (in debug, automatico) senza bloccare l'avvio
+  final dotenvLoaded = await _loadDotenvAdaptive();
 
   // Inizializza dati di localizzazione per Intl (mesi/giorni in italiano)
   await initializeDateFormatting('it_IT');
@@ -65,8 +80,7 @@ Future<void> main() async {
   GoogleFonts.config.allowRuntimeFetching = false;
 
   // Traccia configurazione (senza stampare valori sensibili)
-  final dotenvLoaded = dotenv.isInitialized;
-  debugPrint('[Config] dotenv loaded=$dotenvLoaded');
+  debugPrint('[Config] dotenv loaded=${dotenv.isInitialized}');
 
   // Sorgente valori: preferisci dotenv, altrimenti compile-time (SupaEnv)
   final envUrl = dotenvLoaded ? (dotenv.env['SUPABASE_URL']?.trim() ?? '') : '';
@@ -83,8 +97,21 @@ Future<void> main() async {
       '[Config] Supabase anon key source=${envAnon.isNotEmpty ? 'dotenv:SUPABASE_ANON_KEY' : 'fromEnvironment:SUPABASE_ANON_KEY/SB_ANON'}');
 
   if (supabaseUrl.isEmpty || supabaseAnon.isEmpty) {
-    throw StateError(
-        'Supabase config mancante: assicurati di valorizzare SUPABASE_URL e SUPABASE_ANON_KEY (oppure SB_URL/SB_ANON) via .env o --dart-define.');
+    // In release o debug: mostra una schermata chiara invece di crashare
+    runApp(const ConfigErrorApp());
+    // Imposta comunque la finestra per evitare schermo nero
+    if (Platform.isMacOS || Platform.isWindows) {
+      await windowManager.waitUntilReadyToShow(const WindowOptions(
+        size: Size(1024, 700),
+        center: true,
+        titleBarStyle: TitleBarStyle.normal,
+      ), () async {
+        await windowManager.maximize();
+        await windowManager.show();
+        await windowManager.focus();
+      });
+    }
+    return; // termina main evitando inizializzazione Supabase
   }
 
   // 2) Inizializza Supabase una sola volta qui
@@ -113,7 +140,7 @@ Future<void> main() async {
   // avvia il controllo update senza bloccare la UI
   unawaited(setupAutoUpdater());
 
-  // Imposta fullscreen all'avvio (macOS/Windows)
+  // Imposta massimizzazione all'avvio (macOS/Windows)
   if (Platform.isMacOS || Platform.isWindows) {
     await windowManager.waitUntilReadyToShow(const WindowOptions(
       // In caso di fallback, imposta dimensione iniziale e centra
@@ -122,7 +149,7 @@ Future<void> main() async {
       // Su macOS mantiene la barra del titolo standard; su Windows non influisce
       titleBarStyle: TitleBarStyle.normal,
     ), () async {
-      await windowManager.setFullScreen(true);
+      await windowManager.maximize();
       await windowManager.show();
       await windowManager.focus();
     });
@@ -149,6 +176,48 @@ class GestionaleApp extends StatelessWidget {
           child!,
           AppToaster(key: AppToaster.globalKey),
         ],
+      ),
+    );
+  }
+}
+
+/// App minimale di errore configurazione per rilasci senza variabili richieste.
+class ConfigErrorApp extends StatelessWidget {
+  const ConfigErrorApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Configurazione mancante',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Configurazione mancante')),
+        body: const Center(
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Supabase config mancante',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Assicurati di valorizzare SUPABASE_URL e SUPABASE_ANON_KEY (oppure SB_URL/SB_ANON).',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'In debug: crea/compila un file .env nella root con SUPABASE_URL, SUPABASE_ANON_KEY e (opzionale) APPCAST_URL.\n'
+                  'In release: passa i valori via --dart-define nei workflow GitHub Actions.',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
