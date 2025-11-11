@@ -1,5 +1,5 @@
 #define MyAppName "Earon"
-#define MyAppVersion "0.1.1"   ; <— aggiorna ad ogni release
+#define MyAppVersion "0.1.2"   ; <— aggiorna ad ogni release
 #define MyExeName "Earon.exe"
 
 [Setup]
