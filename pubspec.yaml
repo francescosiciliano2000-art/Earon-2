@@ -28,6 +28,7 @@ dependencies:
   pdf: ^3.11.3
   web: ^1.1.1
   auto_updater: ^1.0.0
+  window_manager: ^0.3.8
   sqlite3_flutter_libs: ^0.5.0
 
 

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'dart:async' show unawaited;
 import 'dart:io' show Platform;
 import 'package:auto_updater/auto_updater.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'app_router.dart';
 // import 'theme/app_theme.dart';
@@ -28,6 +29,7 @@ Future<void> setupAutoUpdater() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
   debugPrint('[App] start');
 
   // Logga le eccezioni in release per evitare schermate bianche silenziose
@@ -106,6 +108,21 @@ Future<void> main() async {
 
   // avvia il controllo update senza bloccare la UI
   unawaited(setupAutoUpdater());
+
+  // Imposta fullscreen all'avvio (macOS/Windows)
+  if (Platform.isMacOS || Platform.isWindows) {
+    await windowManager.waitUntilReadyToShow(const WindowOptions(
+      // In caso di fallback, imposta dimensione iniziale e centra
+      size: Size(1280, 800),
+      center: true,
+      // Su macOS mantiene la barra del titolo standard; su Windows non influisce
+      titleBarStyle: TitleBarStyle.normal,
+    ), () async {
+      await windowManager.setFullScreen(true);
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 }
 
 class GestionaleApp extends StatelessWidget {
