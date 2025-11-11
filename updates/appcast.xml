@@ -26,21 +26,20 @@
 </item>
 
     <!-- Esempio item Windows (da aggiungere quando pubblichi una release con .exe): -->
-    <!--
     <item>
-      <title>v0.1.2 (Windows)</title>
-      <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.2</sparkle:releaseNotesLink>
-      <pubDate>Tue, 11 Nov 2025 10:00:00 +0100</pubDate>
-      <enclosure
-        url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.2/Earon-Setup-0.1.2.exe"
-        sparkle:os="windows"
-        sparkle:version="0.1.2"
-        sparkle:shortVersionString="0.1.2"
-        type="application/octet-stream"
-        sparkle:sha256="REPLACE_WITH_SHA256_OF_EXE" />
-    </item>
-    -->
+  <title>v0.1.2 (Windows)</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.2</sparkle:releaseNotesLink>
+  <pubDate>Tue, 11 Nov 2025 18:20:00 +0100</pubDate>
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.2/Earon-Setup-0.1.2.exe"
+    sparkle:os="windows"
+    sparkle:version="0.1.2"
+    sparkle:shortVersionString="0.1.2"
+    type="application/octet-stream"
+    sparkle:sha256="0c08233a776bd0a460d72eea9f07e1250e0770f05f1c89cf6c8ad1354c014bef" />
+</item>
 
+    
     <item>
   <title>v0.1.0</title>
   <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.0</sparkle:releaseNotesLink>
