@@ -78,8 +78,9 @@ jobs:
             exit 1
           fi
 
-          # Create DMG (overwrite if exists)
-          create-dmg --volname "Earon" --overwrite "$OUT_DIR/$DMG_NAME" "$APP_PATH"
+          # Create DMG (remove existing file; Homebrew create-dmg does not support --overwrite)
+          rm -f "$OUT_DIR/$DMG_NAME"
+          create-dmg --volname "Earon" "$OUT_DIR/$DMG_NAME" "$APP_PATH"
           echo "DMG created at $OUT_DIR/$DMG_NAME"
 
       - name: Upload DMG to GitHub Release (on tag)
