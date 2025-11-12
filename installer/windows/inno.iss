@@ -26,9 +26,13 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "desktopicon"; Description: "Crea un'icona sul Desktop"; GroupDescription: "Icone:"; Flags: unchecked
 
 [Files]
-; Prefer x64 path, but fall back to non-x64 if the directory doesn't exist
-Source: "..\..\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs; Check: DirExists('..\..\build\windows\x64\runner\Release')
-Source: "..\..\build\windows\runner\Release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs; Check: DirExists('..\..\build\windows\runner\Release')
+; Include only existing build output paths at compile time to avoid errors
+#ifexist "..\\..\\build\\windows\\x64\\runner\\Release\\*"
+Source: "..\\..\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+#endif
+#ifexist "..\\..\\build\\windows\\runner\\Release\\*"
+Source: "..\\..\\build\\windows\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+#endif
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyExeName}"
