@@ -1,5 +1,7 @@
 name: Windows EXE (Inno Setup)
 
+# Trigger note: bumped to re-run workflow and produce installer artifacts.
+
 on:
   workflow_dispatch:
   push:
@@ -9,6 +11,8 @@ on:
       - 'windows/**'
       - 'pubspec.yaml'
       - 'lib/**'
+  release:
+    types: [ published ]
 
 jobs:
   build-windows:
@@ -69,6 +73,15 @@ jobs:
         with:
           name: Earon-Windows-Installer
           path: installer/windows/output/*.exe
+
+      - name: Upload installer to GitHub Release (on tag)
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            installer/windows/output/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload portable build (Release folder)
         uses: actions/upload-artifact@v4

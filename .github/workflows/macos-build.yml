@@ -1,0 +1,61 @@
+name: macOS DMG (Sparkle)
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: 'stable'
+
+      - name: Enable macOS desktop
+        run: flutter config --enable-macos-desktop
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Validate required secrets
+        run: |
+          if [ -z "${{ secrets.SUPABASE_URL }}" ]; then echo "Missing SUPABASE_URL secret"; exit 1; fi
+          if [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then echo "Missing SUPABASE_ANON_KEY secret"; exit 1; fi
+          echo "Secrets are present. Proceeding with build."
+
+      - name: Build macOS Release
+        run: >-
+          flutter build macos --release
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          --dart-define=APPCAST_URL=${{ secrets.APPCAST_URL }}
+
+      - name: Install create-dmg
+        run: |
+          brew update
+          brew install create-dmg
+
+      - name: Create DMG
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/Earon.app"
+          OUT_DIR="dist"
+          mkdir -p "$OUT_DIR"
+          TAG_NAME="${{ github.event.release.tag_name }}" # e.g. v0.1.2
+          VERSION="${TAG_NAME#v}"
+          DMG_NAME="Earon-$VERSION.dmg"
+          create-dmg --volname "Earon" --window-size 600 400 --icon-size 100 --icon "$APP_PATH" 200 200 "$OUT_DIR/$DMG_NAME" "$APP_PATH"
+          echo "DMG created at $OUT_DIR/$DMG_NAME"
+
+      - name: Upload DMG to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/Earon-*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
