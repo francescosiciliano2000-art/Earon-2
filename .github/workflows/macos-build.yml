@@ -1,4 +1,6 @@
 name: macOS DMG (Sparkle)
+permissions:
+  contents: write
 
 on:
   release:
@@ -49,13 +51,35 @@ jobs:
 
       - name: Create DMG
         run: |
-          APP_PATH="build/macos/Build/Products/Release/Earon.app"
+          # Resolve tag name from event or manual input
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          if [ -z "$TAG_NAME" ]; then TAG_NAME="${{ inputs.tag_name }}"; fi
+
+          # Derive version from tag, fallback to pubspec.yaml
+          VERSION="${TAG_NAME#v}"
+          if [ -z "$VERSION" ]; then
+            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version:\s*//')
+          fi
+
+          # Detect built .app dynamically
+          APP_PATH=$(ls -d build/macos/Build/Products/Release/*.app 2>/dev/null | head -n 1)
           OUT_DIR="dist"
           mkdir -p "$OUT_DIR"
-          TAG_NAME="${{ github.event.release.tag_name }}" # e.g. v0.1.2
-          VERSION="${TAG_NAME#v}"
           DMG_NAME="Earon-$VERSION.dmg"
-          create-dmg --volname "Earon" --window-size 600 400 --icon-size 100 --icon "$APP_PATH" 200 200 "$OUT_DIR/$DMG_NAME" "$APP_PATH"
+
+          echo "TAG_NAME=$TAG_NAME"
+          echo "VERSION=$VERSION"
+          echo "APP_PATH=$APP_PATH"
+          echo "DMG_NAME=$DMG_NAME"
+
+          if [ -z "$APP_PATH" ] || [ ! -d "$APP_PATH" ]; then
+            echo "ERROR: No .app found under build/macos/Build/Products/Release/"
+            ls -la build/macos/Build/Products/Release/ || true
+            exit 1
+          fi
+
+          # Create DMG (overwrite if exists)
+          create-dmg --volname "Earon" --overwrite "$OUT_DIR/$DMG_NAME" "$APP_PATH"
           echo "DMG created at $OUT_DIR/$DMG_NAME"
 
       - name: Upload DMG to GitHub Release (on tag)
