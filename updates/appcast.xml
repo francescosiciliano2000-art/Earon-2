@@ -16,7 +16,7 @@
   <pubDate>Wed, 12 Nov 2025 12:00:00 +0100</pubDate>
 
   <enclosure
-    url="https://raw.githubusercontent.com/francescosiciliano2000-art/Earon-2/main/dist/Earon-0.1.2.dmg"
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.2/Earon-0.1.2.dmg"
     sparkle:os="macos"
     sparkle:version="0.1.2"
     sparkle:shortVersionString="0.1.2"
