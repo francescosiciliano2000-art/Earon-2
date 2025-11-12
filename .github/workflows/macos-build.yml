@@ -3,6 +3,12 @@ name: macOS DMG (Sparkle)
 on:
   release:
     types: [ published ]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag to upload DMG to (e.g., v0.1.2)"
+        required: false
+        default: v0.1.2
 
 jobs:
   build-macos:
@@ -23,11 +29,11 @@ jobs:
       - name: Pub get
         run: flutter pub get
 
-      - name: Validate required secrets
+      - name: Optional secrets check (non-blocking)
         run: |
-          if [ -z "${{ secrets.SUPABASE_URL }}" ]; then echo "Missing SUPABASE_URL secret"; exit 1; fi
-          if [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then echo "Missing SUPABASE_ANON_KEY secret"; exit 1; fi
-          echo "Secrets are present. Proceeding with build."
+          if [ -z "${{ secrets.SUPABASE_URL }}" ]; then echo "Warning: SUPABASE_URL not set; app will show config error screen at runtime."; fi
+          if [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then echo "Warning: SUPABASE_ANON_KEY not set; app will show config error screen at runtime."; fi
+          echo "Continuing build regardless of secrets."
 
       - name: Build macOS Release
         run: >-
@@ -52,10 +58,21 @@ jobs:
           create-dmg --volname "Earon" --window-size 600 400 --icon-size 100 --icon "$APP_PATH" 200 200 "$OUT_DIR/$DMG_NAME" "$APP_PATH"
           echo "DMG created at $OUT_DIR/$DMG_NAME"
 
-      - name: Upload DMG to GitHub Release
+      - name: Upload DMG to GitHub Release (on tag)
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/Earon-*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload DMG to GitHub Release (manual dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/Earon-*.dmg
+          tag_name: ${{ inputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

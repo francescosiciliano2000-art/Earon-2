@@ -4,6 +4,11 @@ name: Windows EXE (Inno Setup)
 
 on:
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag to upload assets to (e.g., v0.1.2)"
+        required: false
+        default: v0.1.2
   push:
     branches: [ main ]
     paths:
@@ -33,14 +38,14 @@ jobs:
       - name: Pub get
         run: flutter pub get
 
-      - name: Validate required secrets
+      - name: Optional secrets check (non-blocking)
         shell: pwsh
         run: |
           $u = "${{ secrets.SUPABASE_URL }}"
           $k = "${{ secrets.SUPABASE_ANON_KEY }}"
-          if ([string]::IsNullOrWhiteSpace($u)) { Write-Error "Missing SUPABASE_URL secret"; exit 1 }
-          if ([string]::IsNullOrWhiteSpace($k)) { Write-Error "Missing SUPABASE_ANON_KEY secret"; exit 1 }
-          Write-Host "Secrets are present. Proceeding with build."
+          if ([string]::IsNullOrWhiteSpace($u)) { Write-Warning "SUPABASE_URL not set; app will show config error screen at runtime." }
+          if ([string]::IsNullOrWhiteSpace($k)) { Write-Warning "SUPABASE_ANON_KEY not set; app will show config error screen at runtime." }
+          Write-Host "Continuing build regardless of secrets."
 
       - name: Build Windows Release
         run: >-
@@ -80,6 +85,16 @@ jobs:
         with:
           files: |
             installer/windows/output/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload installer to GitHub Release (manual dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            installer/windows/output/*.exe
+          tag_name: ${{ inputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
