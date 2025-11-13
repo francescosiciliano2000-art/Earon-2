@@ -65,11 +65,7 @@ jobs:
           Write-Host "Continuing build regardless of secrets."
 
       - name: Build Windows Release
-        run: >-
-          flutter build windows --release
-          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-          --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
-          --dart-define=APPCAST_URL=${{ secrets.APPCAST_URL }}
+        run: flutter build windows --release --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} --dart-define=APPCAST_URL=${{ secrets.APPCAST_URL }}
 
       - name: Locate and rename exe to Earon.exe
         shell: pwsh
@@ -171,47 +167,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Aggiorna updates/appcast.xml (Windows v${{ env.VERSION_SHORT }})
-        shell: pwsh
-        run: |
-          $installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1
-          if ($null -eq $installer) { Write-Error "Installer non trovato"; exit 1 }
-          $sha = (Get-FileHash -Algorithm SHA256 $installer.FullName).Hash.ToLower()
-          $version = "${env:VERSION_SHORT}"
-          $tag = "v$version"
-          $assetUrl = "https://github.com/${{ github.repository }}/releases/download/$tag/Earon-Setup-$version.exe"
-          $releaseNotes = "https://github.com/${{ github.repository }}/releases/tag/$tag"
-          $pubDate = [DateTime]::UtcNow.ToString('ddd, dd MMM yyyy HH:mm:ss +0000')
-          $item = @"
-  <item>
-  <title>v$version (Windows)</title>
-  <sparkle:releaseNotesLink>$releaseNotes</sparkle:releaseNotesLink>
-  <pubDate>$pubDate</pubDate>
-  <enclosure
-    url="$assetUrl"
-    sparkle:os="windows"
-    sparkle:version="$version"
-    sparkle:shortVersionString="$version"
-    type="application/octet-stream"
-    sparkle:sha256="$sha" />
-</item>
-"@
-
-          $path = "updates/appcast.xml"
-          $content = Get-Content -Raw $path
-          $marker = "<!-- Release più recente -->"
-          if (-not ($content.Contains($marker))) {
-            Write-Warning "Marker non trovato in appcast.xml; appendo in testa al canale."
-            $content = $content -replace '(</language>\s*)', "$1`n$marker`n"
-          }
-          $newContent = $content -replace [Regex]::Escape($marker), "$marker`n`n$item"
-          Set-Content -Path $path -Value $newContent
-
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add $path
-          git commit -m "chore(appcast): add Windows v$version entry with sha256"
-          git push
+      # Nota: l'aggiornamento di updates/appcast.xml è gestito da un workflow dedicato post-release per evitare conflitti con le regole di protezione del branch.
       
       - name: Build Windows Debug (console)
         run: >-
