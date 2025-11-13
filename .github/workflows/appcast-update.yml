@@ -1,0 +1,122 @@
+name: Update appcast.xml (post-release via PR)
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag to read assets from (e.g., v0.1.5)"
+        required: true
+        default: v0.1.5
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-appcast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq curl
+
+      - name: Resolve TAG_NAME and VERSION
+        env:
+          TAG_EVENT: ${{ github.event.release.tag_name }}
+          TAG_INPUT: ${{ inputs.tag_name }}
+        run: |
+          set -euo pipefail
+          TAG="$TAG_EVENT"
+          if [ -z "$TAG" ]; then TAG="$TAG_INPUT"; fi
+          TAG=$(echo "$TAG" | tr -d '[:space:]')
+          echo "TAG=$TAG"
+          if ! echo "$TAG" | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' >/dev/null; then
+            echo "Invalid tag: '$TAG'" >&2; exit 1;
+          fi
+          VERSION=${TAG#v}
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "TAG_NAME=$TAG" >> "$GITHUB_ENV"
+
+      - name: Read release assets from GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          REPO="${{ github.repository }}"
+          TAG="$TAG_NAME"
+          echo "Fetching release $TAG for $REPO"
+          JSON=$(curl -sSL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/$REPO/releases/tags/$TAG")
+          echo "$JSON" | jq '.name, .tag_name, (.assets | map(.name))'
+
+          VERSION="$VERSION"
+          # Prefer exact version match; fall back to best match
+          EXE_URL=$(echo "$JSON" | jq -r --arg v "$VERSION" '[.assets[] | select((.name|test("\\.exe$")) and (.name|contains($v))) | .browser_download_url] | first // empty')
+          if [ -z "$EXE_URL" ]; then
+            EXE_URL=$(echo "$JSON" | jq -r '[.assets[] | select(.name|test("\\.exe$")) | .browser_download_url] | first // empty')
+          fi
+          DMG_URL=$(echo "$JSON" | jq -r --arg v "$VERSION" '[.assets[] | select((.name|test("\\.dmg$")) and (.name|contains($v))) | .browser_download_url] | first // empty')
+          if [ -z "$DMG_URL" ]; then
+            DMG_URL=$(echo "$JSON" | jq -r '[.assets[] | select(.name|test("\\.dmg$")) | .browser_download_url] | first // empty')
+          fi
+          if [ -z "$EXE_URL" ] || [ -z "$DMG_URL" ]; then
+            echo "Missing asset URLs. EXE_URL='$EXE_URL' DMG_URL='$DMG_URL'" >&2; exit 1
+          fi
+          echo "EXE_URL=$EXE_URL" >> "$GITHUB_ENV"
+          echo "DMG_URL=$DMG_URL" >> "$GITHUB_ENV"
+
+      - name: Download assets and compute SHA256
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          echo "Downloading: $DMG_URL"
+          curl -L "$DMG_URL" -o dist/mac.dmg
+          echo "Downloading: $EXE_URL"
+          curl -L "$EXE_URL" -o dist/win.exe
+          MAC_SHA=$(sha256sum dist/mac.dmg | awk '{print tolower($1)}')
+          WIN_SHA=$(sha256sum dist/win.exe | awk '{print tolower($1)}')
+          echo "MAC_SHA=$MAC_SHA" >> "$GITHUB_ENV"
+          echo "WIN_SHA=$WIN_SHA" >> "$GITHUB_ENV"
+
+      - name: Update updates/appcast.xml
+        run: |
+          set -euo pipefail
+          VERSION="$VERSION"
+          TAG="$TAG_NAME"
+          EXE_URL="$EXE_URL"
+          DMG_URL="$DMG_URL"
+          MAC_SHA="$MAC_SHA"
+          WIN_SHA="$WIN_SHA"
+          PUB_DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")
+          PATH_XML="updates/appcast.xml"
+          if [ ! -f "$PATH_XML" ]; then echo "Missing $PATH_XML" >&2; exit 1; fi
+          MARKER='<!-- Release più recente -->'
+          CONTENT=$(cat "$PATH_XML")
+          if ! echo "$CONTENT" | grep -q "$MARKER"; then
+            CONTENT=$(awk '1; /<language>/{print "\n<!-- Release più recente -->"}' "$PATH_XML")
+          fi
+          # Build items
+          ITEM_MAC="\n  <item>\n  <title>v$VERSION (macOS)</title>\n  <sparkle:releaseNotesLink>https://github.com/${{ github.repository }}/releases/tag/$TAG</sparkle:releaseNotesLink>\n  <pubDate>$PUB_DATE</pubDate>\n  <enclosure\n    url=\"$DMG_URL\"\n    sparkle:os=\"macos\"\n    sparkle:version=\"$VERSION\"\n    sparkle:shortVersionString=\"$VERSION\"\n    type=\"application/octet-stream\"\n    sparkle:sha256=\"$MAC_SHA\" />\n</item>\n"
+          ITEM_WIN="\n  <item>\n  <title>v$VERSION (Windows)</title>\n  <sparkle:releaseNotesLink>https://github.com/${{ github.repository }}/releases/tag/$TAG</sparkle:releaseNotesLink>\n  <pubDate>$PUB_DATE</pubDate>\n  <enclosure\n    url=\"$EXE_URL\"\n    sparkle:os=\"windows\"\n    sparkle:version=\"$VERSION\"\n    sparkle:shortVersionString=\"$VERSION\"\n    type=\"application/octet-stream\"\n    sparkle:sha256=\"$WIN_SHA\" />\n</item>\n"
+          # Avoid duplication: if asset URL already present, skip
+          if echo "$CONTENT" | grep -q "$EXE_URL" && echo "$CONTENT" | grep -q "$DMG_URL"; then
+            echo "Appcast already contains current assets; skipping edit." > .appcast_skip
+          else
+            CONTENT=$(echo "$CONTENT" | perl -0777 -pe "s/\Q$MARKER\E/$MARKER\n\n$ITEM_MAC\n$ITEM_WIN/")
+            printf "%s" "$CONTENT" > "$PATH_XML"
+          fi
+
+      - name: Create Pull Request
+        if: ${{ !exists('.appcast_skip') }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(appcast): add v${{ env.VERSION }} macOS/Windows entries with sha256"
+          branch: "chore/appcast-v${{ env.VERSION }}"
+          title: "chore(appcast): update feed for v${{ env.VERSION }}"
+          body: "This PR updates updates/appcast.xml with macOS and Windows entries for v${{ env.VERSION }}, including SHA256 hashes and release notes link."
