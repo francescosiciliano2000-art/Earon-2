@@ -10,6 +10,35 @@
 
     <!-- Release più recente -->
 
+
+  <item>
+  <title>v0.1.6 (macOS)</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.6</sparkle:releaseNotesLink>
+  <pubDate>Thu, 13 Nov 2025 21:30:39 +0000</pubDate>
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.6/Earon-.0.1.6.dmg"
+    sparkle:os="macos"
+    sparkle:version="0.1.6"
+    sparkle:shortVersionString="0.1.6"
+    type="application/octet-stream"
+    sparkle:sha256="0302c42d3b60d8e3d666ccfebc56f6042d336dc44735295750e2f6881b25b47d" />
+</item>
+
+
+  <item>
+  <title>v0.1.6 (Windows)</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.6</sparkle:releaseNotesLink>
+  <pubDate>Thu, 13 Nov 2025 21:30:39 +0000</pubDate>
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.6/Earon-Setup-0.1.6.exe"
+    sparkle:os="windows"
+    sparkle:version="0.1.6"
+    sparkle:shortVersionString="0.1.6"
+    type="application/octet-stream"
+    sparkle:sha256="17496c939ec9d3a43dc02f95ca402ae27cea7b19ea07e34bbbe5c6f2b52edb77" />
+</item>
+
+
   <item>
   <title>v0.1.5 (macOS)</title>
   <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.5</sparkle:releaseNotesLink>
