@@ -115,12 +115,20 @@ jobs:
             echo "updated=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Cleanup downloaded artifacts (avoid committing binaries)
+        if: ${{ always() }}
+        run: |
+          rm -rf dist || true
+
       - name: Create Pull Request
         if: ${{ steps.update_appcast.outputs.updated == 'true' }}
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Use PAT if provided (some orgs block PR creation via GITHUB_TOKEN)
+          token: ${{ secrets.APPCAST_PR_PAT != '' && secrets.APPCAST_PR_PAT || secrets.GITHUB_TOKEN }}
           commit-message: "chore(appcast): add v${{ env.VERSION }} macOS/Windows entries with sha256"
           branch: "chore/appcast-v${{ env.VERSION }}"
           title: "chore(appcast): update feed for v${{ env.VERSION }}"
           body: "This PR updates updates/appcast.xml with macOS and Windows entries for v${{ env.VERSION }}, including SHA256 hashes and release notes link."
+          add-paths: |
+            updates/appcast.xml
