@@ -89,7 +89,8 @@ class AppSidebar extends StatelessWidget {
                     color: theme.colorScheme.primary),
                 if (!isCollapsed) ...[
                   SizedBox(width: spacing * 1.5),
-                  Text('Gestionale', style: theme.textTheme.titleMedium),
+                  // Nome applicazione
+                  Text('Earon', style: theme.textTheme.titleMedium),
                 ],
                 const Spacer(),
                 if (!isCollapsed)

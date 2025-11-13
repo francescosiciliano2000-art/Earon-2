@@ -40,6 +40,8 @@ class _HearingCreateDialogState extends State<HearingCreateDialog> {
   String? _matterId;
   // Items per la combobox pratica (in‑memory, filtrati dal componente)
   List<ComboboxItem> _matterItems = const [];
+  // Debounce per ricerca asincrona lato server
+  Timer? _matterSearchDebounce;
   // Visualizzazione derivata da pratica
   String _matterCourt = '';
   String _matterJudge = '';
@@ -234,6 +236,45 @@ class _HearingCreateDialogState extends State<HearingCreateDialog> {
                       // La lista si adatta alla riga più lunga
                       popoverMatchWidestRow: true,
                       emptyLabel: 'Nessun risultato',
+                      // Ricerca asincrona: interroga Supabase per query > 0
+                      onQueryChanged: (query) async {
+                        final q = query.trim();
+                        // Cancella debounce precedente
+                        _matterSearchDebounce?.cancel();
+                        // Se query vuota → ripristina initial batch (prime 50)
+                        if (q.isEmpty) {
+                          _matterSearchDebounce = Timer(const Duration(milliseconds: 1), () async {
+                            try {
+                              final rows = await _matterRepo.list(search: '', page: 1, pageSize: 50);
+                              if (!mounted) return;
+                              setState(() {
+                                _matterItems = rows.map((m) =>
+                                  ComboboxItem(value: m.matterId, label: _buildMatterLabel(m))).toList();
+                              });
+                            } catch (_) {}
+                          });
+                          return;
+                        }
+                        // Debounce 300ms prima di cercare lato server
+                        _matterSearchDebounce = Timer(const Duration(milliseconds: 300), () async {
+                          try {
+                            final rows = await _matterRepo.list(
+                              search: q,
+                              // Cerca su codice, RG, cliente, controparte e titolo per massima copertura
+                              searchFields: const ['code', 'rg_number', 'client', 'counterparty_name', 'title'],
+                              page: 1,
+                              pageSize: 50,
+                            );
+                            if (!mounted) return;
+                            setState(() {
+                              _matterItems = rows.map((m) =>
+                                ComboboxItem(value: m.matterId, label: _buildMatterLabel(m))).toList();
+                            });
+                          } catch (_) {
+                            // Silenzia errori di rete/db durante la digitazione
+                          }
+                        });
+                      },
                       onChanged: (v) async {
                         setState(() => _matterId = v);
                         try {

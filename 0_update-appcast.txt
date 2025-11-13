@@ -1,0 +1,449 @@
+﻿2025-11-13T13:20:19.4295083Z Current runner version: '2.329.0'
+2025-11-13T13:20:19.4320435Z ##[group]Runner Image Provisioner
+2025-11-13T13:20:19.4321632Z Hosted Compute Agent
+2025-11-13T13:20:19.4322163Z Version: 20251016.436
+2025-11-13T13:20:19.4322760Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+2025-11-13T13:20:19.4323512Z Build Date: 2025-10-15T20:44:12Z
+2025-11-13T13:20:19.4324081Z ##[endgroup]
+2025-11-13T13:20:19.4324641Z ##[group]Operating System
+2025-11-13T13:20:19.4325207Z Ubuntu
+2025-11-13T13:20:19.4325698Z 24.04.3
+2025-11-13T13:20:19.4326132Z LTS
+2025-11-13T13:20:19.4326629Z ##[endgroup]
+2025-11-13T13:20:19.4327105Z ##[group]Runner Image
+2025-11-13T13:20:19.4327690Z Image: ubuntu-24.04
+2025-11-13T13:20:19.4328255Z Version: 20251102.99.1
+2025-11-13T13:20:19.4329247Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251102.99/images/ubuntu/Ubuntu2404-Readme.md
+2025-11-13T13:20:19.4330964Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251102.99
+2025-11-13T13:20:19.4332133Z ##[endgroup]
+2025-11-13T13:20:19.4333303Z ##[group]GITHUB_TOKEN Permissions
+2025-11-13T13:20:19.4335578Z Contents: write
+2025-11-13T13:20:19.4336113Z Metadata: read
+2025-11-13T13:20:19.4336666Z PullRequests: write
+2025-11-13T13:20:19.4337333Z ##[endgroup]
+2025-11-13T13:20:19.4339802Z Secret source: Actions
+2025-11-13T13:20:19.4340508Z Prepare workflow directory
+2025-11-13T13:20:19.4673916Z Prepare all required actions
+2025-11-13T13:20:19.4713066Z Getting action download info
+2025-11-13T13:20:19.7865157Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+2025-11-13T13:20:19.9031743Z Download action repository 'peter-evans/create-pull-request@v5' (SHA:4e1beaa7521e8b457b572c090b25bd3db56bf1c5)
+2025-11-13T13:20:20.2353581Z Complete job name: update-appcast
+2025-11-13T13:20:20.3077489Z ##[group]Run actions/checkout@v4
+2025-11-13T13:20:20.3078334Z with:
+2025-11-13T13:20:20.3078784Z   repository: francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:20.3079618Z   token: ***
+2025-11-13T13:20:20.3080144Z   ssh-strict: true
+2025-11-13T13:20:20.3080553Z   ssh-user: git
+2025-11-13T13:20:20.3081113Z   persist-credentials: true
+2025-11-13T13:20:20.3081564Z   clean: true
+2025-11-13T13:20:20.3081960Z   sparse-checkout-cone-mode: true
+2025-11-13T13:20:20.3082432Z   fetch-depth: 1
+2025-11-13T13:20:20.3082816Z   fetch-tags: false
+2025-11-13T13:20:20.3083209Z   show-progress: true
+2025-11-13T13:20:20.3083622Z   lfs: false
+2025-11-13T13:20:20.3083983Z   submodules: false
+2025-11-13T13:20:20.3084396Z   set-safe-directory: true
+2025-11-13T13:20:20.3085112Z ##[endgroup]
+2025-11-13T13:20:20.4182019Z Syncing repository: francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:20.4183869Z ##[group]Getting Git version info
+2025-11-13T13:20:20.4184628Z Working directory is '/home/runner/work/Earon-2/Earon-2'
+2025-11-13T13:20:20.4185539Z [command]/usr/bin/git version
+2025-11-13T13:20:20.4294683Z git version 2.51.2
+2025-11-13T13:20:20.4335666Z ##[endgroup]
+2025-11-13T13:20:20.4355281Z Temporarily overriding HOME='/home/runner/work/_temp/ce7a2f71-b6b2-4f1a-921a-64b21d5d17ba' before making global git config changes
+2025-11-13T13:20:20.4357014Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-13T13:20:20.4373007Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Earon-2/Earon-2
+2025-11-13T13:20:20.4419900Z Deleting the contents of '/home/runner/work/Earon-2/Earon-2'
+2025-11-13T13:20:20.4424315Z ##[group]Initializing the repository
+2025-11-13T13:20:20.4430708Z [command]/usr/bin/git init /home/runner/work/Earon-2/Earon-2
+2025-11-13T13:20:20.4576575Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-11-13T13:20:20.4578434Z hint: is subject to change. To configure the initial branch name to use in all
+2025-11-13T13:20:20.4579983Z hint: of your new repositories, which will suppress this warning, call:
+2025-11-13T13:20:20.4581287Z hint:
+2025-11-13T13:20:20.4582029Z hint: 	git config --global init.defaultBranch <name>
+2025-11-13T13:20:20.4583254Z hint:
+2025-11-13T13:20:20.4583813Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-11-13T13:20:20.4584740Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-11-13T13:20:20.4585487Z hint:
+2025-11-13T13:20:20.4585885Z hint: 	git branch -m <name>
+2025-11-13T13:20:20.4586362Z hint:
+2025-11-13T13:20:20.4586978Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-11-13T13:20:20.4588528Z Initialized empty Git repository in /home/runner/work/Earon-2/Earon-2/.git/
+2025-11-13T13:20:20.4602287Z [command]/usr/bin/git remote add origin https://github.com/francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:20.4656632Z ##[endgroup]
+2025-11-13T13:20:20.4657914Z ##[group]Disabling automatic garbage collection
+2025-11-13T13:20:20.4660521Z [command]/usr/bin/git config --local gc.auto 0
+2025-11-13T13:20:20.4695859Z ##[endgroup]
+2025-11-13T13:20:20.4696567Z ##[group]Setting up auth
+2025-11-13T13:20:20.4705741Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-11-13T13:20:20.4742391Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-11-13T13:20:20.5149720Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-13T13:20:20.5180893Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-11-13T13:20:20.5412467Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-11-13T13:20:20.5449897Z ##[endgroup]
+2025-11-13T13:20:20.5450939Z ##[group]Fetching the repository
+2025-11-13T13:20:20.5468048Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +1e0d262ff28737f8b0532966cc78b64841e962e4:refs/remotes/origin/main
+2025-11-13T13:20:21.6316460Z From https://github.com/francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:21.6349280Z  * [new ref]         1e0d262ff28737f8b0532966cc78b64841e962e4 -> origin/main
+2025-11-13T13:20:21.6352936Z ##[endgroup]
+2025-11-13T13:20:21.6354153Z ##[group]Determining the checkout info
+2025-11-13T13:20:21.6355509Z ##[endgroup]
+2025-11-13T13:20:21.6359545Z [command]/usr/bin/git sparse-checkout disable
+2025-11-13T13:20:21.6401390Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-11-13T13:20:21.6430804Z ##[group]Checking out the ref
+2025-11-13T13:20:21.6436325Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-11-13T13:20:21.9721411Z Switched to a new branch 'main'
+2025-11-13T13:20:21.9722607Z branch 'main' set up to track 'origin/main'.
+2025-11-13T13:20:21.9742905Z ##[endgroup]
+2025-11-13T13:20:21.9780750Z [command]/usr/bin/git log -1 --format=%H
+2025-11-13T13:20:21.9802231Z 1e0d262ff28737f8b0532966cc78b64841e962e4
+2025-11-13T13:20:22.0003313Z ##[group]Run sudo apt-get update -y
+2025-11-13T13:20:22.0004471Z [36;1msudo apt-get update -y[0m
+2025-11-13T13:20:22.0005482Z [36;1msudo apt-get install -y jq curl[0m
+2025-11-13T13:20:22.0042990Z shell: /usr/bin/bash -e {0}
+2025-11-13T13:20:22.0043925Z ##[endgroup]
+2025-11-13T13:20:22.0934922Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2025-11-13T13:20:22.1259382Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2025-11-13T13:20:22.1266128Z Get:6 https://packages.microsoft.com/repos/azure-cli noble InRelease [3564 B]
+2025-11-13T13:20:22.1277853Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2025-11-13T13:20:22.1286377Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2025-11-13T13:20:22.1317794Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2025-11-13T13:20:22.1346925Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2025-11-13T13:20:22.2579076Z Get:8 https://packages.microsoft.com/repos/azure-cli noble/main amd64 Packages [1700 B]
+2025-11-13T13:20:22.3004535Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [50.0 kB]
+2025-11-13T13:20:22.3087402Z Get:10 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [11.2 kB]
+2025-11-13T13:20:22.3125741Z Get:11 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [67.4 kB]
+2025-11-13T13:20:22.3486632Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1585 kB]
+2025-11-13T13:20:22.3576943Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [299 kB]
+2025-11-13T13:20:22.3607024Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [175 kB]
+2025-11-13T13:20:22.3634997Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [15.7 kB]
+2025-11-13T13:20:22.3672028Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1498 kB]
+2025-11-13T13:20:22.3736924Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [303 kB]
+2025-11-13T13:20:22.3763741Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [378 kB]
+2025-11-13T13:20:22.3795882Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [31.4 kB]
+2025-11-13T13:20:22.3805557Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2244 kB]
+2025-11-13T13:20:22.3923990Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [509 kB]
+2025-11-13T13:20:22.4386985Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+2025-11-13T13:20:22.4395673Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+2025-11-13T13:20:22.4406169Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7140 B]
+2025-11-13T13:20:22.4416724Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [11.0 kB]
+2025-11-13T13:20:22.4423145Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [216 B]
+2025-11-13T13:20:22.4431120Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+2025-11-13T13:20:22.4597502Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1309 kB]
+2025-11-13T13:20:22.4679109Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [215 kB]
+2025-11-13T13:20:22.4712902Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+2025-11-13T13:20:22.4722277Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [9416 B]
+2025-11-13T13:20:22.4731260Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [908 kB]
+2025-11-13T13:20:22.4788487Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [204 kB]
+2025-11-13T13:20:22.4824798Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [52.2 kB]
+2025-11-13T13:20:22.4837136Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [19.4 kB]
+2025-11-13T13:20:22.5269544Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2140 kB]
+2025-11-13T13:20:22.5382028Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [486 kB]
+2025-11-13T13:20:22.5420413Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+2025-11-13T13:20:22.5426879Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [212 B]
+2025-11-13T13:20:31.0677553Z Fetched 12.9 MB in 2s (8393 kB/s)
+2025-11-13T13:20:31.8042656Z Reading package lists...
+2025-11-13T13:20:31.8362474Z Reading package lists...
+2025-11-13T13:20:32.0118738Z Building dependency tree...
+2025-11-13T13:20:32.0126104Z Reading state information...
+2025-11-13T13:20:32.1965796Z jq is already the newest version (1.7.1-3ubuntu0.24.04.1).
+2025-11-13T13:20:32.1966407Z curl is already the newest version (8.5.0-2ubuntu10.6).
+2025-11-13T13:20:32.1967119Z 0 upgraded, 0 newly installed, 0 to remove and 29 not upgraded.
+2025-11-13T13:20:32.2033120Z ##[group]Run set -euo pipefail
+2025-11-13T13:20:32.2033438Z [36;1mset -euo pipefail[0m
+2025-11-13T13:20:32.2033654Z [36;1mTAG="$TAG_EVENT"[0m
+2025-11-13T13:20:32.2033921Z [36;1mif [ -z "$TAG" ]; then TAG="$TAG_INPUT"; fi[0m
+2025-11-13T13:20:32.2034267Z [36;1mTAG=$(echo "$TAG" | tr -d '[:space:]')[0m
+2025-11-13T13:20:32.2034517Z [36;1mecho "TAG=$TAG"[0m
+2025-11-13T13:20:32.2034828Z [36;1mif ! echo "$TAG" | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' >/dev/null; then[0m
+2025-11-13T13:20:32.2035205Z [36;1m  echo "Invalid tag: '$TAG'" >&2; exit 1;[0m
+2025-11-13T13:20:32.2035457Z [36;1mfi[0m
+2025-11-13T13:20:32.2035622Z [36;1mVERSION=${TAG#v}[0m
+2025-11-13T13:20:32.2035850Z [36;1mecho "VERSION=$VERSION" >> "$GITHUB_ENV"[0m
+2025-11-13T13:20:32.2036125Z [36;1mecho "TAG_NAME=$TAG" >> "$GITHUB_ENV"[0m
+2025-11-13T13:20:32.2070490Z shell: /usr/bin/bash -e {0}
+2025-11-13T13:20:32.2070908Z env:
+2025-11-13T13:20:32.2071067Z   TAG_EVENT: 
+2025-11-13T13:20:32.2071299Z   TAG_INPUT: v0.1.5
+2025-11-13T13:20:32.2071483Z ##[endgroup]
+2025-11-13T13:20:32.2138606Z TAG=v0.1.5
+2025-11-13T13:20:32.2205164Z ##[group]Run set -euo pipefail
+2025-11-13T13:20:32.2205490Z [36;1mset -euo pipefail[0m
+2025-11-13T13:20:32.2205773Z [36;1mREPO="francescosiciliano2000-art/Earon-2"[0m
+2025-11-13T13:20:32.2206082Z [36;1mTAG="$TAG_NAME"[0m
+2025-11-13T13:20:32.2206351Z [36;1mecho "Fetching release $TAG for $REPO"[0m
+2025-11-13T13:20:32.2207223Z [36;1mJSON=$(curl -sSL -H "Accept: application/vnd.github+json" -H "Authorization: ***" "https://api.github.com/repos/$REPO/releases/tags/$TAG")[0m
+2025-11-13T13:20:32.2207894Z [36;1mecho "$JSON" | jq '.name, .tag_name, (.assets | map(.name))'[0m
+2025-11-13T13:20:32.2208192Z [36;1m[0m
+2025-11-13T13:20:32.2208364Z [36;1mVERSION="$VERSION"[0m
+2025-11-13T13:20:32.2208646Z [36;1m# Prefer exact version match; fall back to best match[0m
+2025-11-13T13:20:32.2209235Z [36;1mEXE_URL=$(echo "$JSON" | jq -r --arg v "$VERSION" '[.assets[] | select((.name|test("\\.exe$")) and (.name|contains($v))) | .browser_download_url] | first // empty')[0m
+2025-11-13T13:20:32.2209781Z [36;1mif [ -z "$EXE_URL" ]; then[0m
+2025-11-13T13:20:32.2210188Z [36;1m  EXE_URL=$(echo "$JSON" | jq -r '[.assets[] | select(.name|test("\\.exe$")) | .browser_download_url] | first // empty')[0m
+2025-11-13T13:20:32.2210777Z [36;1mfi[0m
+2025-11-13T13:20:32.2211262Z [36;1mDMG_URL=$(echo "$JSON" | jq -r --arg v "$VERSION" '[.assets[] | select((.name|test("\\.dmg$")) and (.name|contains($v))) | .browser_download_url] | first // empty')[0m
+2025-11-13T13:20:32.2211783Z [36;1mif [ -z "$DMG_URL" ]; then[0m
+2025-11-13T13:20:32.2212190Z [36;1m  DMG_URL=$(echo "$JSON" | jq -r '[.assets[] | select(.name|test("\\.dmg$")) | .browser_download_url] | first // empty')[0m
+2025-11-13T13:20:32.2212623Z [36;1mfi[0m
+2025-11-13T13:20:32.2212837Z [36;1mif [ -z "$EXE_URL" ] || [ -z "$DMG_URL" ]; then[0m
+2025-11-13T13:20:32.2213227Z [36;1m  echo "Missing asset URLs. EXE_URL='$EXE_URL' DMG_URL='$DMG_URL'" >&2; exit 1[0m
+2025-11-13T13:20:32.2213559Z [36;1mfi[0m
+2025-11-13T13:20:32.2213760Z [36;1mecho "EXE_URL=$EXE_URL" >> "$GITHUB_ENV"[0m
+2025-11-13T13:20:32.2214040Z [36;1mecho "DMG_URL=$DMG_URL" >> "$GITHUB_ENV"[0m
+2025-11-13T13:20:32.2246844Z shell: /usr/bin/bash -e {0}
+2025-11-13T13:20:32.2247079Z env:
+2025-11-13T13:20:32.2247238Z   VERSION: 0.1.5
+2025-11-13T13:20:32.2247421Z   TAG_NAME: v0.1.5
+2025-11-13T13:20:32.2247763Z   GH_TOKEN: ***
+2025-11-13T13:20:32.2247948Z ##[endgroup]
+2025-11-13T13:20:32.2298490Z Fetching release v0.1.5 for francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:32.4747672Z "v0.1.5"
+2025-11-13T13:20:32.4747975Z "v0.1.5"
+2025-11-13T13:20:32.4748233Z [
+2025-11-13T13:20:32.4748487Z   "app.so",
+2025-11-13T13:20:32.4748785Z   "app_links_plugin.dll",
+2025-11-13T13:20:32.4749164Z   "AssetManifest.bin",
+2025-11-13T13:20:32.4749523Z   "AssetManifest.json",
+2025-11-13T13:20:32.4749934Z   "auto_updater_windows_plugin.dll",
+2025-11-13T13:20:32.4750379Z   "connectivity_plus_plugin.dll",
+2025-11-13T13:20:32.4750966Z   "courtroom.json",
+2025-11-13T13:20:32.4751332Z   "CupertinoIcons.ttf",
+2025-11-13T13:20:32.4751666Z   "Earon-.0.1.5.dmg",
+2025-11-13T13:20:32.4751964Z   "Earon-0.1.1.dmg",
+2025-11-13T13:20:32.4752300Z   "Earon-Setup-0.1.5.exe",
+2025-11-13T13:20:32.4752636Z   "Earon.exe",
+2025-11-13T13:20:32.4752940Z   "flutter_windows.dll",
+2025-11-13T13:20:32.4753387Z   "FontManifest.json",
+2025-11-13T13:20:32.4753713Z   "icudtl.dat",
+2025-11-13T13:20:32.4754036Z   "ic_chrome_close.png",
+2025-11-13T13:20:32.4754411Z   "ic_chrome_maximize.png",
+2025-11-13T13:20:32.4754792Z   "ic_chrome_minimize.png",
+2025-11-13T13:20:32.4755144Z   "ic_chrome_unmaximize.png",
+2025-11-13T13:20:32.4755504Z   "ink_sparkle.frag",
+2025-11-13T13:20:32.4755808Z   "Inter-Medium.otf",
+2025-11-13T13:20:32.4756123Z   "Inter-Regular.otf",
+2025-11-13T13:20:32.4756440Z   "Inter-SemiBold.otf",
+2025-11-13T13:20:32.4756790Z   "MaterialIcons-Regular.otf",
+2025-11-13T13:20:32.4757183Z   "NativeAssetsManifest.json",
+2025-11-13T13:20:32.4757568Z   "neutral_inline.json",
+2025-11-13T13:20:32.4757902Z   "neutral_rgb.json",
+2025-11-13T13:20:32.4758507Z   "NOTICES.Z",
+2025-11-13T13:20:32.4758813Z   "pdfium.dll",
+2025-11-13T13:20:32.4759111Z   "Phosphor-Bold.ttf",
+2025-11-13T13:20:32.4759449Z   "Phosphor-Duotone.ttf",
+2025-11-13T13:20:32.4759799Z   "Phosphor-Fill.ttf",
+2025-11-13T13:20:32.4760146Z   "Phosphor-Light.ttf",
+2025-11-13T13:20:32.4760547Z   "Phosphor-Thin.ttf",
+2025-11-13T13:20:32.4761170Z   "Phosphor.ttf",
+2025-11-13T13:20:32.4761486Z   "printing_plugin.dll",
+2025-11-13T13:20:32.4761859Z   "screen_retriever_plugin.dll",
+2025-11-13T13:20:32.4762219Z   "sqlite3.dll",
+2025-11-13T13:20:32.4762508Z   "sqlite3_flutter_libs_plugin.dll",
+2025-11-13T13:20:32.4762880Z   "url_launcher_windows_plugin.dll",
+2025-11-13T13:20:32.4763307Z   "window_manager_plugin.dll",
+2025-11-13T13:20:32.4763682Z   "WinSparkle.dll"
+2025-11-13T13:20:32.4763981Z ]
+2025-11-13T13:20:32.4917498Z ##[group]Run set -euo pipefail
+2025-11-13T13:20:32.4917779Z [36;1mset -euo pipefail[0m
+2025-11-13T13:20:32.4917996Z [36;1mmkdir -p dist[0m
+2025-11-13T13:20:32.4918212Z [36;1mecho "Downloading: $DMG_URL"[0m
+2025-11-13T13:20:32.4918478Z [36;1mcurl -L "$DMG_URL" -o dist/mac.dmg[0m
+2025-11-13T13:20:32.4918734Z [36;1mecho "Downloading: $EXE_URL"[0m
+2025-11-13T13:20:32.4918978Z [36;1mcurl -L "$EXE_URL" -o dist/win.exe[0m
+2025-11-13T13:20:32.4919298Z [36;1mMAC_SHA=$(sha256sum dist/mac.dmg | awk '{print tolower($1)}')[0m
+2025-11-13T13:20:32.4919676Z [36;1mWIN_SHA=$(sha256sum dist/win.exe | awk '{print tolower($1)}')[0m
+2025-11-13T13:20:32.4920012Z [36;1mecho "MAC_SHA=$MAC_SHA" >> "$GITHUB_ENV"[0m
+2025-11-13T13:20:32.4920281Z [36;1mecho "WIN_SHA=$WIN_SHA" >> "$GITHUB_ENV"[0m
+2025-11-13T13:20:32.4952455Z shell: /usr/bin/bash -e {0}
+2025-11-13T13:20:32.4952674Z env:
+2025-11-13T13:20:32.4952827Z   VERSION: 0.1.5
+2025-11-13T13:20:32.4953002Z   TAG_NAME: v0.1.5
+2025-11-13T13:20:32.4953475Z   EXE_URL: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-Setup-0.1.5.exe
+2025-11-13T13:20:32.4954165Z   DMG_URL: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-.0.1.5.dmg
+2025-11-13T13:20:32.4954643Z ##[endgroup]
+2025-11-13T13:20:32.5078753Z Downloading: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-.0.1.5.dmg
+2025-11-13T13:20:32.5127586Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2025-11-13T13:20:32.5128855Z                                  Dload  Upload   Total   Spent    Left  Speed
+2025-11-13T13:20:32.5129502Z 
+2025-11-13T13:20:32.6305812Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2025-11-13T13:20:32.6306385Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2025-11-13T13:20:32.6935241Z 
+2025-11-13T13:20:32.7786878Z   5 20.9M    5 1134k    0     0  6269k      0  0:00:03 --:--:--  0:00:03 6269k
+2025-11-13T13:20:32.7787435Z 100 20.9M  100 20.9M    0     0  78.6M      0 --:--:-- --:--:-- --:--:--  232M
+2025-11-13T13:20:32.7819746Z Downloading: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-Setup-0.1.5.exe
+2025-11-13T13:20:32.7870397Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2025-11-13T13:20:32.7871277Z                                  Dload  Upload   Total   Spent    Left  Speed
+2025-11-13T13:20:32.7871612Z 
+2025-11-13T13:20:32.9047659Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2025-11-13T13:20:32.9048409Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2025-11-13T13:20:33.0276687Z 
+2025-11-13T13:20:33.0277387Z 100 14.7M  100 14.7M    0     0  61.3M      0 --:--:-- --:--:-- --:--:-- 61.3M
+2025-11-13T13:20:33.0672629Z ##[group]Run set -euo pipefail
+2025-11-13T13:20:33.0672964Z [36;1mset -euo pipefail[0m
+2025-11-13T13:20:33.0673193Z [36;1mVERSION="$VERSION"[0m
+2025-11-13T13:20:33.0673403Z [36;1mTAG="$TAG_NAME"[0m
+2025-11-13T13:20:33.0673605Z [36;1mEXE_URL="$EXE_URL"[0m
+2025-11-13T13:20:33.0673800Z [36;1mDMG_URL="$DMG_URL"[0m
+2025-11-13T13:20:33.0674000Z [36;1mMAC_SHA="$MAC_SHA"[0m
+2025-11-13T13:20:33.0674196Z [36;1mWIN_SHA="$WIN_SHA"[0m
+2025-11-13T13:20:33.0674437Z [36;1mPUB_DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")[0m
+2025-11-13T13:20:33.0674747Z [36;1mPATH_XML="updates/appcast.xml"[0m
+2025-11-13T13:20:33.0675074Z [36;1mif [ ! -f "$PATH_XML" ]; then echo "Missing $PATH_XML" >&2; exit 1; fi[0m
+2025-11-13T13:20:33.0675454Z [36;1mMARKER='<!-- Release più recente -->'[0m
+2025-11-13T13:20:33.0675749Z [36;1mCONTENT=$(cat "$PATH_XML")[0m
+2025-11-13T13:20:33.0676025Z [36;1mif ! echo "$CONTENT" | grep -q "$MARKER"; then[0m
+2025-11-13T13:20:33.0676473Z [36;1m  CONTENT=$(awk '1; /<language>/{print "\n<!-- Release più recente -->"}' "$PATH_XML")[0m
+2025-11-13T13:20:33.0676832Z [36;1mfi[0m
+2025-11-13T13:20:33.0677002Z [36;1m# Build items[0m
+2025-11-13T13:20:33.0678353Z [36;1mITEM_MAC="\n  <item>\n  <title>v$VERSION (macOS)</title>\n  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/$TAG</sparkle:releaseNotesLink>\n  <pubDate>$PUB_DATE</pubDate>\n  <enclosure\n    url=\"$DMG_URL\"\n    sparkle:os=\"macos\"\n    sparkle:version=\"$VERSION\"\n    sparkle:shortVersionString=\"$VERSION\"\n    type=\"application/octet-stream\"\n    sparkle:sha256=\"$MAC_SHA\" />\n</item>\n"[0m
+2025-11-13T13:20:33.0681110Z [36;1mITEM_WIN="\n  <item>\n  <title>v$VERSION (Windows)</title>\n  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/$TAG</sparkle:releaseNotesLink>\n  <pubDate>$PUB_DATE</pubDate>\n  <enclosure\n    url=\"$EXE_URL\"\n    sparkle:os=\"windows\"\n    sparkle:version=\"$VERSION\"\n    sparkle:shortVersionString=\"$VERSION\"\n    type=\"application/octet-stream\"\n    sparkle:sha256=\"$WIN_SHA\" />\n</item>\n"[0m
+2025-11-13T13:20:33.0682557Z [36;1m# Avoid duplication: if asset URL already present, skip[0m
+2025-11-13T13:20:33.0682980Z [36;1mif echo "$CONTENT" | grep -q "$EXE_URL" && echo "$CONTENT" | grep -q "$DMG_URL"; then[0m
+2025-11-13T13:20:33.0683433Z [36;1m  echo "Appcast already contains current assets; skipping edit."[0m
+2025-11-13T13:20:33.0683787Z [36;1m  echo "updated=false" >> "$GITHUB_OUTPUT"[0m
+2025-11-13T13:20:33.0684037Z [36;1melse[0m
+2025-11-13T13:20:33.0684347Z [36;1m  # Use a non-slash delimiter to avoid conflicts with '/' in XML (e.g., </title>, URLs)[0m
+2025-11-13T13:20:33.0684869Z [36;1m  CONTENT=$(echo "$CONTENT" | perl -0777 -pe "s|\Q$MARKER\E|$MARKER\n\n$ITEM_MAC\n$ITEM_WIN|s")[0m
+2025-11-13T13:20:33.0685454Z [36;1m  printf "%s" "$CONTENT" > "$PATH_XML"[0m
+2025-11-13T13:20:33.0685723Z [36;1m  echo "updated=true" >> "$GITHUB_OUTPUT"[0m
+2025-11-13T13:20:33.0685973Z [36;1mfi[0m
+2025-11-13T13:20:33.0718089Z shell: /usr/bin/bash -e {0}
+2025-11-13T13:20:33.0718302Z env:
+2025-11-13T13:20:33.0718462Z   VERSION: 0.1.5
+2025-11-13T13:20:33.0718633Z   TAG_NAME: v0.1.5
+2025-11-13T13:20:33.0719075Z   EXE_URL: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-Setup-0.1.5.exe
+2025-11-13T13:20:33.0719751Z   DMG_URL: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-.0.1.5.dmg
+2025-11-13T13:20:33.0720323Z   MAC_SHA: 1730e1ae3f91cdc6cfba9c6ea8dc4d68c7382e760a2e26d977c313d14ea5c7ad
+2025-11-13T13:20:33.0721010Z   WIN_SHA: 802716ee7d51d8d293290b4fcf29e8f56ca8a88019f1ceb7cbda8910af933f2c
+2025-11-13T13:20:33.0721348Z ##[endgroup]
+2025-11-13T13:20:33.0953407Z ##[group]Run peter-evans/create-pull-request@v5
+2025-11-13T13:20:33.0953719Z with:
+2025-11-13T13:20:33.0954050Z   token: ***
+2025-11-13T13:20:33.0954351Z   commit-message: chore(appcast): add v0.1.5 macOS/Windows entries with sha256
+2025-11-13T13:20:33.0954712Z   branch: chore/appcast-v0.1.5
+2025-11-13T13:20:33.0954963Z   title: chore(appcast): update feed for v0.1.5
+2025-11-13T13:20:33.0955514Z   body: This PR updates updates/appcast.xml with macOS and Windows entries for v0.1.5, including SHA256 hashes and release notes link.
+2025-11-13T13:20:33.0956024Z   committer: GitHub <noreply@github.com>
+2025-11-13T13:20:33.0956439Z   author: francescosiciliano2000-art <francescosiciliano2000-art@users.noreply.github.com>
+2025-11-13T13:20:33.0956830Z   signoff: false
+2025-11-13T13:20:33.0957004Z   delete-branch: false
+2025-11-13T13:20:33.0957178Z   draft: false
+2025-11-13T13:20:33.0957339Z env:
+2025-11-13T13:20:33.0957477Z   VERSION: 0.1.5
+2025-11-13T13:20:33.0957640Z   TAG_NAME: v0.1.5
+2025-11-13T13:20:33.0958076Z   EXE_URL: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-Setup-0.1.5.exe
+2025-11-13T13:20:33.0958763Z   DMG_URL: https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-.0.1.5.dmg
+2025-11-13T13:20:33.0959322Z   MAC_SHA: 1730e1ae3f91cdc6cfba9c6ea8dc4d68c7382e760a2e26d977c313d14ea5c7ad
+2025-11-13T13:20:33.0959771Z   WIN_SHA: 802716ee7d51d8d293290b4fcf29e8f56ca8a88019f1ceb7cbda8910af933f2c
+2025-11-13T13:20:33.0960091Z ##[endgroup]
+2025-11-13T13:20:33.1615727Z ##[group]Prepare git configuration
+2025-11-13T13:20:33.1631634Z [command]/usr/bin/git config --global --name-only --get-regexp safe.directory /home/runner/work/Earon-2/Earon-2
+2025-11-13T13:20:33.1691904Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Earon-2/Earon-2
+2025-11-13T13:20:33.1722167Z [command]/usr/bin/git config --local --name-only --get-regexp http.https://github.com/.extraheader ^AUTHORIZATION:
+2025-11-13T13:20:33.1744600Z http.https://github.com/.extraheader
+2025-11-13T13:20:33.1759673Z [command]/usr/bin/git config --local --get-regexp http.https://github.com/.extraheader ^AUTHORIZATION:
+2025-11-13T13:20:33.1780775Z http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-11-13T13:20:33.1789408Z [command]/usr/bin/git config --local --unset http.https://github.com/.extraheader ^AUTHORIZATION:
+2025-11-13T13:20:33.1816089Z Unset config key 'http.https://github.com/.extraheader'
+2025-11-13T13:20:33.1817066Z ##[endgroup]
+2025-11-13T13:20:33.1874658Z ##[group]Determining the base and head repositories
+2025-11-13T13:20:33.1880296Z [command]/usr/bin/git config --local --get remote.origin.url
+2025-11-13T13:20:33.1902416Z https://github.com/francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:33.1908755Z ##[endgroup]
+2025-11-13T13:20:33.1909882Z Pull request branch target repository set to francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:33.1911273Z ##[group]Configuring credential for HTTPS authentication
+2025-11-13T13:20:33.1918095Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-11-13T13:20:33.1948962Z [command]/usr/bin/git rev-parse --git-dir
+2025-11-13T13:20:33.1969332Z .git
+2025-11-13T13:20:33.1987722Z ##[endgroup]
+2025-11-13T13:20:33.1988451Z ##[group]Checking the base repository state
+2025-11-13T13:20:33.1994592Z [command]/usr/bin/git symbolic-ref HEAD --short
+2025-11-13T13:20:33.2019475Z main
+2025-11-13T13:20:33.2024494Z Working base is branch 'main'
+2025-11-13T13:20:33.2027907Z [command]/usr/bin/git remote prune origin
+2025-11-13T13:20:33.3353422Z ##[endgroup]
+2025-11-13T13:20:33.3354035Z Pull request branch to create or update set to 'chore/appcast-v0.1.5'
+2025-11-13T13:20:33.3354820Z ##[group]Configuring the committer and author
+2025-11-13T13:20:33.3356559Z Configured git committer as 'GitHub <noreply@github.com>'
+2025-11-13T13:20:33.3357463Z Configured git author as 'francescosiciliano2000-art <francescosiciliano2000-art@users.noreply.github.com>'
+2025-11-13T13:20:33.3358436Z ##[endgroup]
+2025-11-13T13:20:33.3358891Z ##[group]Create or update the pull request branch
+2025-11-13T13:20:33.3368093Z [command]/usr/bin/git symbolic-ref HEAD --short
+2025-11-13T13:20:33.3396495Z main
+2025-11-13T13:20:33.3403220Z Working base is branch 'main'
+2025-11-13T13:20:33.3413782Z [command]/usr/bin/git checkout --progress -B 005c8855-0de2-4bdc-a4cd-8b2a455dd1be HEAD --
+2025-11-13T13:20:33.5548780Z Switched to a new branch '005c8855-0de2-4bdc-a4cd-8b2a455dd1be'
+2025-11-13T13:20:33.5549453Z M	updates/appcast.xml
+2025-11-13T13:20:33.5560304Z [command]/usr/bin/git status --porcelain -unormal --
+2025-11-13T13:20:33.5642776Z  M updates/appcast.xml
+2025-11-13T13:20:33.5643137Z ?? dist/mac.dmg
+2025-11-13T13:20:33.5643416Z ?? dist/win.exe
+2025-11-13T13:20:33.5647808Z Uncommitted changes found. Adding a commit.
+2025-11-13T13:20:33.5651435Z [command]/usr/bin/git add -A
+2025-11-13T13:20:34.6167392Z [command]/usr/bin/git -c author.name=francescosiciliano2000-art -c author.email=francescosiciliano2000-art@users.noreply.github.com -c committer.name=GitHub -c committer.email=noreply@github.com commit -m chore(appcast): add v0.1.5 macOS/Windows entries with sha256
+2025-11-13T13:20:34.6248531Z [005c8855-0de2-4bdc-a4cd-8b2a455dd1be 500180b] chore(appcast): add v0.1.5 macOS/Windows entries with sha256
+2025-11-13T13:20:34.6249682Z  Author: francescosiciliano2000-art <francescosiciliano2000-art@users.noreply.github.com>
+2025-11-13T13:20:34.6250471Z  3 files changed, 30 insertions(+), 1 deletion(-)
+2025-11-13T13:20:34.6251097Z  create mode 100644 dist/mac.dmg
+2025-11-13T13:20:34.6251338Z  create mode 100644 dist/win.exe
+2025-11-13T13:20:34.6256882Z [command]/usr/bin/git stash push --include-untracked
+2025-11-13T13:20:34.6333155Z No local changes to save
+2025-11-13T13:20:34.6337681Z Resetting working base branch 'main'
+2025-11-13T13:20:34.6342540Z [command]/usr/bin/git checkout --progress main --
+2025-11-13T13:20:34.6466203Z Switched to branch 'main'
+2025-11-13T13:20:34.6469365Z Your branch is up to date with 'origin/main'.
+2025-11-13T13:20:34.6477911Z [command]/usr/bin/git reset --hard origin/main
+2025-11-13T13:20:34.6528804Z HEAD is now at 1e0d262 ci(appcast): fix Perl substitution delimiter to avoid '/t' unknown modifier error; no backticks in URLs
+2025-11-13T13:20:34.6540396Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --progress --no-recurse-submodules --unshallow --force origin chore/appcast-v0.1.5:refs/remotes/origin/chore/appcast-v0.1.5
+2025-11-13T13:20:34.7905055Z fatal: couldn't find remote ref chore/appcast-v0.1.5
+2025-11-13T13:20:34.7933785Z Pull request branch 'chore/appcast-v0.1.5' does not exist yet.
+2025-11-13T13:20:34.7938336Z [command]/usr/bin/git checkout --progress -B chore/appcast-v0.1.5 005c8855-0de2-4bdc-a4cd-8b2a455dd1be --
+2025-11-13T13:20:34.8596262Z Switched to a new branch 'chore/appcast-v0.1.5'
+2025-11-13T13:20:34.8611262Z [command]/usr/bin/git rev-list --right-only --count main...chore/appcast-v0.1.5
+2025-11-13T13:20:34.8635369Z 1
+2025-11-13T13:20:34.8639677Z Created branch 'chore/appcast-v0.1.5'
+2025-11-13T13:20:34.8644241Z [command]/usr/bin/git rev-parse HEAD
+2025-11-13T13:20:34.8664847Z 500180ba4b267fc5871d433c5f62474e599901ed
+2025-11-13T13:20:34.8672220Z [command]/usr/bin/git branch --delete --force 005c8855-0de2-4bdc-a4cd-8b2a455dd1be
+2025-11-13T13:20:34.8697059Z Deleted branch 005c8855-0de2-4bdc-a4cd-8b2a455dd1be (was 500180b).
+2025-11-13T13:20:34.8705393Z [command]/usr/bin/git checkout --progress main --
+2025-11-13T13:20:34.9785586Z Switched to branch 'main'
+2025-11-13T13:20:34.9787749Z Your branch is up to date with 'origin/main'.
+2025-11-13T13:20:34.9794768Z ##[endgroup]
+2025-11-13T13:20:34.9795577Z ##[group]Pushing pull request branch to 'origin/chore/appcast-v0.1.5'
+2025-11-13T13:20:34.9801070Z [command]/usr/bin/git push --force-with-lease origin chore/appcast-v0.1.5:refs/heads/chore/appcast-v0.1.5
+2025-11-13T13:20:38.9214596Z remote: 
+2025-11-13T13:20:38.9215387Z remote: Create a pull request for 'chore/appcast-v0.1.5' on GitHub by visiting:        
+2025-11-13T13:20:38.9217226Z remote:      https://github.com/francescosiciliano2000-art/Earon-2/pull/new/chore/appcast-v0.1.5        
+2025-11-13T13:20:38.9217858Z remote: 
+2025-11-13T13:20:38.9222001Z To https://github.com/francescosiciliano2000-art/Earon-2
+2025-11-13T13:20:38.9222770Z  * [new branch]      chore/appcast-v0.1.5 -> chore/appcast-v0.1.5
+2025-11-13T13:20:38.9270462Z ##[endgroup]
+2025-11-13T13:20:38.9271257Z ##[group]Create or update the pull request
+2025-11-13T13:20:38.9274611Z Attempting creation of pull request
+2025-11-13T13:20:39.1417639Z ##[error]GitHub Actions is not permitted to create or approve pull requests.
+2025-11-13T13:20:39.1428696Z ##[group]Restore git configuration
+2025-11-13T13:20:39.1429553Z [command]/usr/bin/git config --local --name-only --get-regexp http.https://github.com/.extraheader ^AUTHORIZATION:
+2025-11-13T13:20:39.1438418Z http.https://github.com/.extraheader
+2025-11-13T13:20:39.1446327Z [command]/usr/bin/git config --local --get-regexp http.https://github.com/.extraheader ^AUTHORIZATION:
+2025-11-13T13:20:39.1471913Z http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-11-13T13:20:39.1478786Z [command]/usr/bin/git config --local --unset http.https://github.com/.extraheader ^AUTHORIZATION:
+2025-11-13T13:20:39.1507415Z Unset config key 'http.https://github.com/.extraheader'
+2025-11-13T13:20:39.1514018Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-11-13T13:20:39.1545324Z Persisted git credentials restored
+2025-11-13T13:20:39.1550546Z [command]/usr/bin/git config --global --unset safe.directory /home/runner/work/Earon-2/Earon-2
+2025-11-13T13:20:39.1578014Z ##[endgroup]
+2025-11-13T13:20:39.2331727Z Post job cleanup.
+2025-11-13T13:20:39.3263182Z [command]/usr/bin/git version
+2025-11-13T13:20:39.3298450Z git version 2.51.2
+2025-11-13T13:20:39.3335233Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/fd0c1e91-2d03-499c-8b96-960f55d99582/.gitconfig'
+2025-11-13T13:20:39.3344065Z Temporarily overriding HOME='/home/runner/work/_temp/fd0c1e91-2d03-499c-8b96-960f55d99582' before making global git config changes
+2025-11-13T13:20:39.3345075Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-13T13:20:39.3349581Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Earon-2/Earon-2
+2025-11-13T13:20:39.3383035Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-11-13T13:20:39.3414685Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-11-13T13:20:39.3660322Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-13T13:20:39.3683488Z http.https://github.com/.extraheader
+2025-11-13T13:20:39.3697204Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-11-13T13:20:39.3730122Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-11-13T13:20:39.4078464Z Cleaning up orphan processes

@@ -55,7 +55,10 @@ Future<bool> _loadDotenvAdaptive() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
+  // Inizializza window_manager solo su desktop (macOS/Windows)
+  if (Platform.isMacOS || Platform.isWindows) {
+    await windowManager.ensureInitialized();
+  }
   debugPrint('[App] start');
 
   // Logga le eccezioni in release per evitare schermate bianche silenziose
@@ -165,7 +168,7 @@ class GestionaleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Gestionale',
+      title: 'Earon',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
