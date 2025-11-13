@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"
+<rss version="5.0"
      xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
      xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
@@ -9,6 +9,32 @@
     <language>it</language>
 
     <!-- Release più recente -->
+
+  <item>
+  <title>v0.1.5 (macOS)</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.5</sparkle:releaseNotesLink>
+  <pubDate>Thu, 13 Nov 2025 13:37:50 +0000</pubDate>
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-.0.1.5.dmg"
+    sparkle:os="macos"
+    sparkle:version="0.1.5"
+    sparkle:shortVersionString="0.1.5"
+    type="application/octet-stream"
+    sparkle:sha256="1730e1ae3f91cdc6cfba9c6ea8dc4d68c7382e760a2e26d977c313d14ea5c7ad" />
+</item>
+
+  <item>
+  <title>v0.1.5 (Windows)</title>
+  <sparkle:releaseNotesLink>https://github.com/francescosiciliano2000-art/Earon-2/releases/tag/v0.1.5</sparkle:releaseNotesLink>
+  <pubDate>Thu, 13 Nov 2025 13:37:50 +0000</pubDate>
+  <enclosure
+    url="https://github.com/francescosiciliano2000-art/Earon-2/releases/download/v0.1.5/Earon-Setup-0.1.5.exe"
+    sparkle:os="windows"
+    sparkle:version="0.1.5"
+    sparkle:shortVersionString="0.1.5"
+    type="application/octet-stream"
+    sparkle:sha256="802716ee7d51d8d293290b4fcf29e8f56ca8a88019f1ceb7cbda8910af933f2c" />
+</item>
 
   <item>
   <title>v0.1.2</title>
