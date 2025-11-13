@@ -8,10 +8,7 @@
 AppId={{E3EDC4C9-3C8B-4C8C-9F7D-EE0000E1A1E1}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-; Forza installazione a 64 bit e posizione corretta su sistemi x64
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
-; Aggiorna identificatori deprecati secondo help Inno Setup
+; Forza installazione a 64 bit e posizione corretta su sistemi x64 (identificatori aggiornati)
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DefaultDirName={commonpf64}\{#MyAppName}
