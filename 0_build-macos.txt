@@ -1,0 +1,739 @@
+﻿2025-11-13T09:58:48.3729314Z Current runner version: '2.329.0'
+2025-11-13T09:58:48.3754802Z ##[group]Runner Image Provisioner
+2025-11-13T09:58:48.3755641Z Hosted Compute Agent
+2025-11-13T09:58:48.3756199Z Version: 20251016.436
+2025-11-13T09:58:48.3756797Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+2025-11-13T09:58:48.3757448Z Build Date: 2025-10-15T20:44:12Z
+2025-11-13T09:58:48.3758018Z ##[endgroup]
+2025-11-13T09:58:48.3758511Z ##[group]Operating System
+2025-11-13T09:58:48.3759065Z Microsoft Windows Server 2025
+2025-11-13T09:58:48.3759622Z 10.0.26100
+2025-11-13T09:58:48.3760033Z Datacenter
+2025-11-13T09:58:48.3760480Z ##[endgroup]
+2025-11-13T09:58:48.3760970Z ##[group]Runner Image
+2025-11-13T09:58:48.3761708Z Image: windows-2025
+2025-11-13T09:58:48.3762176Z Version: 20251102.77.1
+2025-11-13T09:58:48.3763204Z Included Software: https://github.com/actions/runner-images/blob/win25/20251102.77/images/windows/Windows2025-Readme.md
+2025-11-13T09:58:48.3764960Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20251102.77
+2025-11-13T09:58:48.3765918Z ##[endgroup]
+2025-11-13T09:58:48.3767157Z ##[group]GITHUB_TOKEN Permissions
+2025-11-13T09:58:48.3769385Z Contents: write
+2025-11-13T09:58:48.3769880Z Metadata: read
+2025-11-13T09:58:48.3770339Z ##[endgroup]
+2025-11-13T09:58:48.3772637Z Secret source: Actions
+2025-11-13T09:58:48.3773335Z Prepare workflow directory
+2025-11-13T09:58:48.4123886Z Prepare all required actions
+2025-11-13T09:58:48.4162480Z Getting action download info
+2025-11-13T09:58:48.9045967Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+2025-11-13T09:58:49.0388763Z Download action repository 'subosito/flutter-action@v2' (SHA:fd55f4c5af5b953cc57a2be44cb082c8f6635e8e)
+2025-11-13T09:58:49.4933821Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-11-13T09:58:49.7092728Z Download action repository 'softprops/action-gh-release@v2' (SHA:5be0e66d93ac7ed76da52eca8bb058f665c3a5fe)
+2025-11-13T09:58:50.3639924Z Getting action download info
+2025-11-13T09:58:50.5817777Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2025-11-13T09:58:50.7806277Z Complete job name: build-windows
+2025-11-13T09:58:50.9377094Z ##[group]Run actions/checkout@v4
+2025-11-13T09:58:50.9378086Z with:
+2025-11-13T09:58:50.9378421Z   repository: francescosiciliano2000-art/Earon-2
+2025-11-13T09:58:50.9379053Z   token: ***
+2025-11-13T09:58:50.9379288Z   ssh-strict: true
+2025-11-13T09:58:50.9379508Z   ssh-user: git
+2025-11-13T09:58:50.9379740Z   persist-credentials: true
+2025-11-13T09:58:50.9379996Z   clean: true
+2025-11-13T09:58:50.9380235Z   sparse-checkout-cone-mode: true
+2025-11-13T09:58:50.9380508Z   fetch-depth: 1
+2025-11-13T09:58:50.9380730Z   fetch-tags: false
+2025-11-13T09:58:50.9380957Z   show-progress: true
+2025-11-13T09:58:50.9381179Z   lfs: false
+2025-11-13T09:58:50.9381385Z   submodules: false
+2025-11-13T09:58:50.9381620Z   set-safe-directory: true
+2025-11-13T09:58:50.9382111Z ##[endgroup]
+2025-11-13T09:58:51.1052377Z Syncing repository: francescosiciliano2000-art/Earon-2
+2025-11-13T09:58:51.1053859Z ##[group]Getting Git version info
+2025-11-13T09:58:51.1054309Z Working directory is 'D:\a\Earon-2\Earon-2'
+2025-11-13T09:58:51.2157487Z [command]"C:\Program Files\Git\bin\git.exe" version
+2025-11-13T09:58:51.8452295Z git version 2.51.2.windows.1
+2025-11-13T09:58:51.8510379Z ##[endgroup]
+2025-11-13T09:58:51.8532167Z Temporarily overriding HOME='D:\a\_temp\23bd94d6-f314-484e-8a5b-9bdff045ca0a' before making global git config changes
+2025-11-13T09:58:51.8533049Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-13T09:58:51.8544802Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Earon-2\Earon-2
+2025-11-13T09:58:51.9144550Z Deleting the contents of 'D:\a\Earon-2\Earon-2'
+2025-11-13T09:58:51.9151397Z ##[group]Initializing the repository
+2025-11-13T09:58:51.9161856Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\Earon-2\Earon-2
+2025-11-13T09:58:52.0054885Z Initialized empty Git repository in D:/a/Earon-2/Earon-2/.git/
+2025-11-13T09:58:52.0116307Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/francescosiciliano2000-art/Earon-2
+2025-11-13T09:58:52.0826724Z ##[endgroup]
+2025-11-13T09:58:52.0827224Z ##[group]Disabling automatic garbage collection
+2025-11-13T09:58:52.0843601Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2025-11-13T09:58:52.1202777Z ##[endgroup]
+2025-11-13T09:58:52.1203502Z ##[group]Setting up auth
+2025-11-13T09:58:52.1219197Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2025-11-13T09:58:52.1648733Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2025-11-13T09:58:53.9221312Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-13T09:58:53.9638903Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2025-11-13T09:58:54.5974502Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2025-11-13T09:58:54.6289426Z ##[endgroup]
+2025-11-13T09:58:54.6290239Z ##[group]Fetching the repository
+2025-11-13T09:58:54.6304854Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9af34009e22850217b58753b69b877ce47ad9c87:refs/remotes/origin/main
+2025-11-13T09:58:56.8009207Z From https://github.com/francescosiciliano2000-art/Earon-2
+2025-11-13T09:58:56.8010069Z  * [new ref]         9af34009e22850217b58753b69b877ce47ad9c87 -> origin/main
+2025-11-13T09:58:56.8364334Z ##[endgroup]
+2025-11-13T09:58:56.8365010Z ##[group]Determining the checkout info
+2025-11-13T09:58:56.8367997Z ##[endgroup]
+2025-11-13T09:58:56.8380661Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2025-11-13T09:58:56.8889793Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2025-11-13T09:58:56.9192385Z ##[group]Checking out the ref
+2025-11-13T09:58:56.9202679Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B main refs/remotes/origin/main
+2025-11-13T09:58:57.5922582Z branch 'main' set up to track 'origin/main'.
+2025-11-13T09:58:57.5950735Z Switched to a new branch 'main'
+2025-11-13T09:58:57.6052002Z ##[endgroup]
+2025-11-13T09:58:57.6508261Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2025-11-13T09:58:57.6773667Z 9af34009e22850217b58753b69b877ce47ad9c87
+2025-11-13T09:58:57.7258046Z ##[group]Run subosito/flutter-action@v2
+2025-11-13T09:58:57.7258399Z with:
+2025-11-13T09:58:57.7258586Z   flutter-version: 3.35.7
+2025-11-13T09:58:57.7258776Z   channel: stable
+2025-11-13T09:58:57.7258952Z   architecture: X64
+2025-11-13T09:58:57.7259134Z   cache: false
+2025-11-13T09:58:57.7259309Z   pub-cache-path: default
+2025-11-13T09:58:57.7259498Z   dry-run: false
+2025-11-13T09:58:57.7259748Z   git-source: https://github.com/flutter/flutter.git
+2025-11-13T09:58:57.7260027Z ##[endgroup]
+2025-11-13T09:58:57.7493206Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2025-11-13T09:58:57.7493610Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2025-11-13T09:58:57.7510851Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2025-11-13T09:58:57.7511235Z ##[endgroup]
+2025-11-13T09:58:57.9825415Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2025-11-13T09:58:57.9825755Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2025-11-13T09:58:57.9826030Z [36;1m  -n '3.35.7' \[0m
+2025-11-13T09:58:57.9826964Z [36;1m  -f '' \[0m
+2025-11-13T09:58:57.9827136Z [36;1m  -a 'X64' \[0m
+2025-11-13T09:58:57.9827305Z [36;1m  -k '' \[0m
+2025-11-13T09:58:57.9827461Z [36;1m  -c '' \[0m
+2025-11-13T09:58:57.9827612Z [36;1m  -l '' \[0m
+2025-11-13T09:58:57.9827777Z [36;1m  -d 'default' \[0m
+2025-11-13T09:58:57.9828091Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2025-11-13T09:58:57.9828363Z [36;1m  stable[0m
+2025-11-13T09:58:57.9843089Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2025-11-13T09:58:57.9843442Z ##[endgroup]
+2025-11-13T09:59:01.1469571Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2025-11-13T09:59:01.1469919Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2025-11-13T09:59:01.1470181Z [36;1m  -n '3.35.7' \[0m
+2025-11-13T09:59:01.1470382Z [36;1m  -a 'x64' \[0m
+2025-11-13T09:59:01.1470678Z [36;1m  -c 'C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64' \[0m
+2025-11-13T09:59:01.1471093Z [36;1m  -d 'C:\Users\runneradmin\AppData\Local\Pub\Cache' \[0m
+2025-11-13T09:59:01.1471403Z [36;1m  stable[0m
+2025-11-13T09:59:01.1484021Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2025-11-13T09:59:01.1484534Z ##[endgroup]
+2025-11-13T09:59:03.4824974Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2025-11-13T09:59:03.4825416Z                                  Dload  Upload   Total   Spent    Left  Speed
+2025-11-13T09:59:03.4825643Z 
+2025-11-13T09:59:03.7088889Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2025-11-13T09:59:04.7092471Z   0 1680M    0  968k    0     0  4258k      0  0:06:43 --:--:--  0:06:43 4265k
+2025-11-13T09:59:05.7107855Z   7 1680M    7  129M    0     0   105M      0  0:00:15  0:00:01  0:00:14  105M
+2025-11-13T09:59:06.7086435Z  15 1680M   15  267M    0     0   119M      0  0:00:14  0:00:02  0:00:12  119M
+2025-11-13T09:59:07.7085605Z  23 1680M   23  400M    0     0   124M      0  0:00:13  0:00:03  0:00:10  124M
+2025-11-13T09:59:08.7086536Z  31 1680M   31  536M    0     0   126M      0  0:00:13  0:00:04  0:00:09  126M
+2025-11-13T09:59:09.7088683Z  39 1680M   39  665M    0     0   127M      0  0:00:13  0:00:05  0:00:08  132M
+2025-11-13T09:59:10.7112171Z  47 1680M   47  800M    0     0   128M      0  0:00:13  0:00:06  0:00:07  134M
+2025-11-13T09:59:11.7086583Z  55 1680M   55  929M    0     0   128M      0  0:00:13  0:00:07  0:00:06  132M
+2025-11-13T09:59:12.7088398Z  63 1680M   63 1062M    0     0   129M      0  0:00:13  0:00:08  0:00:05  132M
+2025-11-13T09:59:13.7094539Z  70 1680M   70 1190M    0     0   129M      0  0:00:13  0:00:09  0:00:04  130M
+2025-11-13T09:59:14.7086805Z  78 1680M   78 1322M    0     0   129M      0  0:00:12  0:00:10  0:00:02  131M
+2025-11-13T09:59:15.7087632Z  86 1680M   86 1450M    0     0   129M      0  0:00:13  0:00:11  0:00:02  129M
+2025-11-13T09:59:16.4904749Z  94 1680M   94 1582M    0     0   129M      0  0:00:12  0:00:12 --:--:--  130M
+2025-11-13T09:59:16.4913796Z 100 1680M  100 1680M    0     0   129M      0  0:00:13  0:00:13 --:--:--  129M
+2025-11-13T10:00:59.8749570Z ##[group]Run flutter config --enable-windows-desktop
+2025-11-13T10:00:59.8750036Z [36;1mflutter config --enable-windows-desktop[0m
+2025-11-13T10:01:00.1056773Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:01:00.1057252Z env:
+2025-11-13T10:01:00.1057672Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:01:00.1058263Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:01:00.1058707Z ##[endgroup]
+2025-11-13T10:01:13.5328767Z Building flutter tool... 
+2025-11-13T10:01:13.5363799Z Running pub upgrade... 
+2025-11-13T10:01:13.6813332Z Resolving dependencies...
+2025-11-13T10:01:14.8137259Z Downloading packages...
+2025-11-13T10:01:25.9745692Z Got dependencies.
+2025-11-13T10:01:42.2535054Z Setting "enable-windows-desktop" value to "true".
+2025-11-13T10:01:42.2537443Z 
+2025-11-13T10:01:42.2538015Z You may need to restart any open editors for them to read new settings.
+2025-11-13T10:01:42.3942728Z ##[group]Run flutter pub get
+2025-11-13T10:01:42.3943161Z [36;1mflutter pub get[0m
+2025-11-13T10:01:42.4004963Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:01:42.4005371Z env:
+2025-11-13T10:01:42.4005713Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:01:42.4006163Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:01:42.4006605Z ##[endgroup]
+2025-11-13T10:01:43.6564249Z Resolving dependencies...
+2025-11-13T10:01:44.8334469Z Downloading packages...
+2025-11-13T10:01:58.3827955Z   adaptive_breakpoints 0.1.7 (discontinued)
+2025-11-13T10:01:58.3828616Z   characters 1.4.0 (1.4.1 available)
+2025-11-13T10:01:58.3829018Z   file_picker 10.3.3 (10.3.6 available)
+2025-11-13T10:01:58.3830405Z   fl_chart 0.68.0 (1.1.1 available)
+2025-11-13T10:01:58.3831024Z   go_router 16.3.0 (17.0.0 available)
+2025-11-13T10:01:58.3831545Z   http 1.5.0 (1.6.0 available)
+2025-11-13T10:01:58.3832170Z   material_color_utilities 0.11.1 (0.13.0 available)
+2025-11-13T10:01:58.3833081Z   meta 1.16.0 (1.17.0 available)
+2025-11-13T10:01:58.3833714Z   screen_retriever 0.1.9 (0.2.0 available)
+2025-11-13T10:01:58.3834374Z   test_api 0.7.6 (0.7.8 available)
+2025-11-13T10:01:58.3835019Z   window_manager 0.3.9 (0.5.1 available)
+2025-11-13T10:01:58.3840849Z Got dependencies!
+2025-11-13T10:01:58.3849137Z 1 package is discontinued.
+2025-11-13T10:01:58.3861599Z 10 packages have newer versions incompatible with dependency constraints.
+2025-11-13T10:01:58.3862339Z Try `flutter pub outdated` for more information.
+2025-11-13T10:01:59.1343685Z ##[group]Run $u = "***"
+2025-11-13T10:01:59.1345002Z [36;1m$u = "***"[0m
+2025-11-13T10:01:59.1346421Z [36;1m$k = "***"[0m
+2025-11-13T10:01:59.1346959Z [36;1mif ([string]::IsNullOrWhiteSpace($u)) { Write-Warning "SUPABASE_URL not set; app will show config error screen at runtime." }[0m
+2025-11-13T10:01:59.1347793Z [36;1mif ([string]::IsNullOrWhiteSpace($k)) { Write-Warning "SUPABASE_ANON_KEY not set; app will show config error screen at runtime." }[0m
+2025-11-13T10:01:59.1348416Z [36;1mWrite-Host "Continuing build regardless of secrets."[0m
+2025-11-13T10:01:59.1411589Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:01:59.1412064Z env:
+2025-11-13T10:01:59.1412503Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:01:59.1413112Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:01:59.1413471Z ##[endgroup]
+2025-11-13T10:01:59.4891227Z Continuing build regardless of secrets.
+2025-11-13T10:01:59.5786628Z ##[group]Run flutter build windows --release --dart-define=SUPABASE_URL=*** --dart-define=SUPABASE_ANON_KEY=*** --dart-define=APPCAST_URL=***
+2025-11-13T10:01:59.5789379Z [36;1mflutter build windows --release --dart-define=SUPABASE_URL=*** --dart-define=SUPABASE_ANON_KEY=*** --dart-define=APPCAST_URL=***[0m
+2025-11-13T10:01:59.5852572Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:01:59.5852954Z env:
+2025-11-13T10:01:59.5853300Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:01:59.5853781Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:01:59.5854161Z ##[endgroup]
+2025-11-13T10:02:00.7998968Z Resolving dependencies...
+2025-11-13T10:02:01.4013143Z Downloading packages...
+2025-11-13T10:02:01.6848652Z   adaptive_breakpoints 0.1.7 (discontinued)
+2025-11-13T10:02:01.6849279Z   characters 1.4.0 (1.4.1 available)
+2025-11-13T10:02:01.6849731Z   file_picker 10.3.3 (10.3.6 available)
+2025-11-13T10:02:01.6850375Z   fl_chart 0.68.0 (1.1.1 available)
+2025-11-13T10:02:01.6850803Z   go_router 16.3.0 (17.0.0 available)
+2025-11-13T10:02:01.6851345Z   http 1.5.0 (1.6.0 available)
+2025-11-13T10:02:01.6851881Z   material_color_utilities 0.11.1 (0.13.0 available)
+2025-11-13T10:02:01.6852401Z   meta 1.16.0 (1.17.0 available)
+2025-11-13T10:02:01.6853222Z   screen_retriever 0.1.9 (0.2.0 available)
+2025-11-13T10:02:01.6853757Z   test_api 0.7.6 (0.7.8 available)
+2025-11-13T10:02:01.6854257Z   window_manager 0.3.9 (0.5.1 available)
+2025-11-13T10:02:01.6871654Z Got dependencies!
+2025-11-13T10:02:01.6881453Z 1 package is discontinued.
+2025-11-13T10:02:01.6892027Z 10 packages have newer versions incompatible with dependency constraints.
+2025-11-13T10:02:01.6892836Z Try `flutter pub outdated` for more information.
+2025-11-13T10:04:27.4692876Z Building Windows application...                                   144.6s
+2025-11-13T10:04:27.4726138Z √ Built build\windows\x64\runner\Release\gestionale_desktop.exe
+2025-11-13T10:04:27.5984107Z ##[group]Run $dir = "build/windows/x64/runner/Release"
+2025-11-13T10:04:27.5984598Z [36;1m$dir = "build/windows/x64/runner/Release"[0m
+2025-11-13T10:04:27.5985017Z [36;1mif (!(Test-Path $dir)) { $dir = "build/windows/runner/Release" }[0m
+2025-11-13T10:04:27.5985370Z [36;1m$target = $null[0m
+2025-11-13T10:04:27.5985825Z [36;1mif (Test-Path "$dir/gestionale_desktop.exe") { $target = "$dir/gestionale_desktop.exe" }[0m
+2025-11-13T10:04:27.5986374Z [36;1melseif (Test-Path "$dir/runner.exe") { $target = "$dir/runner.exe" }[0m
+2025-11-13T10:04:27.5987012Z [36;1melse {[0m
+2025-11-13T10:04:27.5987647Z [36;1m  $exe = Get-ChildItem -Path $dir -Filter *.exe | Where-Object { $_.Name -notmatch '^unins' } | Select-Object -First 1[0m
+2025-11-13T10:04:27.5988271Z [36;1m  if ($null -eq $exe) { Write-Error "App EXE not found in $dir"; exit 1 }[0m
+2025-11-13T10:04:27.5988661Z [36;1m  $target = $exe.FullName[0m
+2025-11-13T10:04:27.5988926Z [36;1m}[0m
+2025-11-13T10:04:27.5989276Z [36;1mRename-Item -Path $target -NewName "Earon.exe"[0m
+2025-11-13T10:04:27.6048277Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:04:27.6048673Z env:
+2025-11-13T10:04:27.6048989Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:04:27.6049433Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:04:27.6049781Z ##[endgroup]
+2025-11-13T10:04:27.9701053Z ##[group]Run $dir = "build/windows/x64/runner/Release"
+2025-11-13T10:04:27.9701589Z [36;1m$dir = "build/windows/x64/runner/Release"[0m
+2025-11-13T10:04:27.9702026Z [36;1mif (!(Test-Path $dir)) { $dir = "build/windows/runner/Release" }[0m
+2025-11-13T10:04:27.9702473Z [36;1mWrite-Host "Listing $dir"[0m
+2025-11-13T10:04:27.9702902Z [36;1mGet-ChildItem -Path $dir -Recurse | Format-Table -AutoSize[0m
+2025-11-13T10:04:27.9703537Z [36;1mif (!(Test-Path "$dir/Earon.exe")) { Write-Error "Earon.exe not present in $dir after rename"; exit 1 }[0m
+2025-11-13T10:04:27.9771496Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:04:27.9772034Z env:
+2025-11-13T10:04:27.9772366Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:04:27.9772799Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:04:27.9773127Z ##[endgroup]
+2025-11-13T10:04:28.2955072Z Listing build/windows/x64/runner/Release
+2025-11-13T10:04:28.3183042Z 
+2025-11-13T10:04:28.4396370Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release
+2025-11-13T10:04:28.4396907Z 
+2025-11-13T10:04:28.4398845Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3m  Length[0m[32;1m Name[0m
+2025-11-13T10:04:28.4399810Z [32;1m---- [0m [32;1m      -------------[0m [32;1m  ------[0m [32;1m----[0m
+2025-11-13T10:04:28.4400779Z d---- 11/13/2025 10:04 AM          [44;1mdata[0m
+2025-11-13T10:04:28.4401360Z -a--- 11/13/2025 10:03 AM   139776 app_links_plugin.dll
+2025-11-13T10:04:28.4402473Z -a--- 11/13/2025 10:03 AM    96768 auto_updater_windows_plugin.dll
+2025-11-13T10:04:28.4403234Z -a--- 11/13/2025 10:03 AM    99328 connectivity_plus_plugin.dll
+2025-11-13T10:04:28.4404120Z -a--- 11/13/2025 10:04 AM    93696 [32;1mEaron.exe[0m
+2025-11-13T10:04:28.4404943Z -a--- 10/23/2025  8:46 AM 19036160 flutter_windows.dll
+2025-11-13T10:04:28.4405502Z -a--- 11/13/2025 10:02 AM  4749824 pdfium.dll
+2025-11-13T10:04:28.4407567Z -a--- 11/13/2025 10:03 AM   138752 printing_plugin.dll
+2025-11-13T10:04:28.4408225Z -a--- 11/13/2025 10:03 AM   102400 screen_retriever_plugin.dll
+2025-11-13T10:04:28.4408830Z -a--- 11/13/2025 10:04 AM     9728 sqlite3_flutter_libs_plugin.dll
+2025-11-13T10:04:28.4409421Z -a--- 11/13/2025 10:04 AM  1472000 sqlite3.dll
+2025-11-13T10:04:28.4409856Z -a--- 11/13/2025 10:04 AM    98304 url_launcher_windows_plugin.dll
+2025-11-13T10:04:28.4410363Z -a--- 11/13/2025 10:04 AM   130560 window_manager_plugin.dll
+2025-11-13T10:04:28.4410828Z -a--- 11/13/2025 10:01 AM  2797056 WinSparkle.dll
+2025-11-13T10:04:28.4411011Z 
+2025-11-13T10:04:28.4427735Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data
+2025-11-13T10:04:28.4428137Z 
+2025-11-13T10:04:28.4429046Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3m Length[0m[32;1m Name[0m
+2025-11-13T10:04:28.4429887Z [32;1m---- [0m [32;1m      -------------[0m [32;1m ------[0m [32;1m----[0m
+2025-11-13T10:04:28.4430413Z d---- 11/13/2025 10:04 AM         [44;1mflutter_assets[0m
+2025-11-13T10:04:28.4430861Z -a--- 11/13/2025 10:03 AM 8274864 app.so
+2025-11-13T10:04:28.4431279Z -a--- 10/23/2025  8:45 AM  778864 icudtl.dat
+2025-11-13T10:04:28.4431551Z 
+2025-11-13T10:04:28.4454274Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets
+2025-11-13T10:04:28.4454673Z 
+2025-11-13T10:04:28.4455086Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4455850Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4456340Z d---- 11/13/2025 10:04 AM        [44;1massets[0m
+2025-11-13T10:04:28.4457110Z d---- 11/13/2025 10:04 AM        [44;1mfonts[0m
+2025-11-13T10:04:28.4458066Z d---- 11/13/2025 10:04 AM        [44;1mlib[0m
+2025-11-13T10:04:28.4458908Z d---- 11/13/2025 10:04 AM        [44;1mpackages[0m
+2025-11-13T10:04:28.4459644Z d---- 11/13/2025 10:04 AM        [44;1mshaders[0m
+2025-11-13T10:04:28.4463716Z -a--- 11/13/2025 10:03 AM   1877 AssetManifest.bin
+2025-11-13T10:04:28.4464535Z -a--- 11/13/2025 10:03 AM   1757 AssetManifest.json
+2025-11-13T10:04:28.4465345Z -a--- 11/13/2025 10:03 AM   1275 FontManifest.json
+2025-11-13T10:04:28.4465820Z -a--- 11/13/2025 10:02 AM     45 NativeAssetsManifest.json
+2025-11-13T10:04:28.4466126Z -a--- 11/13/2025 10:03 AM 102329 NOTICES.Z
+2025-11-13T10:04:28.4466310Z 
+2025-11-13T10:04:28.4472236Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\assets
+2025-11-13T10:04:28.4472773Z 
+2025-11-13T10:04:28.4473204Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4473818Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4474316Z d---- 11/13/2025 10:04 AM        [44;1mfonts[0m
+2025-11-13T10:04:28.4474504Z 
+2025-11-13T10:04:28.4481136Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\assets\fonts
+2025-11-13T10:04:28.4481716Z 
+2025-11-13T10:04:28.4482051Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4482759Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4483122Z d---- 11/13/2025 10:04 AM        [44;1mInter[0m
+2025-11-13T10:04:28.4483363Z 
+2025-11-13T10:04:28.4493779Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\assets\fonts\Inter
+2025-11-13T10:04:28.4494369Z 
+2025-11-13T10:04:28.4494727Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4495172Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4495664Z -a--- 11/13/2025  9:58 AM 269692 Inter-Medium.otf
+2025-11-13T10:04:28.4496106Z -a--- 11/13/2025  9:58 AM 258992 Inter-Regular.otf
+2025-11-13T10:04:28.4496861Z -a--- 11/13/2025  9:58 AM 270760 Inter-SemiBold.otf
+2025-11-13T10:04:28.4497177Z 
+2025-11-13T10:04:28.4504014Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\fonts
+2025-11-13T10:04:28.4504509Z 
+2025-11-13T10:04:28.4505767Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3m Length[0m[32;1m Name[0m
+2025-11-13T10:04:28.4506275Z [32;1m---- [0m [32;1m      -------------[0m [32;1m ------[0m [32;1m----[0m
+2025-11-13T10:04:28.4506825Z -a--- 10/23/2025  8:45 AM 1645184 MaterialIcons-Regular.otf
+2025-11-13T10:04:28.4507544Z 
+2025-11-13T10:04:28.4515333Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\lib
+2025-11-13T10:04:28.4515911Z 
+2025-11-13T10:04:28.4516836Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4517898Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4518338Z d---- 11/13/2025 10:04 AM        [44;1mdesign%20system[0m
+2025-11-13T10:04:28.4518706Z d---- 11/13/2025 10:04 AM        [44;1mfeatures[0m
+2025-11-13T10:04:28.4519059Z 
+2025-11-13T10:04:28.4526162Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\lib\design%20system
+2025-11-13T10:04:28.4526865Z 
+2025-11-13T10:04:28.4527639Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4528422Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4528946Z d---- 11/13/2025 10:04 AM        [44;1mtheme[0m
+2025-11-13T10:04:28.4529814Z 
+2025-11-13T10:04:28.4536750Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\lib\design%20system\theme
+2025-11-13T10:04:28.4537610Z 
+2025-11-13T10:04:28.4538286Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4539037Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4540401Z d---- 11/13/2025 10:04 AM        [44;1mcolors[0m
+2025-11-13T10:04:28.4540916Z 
+2025-11-13T10:04:28.4550180Z     Directory: 
+2025-11-13T10:04:28.4551204Z D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\lib\design%20system\theme\colors
+2025-11-13T10:04:28.4551689Z 
+2025-11-13T10:04:28.4552604Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4553379Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4553777Z -a--- 11/13/2025  9:58 AM   1497 neutral_inline.json
+2025-11-13T10:04:28.4554084Z -a--- 11/13/2025  9:58 AM    430 neutral_rgb.json
+2025-11-13T10:04:28.4554653Z 
+2025-11-13T10:04:28.4560731Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\lib\features
+2025-11-13T10:04:28.4561189Z 
+2025-11-13T10:04:28.4562283Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4563290Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4564145Z -a--- 11/13/2025  9:58 AM  16324 courtroom.json
+2025-11-13T10:04:28.4564465Z 
+2025-11-13T10:04:28.4575756Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages
+2025-11-13T10:04:28.4576502Z 
+2025-11-13T10:04:28.4578090Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4579343Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4580512Z d---- 11/13/2025 10:04 AM        [44;1mcupertino_icons[0m
+2025-11-13T10:04:28.4581583Z d---- 11/13/2025 10:04 AM        [44;1mphosphor_flutter[0m
+2025-11-13T10:04:28.4582701Z d---- 11/13/2025 10:04 AM        [44;1mwindow_manager[0m
+2025-11-13T10:04:28.4583408Z 
+2025-11-13T10:04:28.4587016Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\cupertino_icons
+2025-11-13T10:04:28.4588211Z 
+2025-11-13T10:04:28.4590366Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4591455Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4591840Z d---- 11/13/2025 10:04 AM        [44;1massets[0m
+2025-11-13T10:04:28.4592016Z 
+2025-11-13T10:04:28.4596271Z     Directory: 
+2025-11-13T10:04:28.4597535Z D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\cupertino_icons\assets
+2025-11-13T10:04:28.4598614Z 
+2025-11-13T10:04:28.4599040Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4600026Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4600557Z -a--- 11/13/2025 10:01 AM 257628 CupertinoIcons.ttf
+2025-11-13T10:04:28.4600760Z 
+2025-11-13T10:04:28.4607324Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\phosphor_flutter
+2025-11-13T10:04:28.4607889Z 
+2025-11-13T10:04:28.4609158Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4610056Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4611246Z d---- 11/13/2025 10:04 AM        [44;1mlib[0m
+2025-11-13T10:04:28.4611599Z 
+2025-11-13T10:04:28.4618681Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\phosphor_flutter\lib
+2025-11-13T10:04:28.4619392Z 
+2025-11-13T10:04:28.4620182Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4620693Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4621973Z d---- 11/13/2025 10:04 AM        [44;1mfonts[0m
+2025-11-13T10:04:28.4622178Z 
+2025-11-13T10:04:28.4637040Z     Directory: 
+2025-11-13T10:04:28.4638128Z D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\phosphor_flutter\lib\fonts
+2025-11-13T10:04:28.4638795Z 
+2025-11-13T10:04:28.4639250Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4639844Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4640192Z -a--- 11/13/2025 10:01 AM 495308 Phosphor-Bold.ttf
+2025-11-13T10:04:28.4641295Z -a--- 11/13/2025 10:01 AM 567808 Phosphor-Duotone.ttf
+2025-11-13T10:04:28.4641655Z -a--- 11/13/2025 10:01 AM 449252 Phosphor-Fill.ttf
+2025-11-13T10:04:28.4642821Z -a--- 11/13/2025 10:01 AM 536628 Phosphor-Light.ttf
+2025-11-13T10:04:28.4643891Z -a--- 11/13/2025 10:01 AM 535152 Phosphor-Thin.ttf
+2025-11-13T10:04:28.4644342Z -a--- 11/13/2025 10:01 AM 488636 Phosphor.ttf
+2025-11-13T10:04:28.4645208Z 
+2025-11-13T10:04:28.4651821Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\window_manager
+2025-11-13T10:04:28.4652641Z 
+2025-11-13T10:04:28.4653256Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4654155Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4655144Z d---- 11/13/2025 10:04 AM        [44;1mimages[0m
+2025-11-13T10:04:28.4655877Z 
+2025-11-13T10:04:28.4668246Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\packages\window_manager\images
+2025-11-13T10:04:28.4669296Z 
+2025-11-13T10:04:28.4669679Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4670306Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4670785Z -a--- 11/13/2025 10:01 AM    298 ic_chrome_close.png
+2025-11-13T10:04:28.4671868Z -a--- 11/13/2025 10:01 AM    271 ic_chrome_maximize.png
+2025-11-13T10:04:28.4672763Z -a--- 11/13/2025 10:01 AM    166 ic_chrome_minimize.png
+2025-11-13T10:04:28.4673172Z -a--- 11/13/2025 10:01 AM    366 ic_chrome_unmaximize.png
+2025-11-13T10:04:28.4673563Z 
+2025-11-13T10:04:28.4679436Z     Directory: D:\a\Earon-2\Earon-2\build\windows\x64\runner\Release\data\flutter_assets\shaders
+2025-11-13T10:04:28.4679797Z 
+2025-11-13T10:04:28.4681350Z [32;1mMode [0m[32;1m       LastWriteTime[0m [32;1;3mLength[0m[32;1m Name[0m
+2025-11-13T10:04:28.4681862Z [32;1m---- [0m [32;1m      -------------[0m [32;1m------[0m [32;1m----[0m
+2025-11-13T10:04:28.4683160Z -a--- 11/13/2025 10:03 AM  21320 ink_sparkle.frag
+2025-11-13T10:04:28.4684517Z 
+2025-11-13T10:04:28.5363499Z ##[group]Run choco install innosetup -y
+2025-11-13T10:04:28.5363857Z [36;1mchoco install innosetup -y[0m
+2025-11-13T10:04:28.5423475Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:04:28.5423792Z env:
+2025-11-13T10:04:28.5424046Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:04:28.5424449Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:04:28.5424759Z ##[endgroup]
+2025-11-13T10:04:30.9888310Z Chocolatey v2.5.1
+2025-11-13T10:04:31.2752311Z Installing the following packages:
+2025-11-13T10:04:31.2759238Z innosetup
+2025-11-13T10:04:31.2764612Z By installing, you accept licenses for the packages.
+2025-11-13T10:04:33.8107050Z InnoSetup v6.5.4 already installed.
+2025-11-13T10:04:33.8107845Z  Use --force to reinstall, specify a version to install, or try upgrade.
+2025-11-13T10:04:33.8194267Z 
+2025-11-13T10:04:33.8194536Z Chocolatey installed 0/1 packages. 
+2025-11-13T10:04:33.8195205Z  See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+2025-11-13T10:04:33.8199367Z 
+2025-11-13T10:04:33.8204059Z Warnings:
+2025-11-13T10:04:33.8212360Z  - InnoSetup - InnoSetup v6.5.4 already installed.
+2025-11-13T10:04:33.8212972Z  Use --force to reinstall, specify a version to install, or try upgrade.
+2025-11-13T10:04:33.9636667Z ##[group]Run $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+2025-11-13T10:04:33.9637673Z [36;1m$iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"[0m
+2025-11-13T10:04:33.9638020Z [36;1m& "$iscc" "installer/windows/inno.iss"[0m
+2025-11-13T10:04:33.9698547Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:04:33.9698857Z env:
+2025-11-13T10:04:33.9699112Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:04:33.9699490Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:04:33.9699759Z ##[endgroup]
+2025-11-13T10:04:34.3485878Z Inno Setup 6 Command-Line Compiler
+2025-11-13T10:04:34.3486509Z Copyright (C) 1997-2025 Jordan Russell. All rights reserved.
+2025-11-13T10:04:34.3487254Z Portions Copyright (C) 2000-2025 Martijn Laan. All rights reserved.
+2025-11-13T10:04:34.3488711Z Portions Copyright (C) 2001-2004 Alex Yackimoff. All rights reserved.
+2025-11-13T10:04:34.3489476Z https://www.innosetup.com
+2025-11-13T10:04:34.3489779Z 
+2025-11-13T10:04:34.5246078Z Compiler engine version: Inno Setup 6.5.4
+2025-11-13T10:04:34.5246620Z Non-commercial use only
+2025-11-13T10:04:34.5247093Z 
+2025-11-13T10:04:34.6457971Z Preprocessing
+2025-11-13T10:04:34.6460649Z    Reading file: C:\Program Files (x86)\Inno Setup 6\ISPPBuiltins.iss
+2025-11-13T10:04:34.6678379Z Parsing [Setup] section, line 8
+2025-11-13T10:04:34.6679158Z Parsing [Setup] section, line 9
+2025-11-13T10:04:34.6679607Z Parsing [Setup] section, line 10
+2025-11-13T10:04:34.6680077Z Parsing [Setup] section, line 12
+2025-11-13T10:04:34.6680443Z Parsing [Setup] section, line 13
+2025-11-13T10:04:34.6680761Z Parsing [Setup] section, line 14
+2025-11-13T10:04:34.6681060Z Parsing [Setup] section, line 15
+2025-11-13T10:04:34.6681347Z Parsing [Setup] section, line 16
+2025-11-13T10:04:34.6681640Z Parsing [Setup] section, line 17
+2025-11-13T10:04:34.6681947Z Parsing [Setup] section, line 18
+2025-11-13T10:04:34.6682279Z Parsing [Setup] section, line 19
+2025-11-13T10:04:34.6684237Z Parsing [Setup] section, line 20
+2025-11-13T10:04:34.6684563Z Parsing [Setup] section, line 21
+2025-11-13T10:04:34.6684863Z Parsing [Setup] section, line 22
+2025-11-13T10:04:34.6685169Z Parsing [Setup] section, line 24
+2025-11-13T10:04:34.6685625Z Creating output directory: D:\a\Earon-2\Earon-2\installer\windows\output
+2025-11-13T10:04:34.6686128Z Reading file (WizardImageFile)
+2025-11-13T10:04:34.6686443Z Reading file (WizardSmallImageFile)
+2025-11-13T10:04:34.6686791Z Preparing Setup program executable
+2025-11-13T10:04:35.0436379Z    Verification successful
+2025-11-13T10:04:35.0471751Z    Updating version info (Setup.e32)
+2025-11-13T10:04:35.0484509Z Determining language code pages
+2025-11-13T10:04:35.0484986Z Parsing [Languages] section, line 27
+2025-11-13T10:04:35.0485439Z    Reading file: C:\Program Files (x86)\Inno Setup 6\Default.isl
+2025-11-13T10:04:35.0548000Z Parsing [Languages] section, line 28
+2025-11-13T10:04:35.0548589Z    Reading file: C:\Program Files (x86)\Inno Setup 6\Languages\Italian.isl
+2025-11-13T10:04:35.0626512Z    Messages in script file
+2025-11-13T10:04:35.0626980Z Reading default messages from Default.isl
+2025-11-13T10:04:35.0633018Z Parsing [Languages] section, line 27
+2025-11-13T10:04:35.0633633Z    Reading file: C:\Program Files (x86)\Inno Setup 6\Default.isl
+2025-11-13T10:04:35.0635909Z Parsing [Languages] section, line 28
+2025-11-13T10:04:35.0636429Z    Reading file: C:\Program Files (x86)\Inno Setup 6\Languages\Italian.isl
+2025-11-13T10:04:35.0642125Z Parsing [LangOptions], [Messages], and [CustomMessages] sections
+2025-11-13T10:04:35.0642659Z    Messages in script file
+2025-11-13T10:04:35.0644180Z Reading [Code] section
+2025-11-13T10:04:35.0644573Z Parsing [Tasks] section, line 31
+2025-11-13T10:04:35.0645364Z Parsing [Icons] section, line 45
+2025-11-13T10:04:35.0645790Z Parsing [Icons] section, line 46
+2025-11-13T10:04:35.0646145Z Parsing [Run] section, line 50
+2025-11-13T10:04:35.0648749Z Parsing [Files] section, line 35
+2025-11-13T10:04:35.0660102Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\app_links_plugin.dll
+2025-11-13T10:04:35.0662389Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\auto_updater_windows_plugin.dll
+2025-11-13T10:04:35.0664340Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\connectivity_plus_plugin.dll
+2025-11-13T10:04:35.0666217Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\Earon.exe
+2025-11-13T10:04:35.0669082Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\flutter_windows.dll
+2025-11-13T10:04:35.0680756Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\pdfium.dll
+2025-11-13T10:04:35.0687882Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\printing_plugin.dll
+2025-11-13T10:04:35.0689743Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\screen_retriever_plugin.dll
+2025-11-13T10:04:35.0691765Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\sqlite3.dll
+2025-11-13T10:04:35.0694197Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\sqlite3_flutter_libs_plugin.dll
+2025-11-13T10:04:35.0695955Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\url_launcher_windows_plugin.dll
+2025-11-13T10:04:35.0697639Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\window_manager_plugin.dll
+2025-11-13T10:04:35.0699333Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\WinSparkle.dll
+2025-11-13T10:04:35.0705305Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\app.so
+2025-11-13T10:04:35.0707988Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\icudtl.dat
+2025-11-13T10:04:35.0709942Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\AssetManifest.bin
+2025-11-13T10:04:35.0712572Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\AssetManifest.json
+2025-11-13T10:04:35.0714443Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\FontManifest.json
+2025-11-13T10:04:35.0716320Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\NativeAssetsManifest.json
+2025-11-13T10:04:35.0718761Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\NOTICES.Z
+2025-11-13T10:04:35.0720377Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\assets\fonts\Inter\Inter-Medium.otf
+2025-11-13T10:04:35.0722605Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\assets\fonts\Inter\Inter-Regular.otf
+2025-11-13T10:04:35.0724586Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\assets\fonts\Inter\Inter-SemiBold.otf
+2025-11-13T10:04:35.0727226Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\fonts\MaterialIcons-Regular.otf
+2025-11-13T10:04:35.0728759Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\lib\design%20system\theme\colors\neutral_inline.json
+2025-11-13T10:04:35.0730453Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\lib\design%20system\theme\colors\neutral_rgb.json
+2025-11-13T10:04:35.0732894Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\lib\features\courtroom.json
+2025-11-13T10:04:35.0734927Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\cupertino_icons\assets\CupertinoIcons.ttf
+2025-11-13T10:04:35.0736957Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Bold.ttf
+2025-11-13T10:04:35.0739350Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Duotone.ttf
+2025-11-13T10:04:35.0741318Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Fill.ttf
+2025-11-13T10:04:35.0743610Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Light.ttf
+2025-11-13T10:04:35.0745568Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Thin.ttf
+2025-11-13T10:04:35.0747582Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor.ttf
+2025-11-13T10:04:35.0750389Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_close.png
+2025-11-13T10:04:35.0752112Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_maximize.png
+2025-11-13T10:04:35.0753974Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_minimize.png
+2025-11-13T10:04:35.0755593Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_unmaximize.png
+2025-11-13T10:04:35.0757287Z    Reading version info: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\shaders\ink_sparkle.frag
+2025-11-13T10:04:35.0794672Z Creating setup files
+2025-11-13T10:04:35.1706058Z    Verification successful
+2025-11-13T10:04:35.1714771Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\app_links_plugin.dll
+2025-11-13T10:04:35.1734980Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\auto_updater_windows_plugin.dll
+2025-11-13T10:04:35.1746673Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\connectivity_plus_plugin.dll
+2025-11-13T10:04:35.1757466Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\Earon.exe   (1.0.0.1)
+2025-11-13T10:04:35.1768077Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\flutter_windows.dll
+2025-11-13T10:04:38.5575139Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\pdfium.dll   (106.0.5200.0)
+2025-11-13T10:04:39.2587062Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\printing_plugin.dll
+2025-11-13T10:04:39.2603734Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\screen_retriever_plugin.dll
+2025-11-13T10:04:39.2615612Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\sqlite3.dll
+2025-11-13T10:04:40.0033362Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\sqlite3_flutter_libs_plugin.dll
+2025-11-13T10:04:40.0035423Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\url_launcher_windows_plugin.dll
+2025-11-13T10:04:40.0050684Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\window_manager_plugin.dll
+2025-11-13T10:04:40.0069948Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\WinSparkle.dll   (0.8.1.0)
+2025-11-13T10:04:40.0421127Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\app.so
+2025-11-13T10:04:41.8250821Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\icudtl.dat
+2025-11-13T10:04:41.8326864Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\AssetManifest.bin
+2025-11-13T10:04:41.8328509Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\AssetManifest.json
+2025-11-13T10:04:41.8330131Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\FontManifest.json
+2025-11-13T10:04:41.8331676Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\NativeAssetsManifest.json
+2025-11-13T10:04:41.8333344Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\NOTICES.Z
+2025-11-13T10:04:41.8342753Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\assets\fonts\Inter\Inter-Medium.otf
+2025-11-13T10:04:41.8369718Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\assets\fonts\Inter\Inter-Regular.otf
+2025-11-13T10:04:41.8395281Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\assets\fonts\Inter\Inter-SemiBold.otf
+2025-11-13T10:04:41.8421814Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\fonts\MaterialIcons-Regular.otf
+2025-11-13T10:04:41.8600313Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\lib\design%20system\theme\colors\neutral_inline.json
+2025-11-13T10:04:41.8602404Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\lib\design%20system\theme\colors\neutral_rgb.json
+2025-11-13T10:04:41.8604400Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\lib\features\courtroom.json
+2025-11-13T10:04:41.8606265Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\cupertino_icons\assets\CupertinoIcons.ttf
+2025-11-13T10:04:42.6822747Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Bold.ttf
+2025-11-13T10:04:42.6892927Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Duotone.ttf
+2025-11-13T10:04:42.6950487Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Fill.ttf
+2025-11-13T10:04:42.6996139Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Light.ttf
+2025-11-13T10:04:42.7050435Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor-Thin.ttf
+2025-11-13T10:04:42.7103400Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\phosphor_flutter\lib\fonts\Phosphor.ttf
+2025-11-13T10:04:42.7152154Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_close.png
+2025-11-13T10:04:42.7154171Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_maximize.png
+2025-11-13T10:04:42.7155950Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_minimize.png
+2025-11-13T10:04:42.7156950Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\packages\window_manager\images\ic_chrome_unmaximize.png
+2025-11-13T10:04:42.7157825Z    Compressing: D:\a\Earon-2\Earon-2\installer\windows\..\\..\\build\\windows\\x64\\runner\\Release\\data\flutter_assets\shaders\ink_sparkle.frag
+2025-11-13T10:04:43.3989734Z    Compressing Setup program executable
+2025-11-13T10:04:43.8536771Z    Updating version info (Setup.exe)
+2025-11-13T10:04:43.8537132Z    Updating manifest (Setup.exe)
+2025-11-13T10:04:43.8538345Z 
+2025-11-13T10:04:43.8540012Z Warning: Architecture identifier "x64" is deprecated. Substituting "x64os", but note that "x64compatible" is preferred in most cases. See the "Architecture Identifiers" topic in help file for more information.
+2025-11-13T10:04:43.8542034Z Warning: Constant "pf64" has been renamed. Use "commonpf64" instead or consider using its "auto" form.
+2025-11-13T10:04:43.8542674Z 
+2025-11-13T10:04:43.8543114Z Successful compile (9.328 sec). Resulting Setup program filename is:
+2025-11-13T10:04:43.8543759Z D:\a\Earon-2\Earon-2\installer\windows\output\Earon-Setup-0.1.2.exe
+2025-11-13T10:04:43.9816513Z ##[group]Run choco install innounp -y
+2025-11-13T10:04:43.9816876Z [36;1mchoco install innounp -y[0m
+2025-11-13T10:04:43.9817318Z [36;1m$installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1[0m
+2025-11-13T10:04:43.9817874Z [36;1mif ($null -eq $installer) { Write-Error "Installer not found"; exit 1 }[0m
+2025-11-13T10:04:43.9818229Z [36;1minnounp -l $installer.FullName[0m
+2025-11-13T10:04:43.9875375Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-13T10:04:43.9875675Z env:
+2025-11-13T10:04:43.9875922Z   FLUTTER_ROOT: C:\hostedtoolcache\windows\flutter\stable-3.35.7-x64
+2025-11-13T10:04:43.9876278Z   PUB_CACHE: C:\Users\runneradmin\AppData\Local\Pub\Cache
+2025-11-13T10:04:43.9876545Z ##[endgroup]
+2025-11-13T10:04:44.9197858Z Chocolatey v2.5.1
+2025-11-13T10:04:45.0674150Z Installing the following packages:
+2025-11-13T10:04:45.0680696Z innounp
+2025-11-13T10:04:45.0686417Z By installing, you accept licenses for the packages.
+2025-11-13T10:04:46.1516562Z Downloading package from source 'https://community.chocolatey.org/api/v2/'
+2025-11-13T10:04:46.4310065Z 
+2025-11-13T10:04:46.4311370Z Progress: Downloading innounp 0.50... %
+2025-11-13T10:04:46.4311925Z Progress: Downloading innounp 0.50... 1%
+2025-11-13T10:04:46.4312764Z Progress: Downloading innounp 0.50... 1%
+2025-11-13T10:04:46.4314987Z Progress: Downloading innounp 0.50... 2%
+2025-11-13T10:04:46.4315496Z Progress: Downloading innounp 0.50... 2%
+2025-11-13T10:04:46.4315967Z Progress: Downloading innounp 0.50... 3%
+2025-11-13T10:04:46.4316833Z Progress: Downloading innounp 0.50... 3%
+2025-11-13T10:04:46.4317570Z Progress: Downloading innounp 0.50... 4%
+2025-11-13T10:04:46.4318031Z Progress: Downloading innounp 0.50... 4%
+2025-11-13T10:04:46.4318466Z Progress: Downloading innounp 0.50... 5%
+2025-11-13T10:04:46.4319257Z Progress: Downloading innounp 0.50... 5%
+2025-11-13T10:04:46.4319718Z Progress: Downloading innounp 0.50... 6%
+2025-11-13T10:04:46.4320217Z Progress: Downloading innounp 0.50... 7%
+2025-11-13T10:04:46.4320673Z Progress: Downloading innounp 0.50... 7%
+2025-11-13T10:04:46.4321114Z Progress: Downloading innounp 0.50... 8%
+2025-11-13T10:04:46.4321558Z Progress: Downloading innounp 0.50... 8%
+2025-11-13T10:04:46.4322027Z Progress: Downloading innounp 0.50... 9%
+2025-11-13T10:04:46.4322470Z Progress: Downloading innounp 0.50... 9%
+2025-11-13T10:04:46.4322912Z Progress: Downloading innounp 0.50... 10%
+2025-11-13T10:04:46.4323355Z Progress: Downloading innounp 0.50... 10%
+2025-11-13T10:04:46.4323763Z Progress: Downloading innounp 0.50... 11%
+2025-11-13T10:04:46.4324247Z Progress: Downloading innounp 0.50... 11%
+2025-11-13T10:04:46.4324891Z Progress: Downloading innounp 0.50... 12%
+2025-11-13T10:04:46.4325442Z Progress: Downloading innounp 0.50... 12%
+2025-11-13T10:04:46.4326031Z Progress: Downloading innounp 0.50... 13%
+2025-11-13T10:04:46.4326568Z Progress: Downloading innounp 0.50... 13%
+2025-11-13T10:04:46.4327170Z Progress: Downloading innounp 0.50... 14%
+2025-11-13T10:04:46.4327911Z Progress: Downloading innounp 0.50... 14%
+2025-11-13T10:04:46.4328691Z Progress: Downloading innounp 0.50... 15%
+2025-11-13T10:04:46.4329424Z Progress: Downloading innounp 0.50... 15%
+2025-11-13T10:04:46.4330264Z Progress: Downloading innounp 0.50... 16%
+2025-11-13T10:04:46.4331288Z Progress: Downloading innounp 0.50... 16%
+2025-11-13T10:04:46.4332048Z Progress: Downloading innounp 0.50... 17%
+2025-11-13T10:04:46.4406186Z Progress: Downloading innounp 0.50... 17%
+2025-11-13T10:04:46.4406936Z Progress: Downloading innounp 0.50... 18%
+2025-11-13T10:04:46.4407574Z Progress: Downloading innounp 0.50... 18%
+2025-11-13T10:04:46.4408058Z Progress: Downloading innounp 0.50... 19%
+2025-11-13T10:04:46.4408509Z Progress: Downloading innounp 0.50... 19%
+2025-11-13T10:04:46.4408950Z Progress: Downloading innounp 0.50... 20%
+2025-11-13T10:04:46.4409371Z Progress: Downloading innounp 0.50... 21%
+2025-11-13T10:04:46.4412867Z Progress: Downloading innounp 0.50... 21%
+2025-11-13T10:04:46.4413399Z Progress: Downloading innounp 0.50... 23%
+2025-11-13T10:04:46.4413835Z Progress: Downloading innounp 0.50... 24%
+2025-11-13T10:04:46.4414249Z Progress: Downloading innounp 0.50... 26%
+2025-11-13T10:04:46.4414755Z Progress: Downloading innounp 0.50... 27%
+2025-11-13T10:04:46.4415227Z Progress: Downloading innounp 0.50... 29%
+2025-11-13T10:04:46.4415686Z Progress: Downloading innounp 0.50... 31%
+2025-11-13T10:04:46.4416140Z Progress: Downloading innounp 0.50... 32%
+2025-11-13T10:04:46.4416605Z Progress: Downloading innounp 0.50... 34%
+2025-11-13T10:04:46.4417042Z Progress: Downloading innounp 0.50... 35%
+2025-11-13T10:04:46.4417450Z Progress: Downloading innounp 0.50... 37%
+2025-11-13T10:04:46.4417868Z Progress: Downloading innounp 0.50... 39%
+2025-11-13T10:04:46.4418310Z Progress: Downloading innounp 0.50... 40%
+2025-11-13T10:04:46.4418731Z Progress: Downloading innounp 0.50... 42%
+2025-11-13T10:04:46.4419178Z Progress: Downloading innounp 0.50... 44%
+2025-11-13T10:04:46.4419613Z Progress: Downloading innounp 0.50... 45%
+2025-11-13T10:04:46.4420041Z Progress: Downloading innounp 0.50... 47%
+2025-11-13T10:04:46.4420486Z Progress: Downloading innounp 0.50... 48%
+2025-11-13T10:04:46.4420912Z Progress: Downloading innounp 0.50... 50%
+2025-11-13T10:04:46.4421332Z Progress: Downloading innounp 0.50... 52%
+2025-11-13T10:04:46.4421758Z Progress: Downloading innounp 0.50... 53%
+2025-11-13T10:04:46.4422200Z Progress: Downloading innounp 0.50... 55%
+2025-11-13T10:04:46.4422627Z Progress: Downloading innounp 0.50... 56%
+2025-11-13T10:04:46.4423045Z Progress: Downloading innounp 0.50... 58%
+2025-11-13T10:04:46.4423488Z Progress: Downloading innounp 0.50... 58%
+2025-11-13T10:04:46.4423930Z Progress: Downloading innounp 0.50... 60%
+2025-11-13T10:04:46.4424376Z Progress: Downloading innounp 0.50... 62%
+2025-11-13T10:04:46.4424814Z Progress: Downloading innounp 0.50... 63%
+2025-11-13T10:04:46.4425240Z Progress: Downloading innounp 0.50... 65%
+2025-11-13T10:04:46.4425677Z Progress: Downloading innounp 0.50... 66%
+2025-11-13T10:04:46.4426122Z Progress: Downloading innounp 0.50... 68%
+2025-11-13T10:04:46.4426550Z Progress: Downloading innounp 0.50... 70%
+2025-11-13T10:04:46.4427593Z Progress: Downloading innounp 0.50... 71%
+2025-11-13T10:04:46.4428112Z Progress: Downloading innounp 0.50... 73%
+2025-11-13T10:04:46.4428555Z Progress: Downloading innounp 0.50... 74%
+2025-11-13T10:04:46.4428986Z Progress: Downloading innounp 0.50... 76%
+2025-11-13T10:04:46.4429423Z Progress: Downloading innounp 0.50... 78%
+2025-11-13T10:04:46.4429836Z Progress: Downloading innounp 0.50... 79%
+2025-11-13T10:04:46.4430254Z Progress: Downloading innounp 0.50... 81%
+2025-11-13T10:04:46.4430690Z Progress: Downloading innounp 0.50... 82%
+2025-11-13T10:04:46.4431122Z Progress: Downloading innounp 0.50... 84%
+2025-11-13T10:04:46.4431544Z Progress: Downloading innounp 0.50... 87%
+2025-11-13T10:04:46.4431961Z Progress: Downloading innounp 0.50... 90%
+2025-11-13T10:04:46.4432409Z Progress: Downloading innounp 0.50... 93%
+2025-11-13T10:04:46.4432850Z Progress: Downloading innounp 0.50... 97%
+2025-11-13T10:04:46.4433274Z Progress: Downloading innounp 0.50... 100%
+2025-11-13T10:04:46.4433702Z Progress: Downloading innounp 0.50... 100%
+2025-11-13T10:04:46.7432478Z 
+2025-11-13T10:04:46.7432713Z innounp v0.50.0 [Approved]
+2025-11-13T10:04:46.7653879Z innounp package files install completed. Performing other installation steps.
+2025-11-13T10:04:47.9006791Z Adding  C:\Users\runneradmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\innounp.lnk
+2025-11-13T10:04:48.9433956Z  ShimGen has successfully created a shim for innounp.exe
+2025-11-13T10:04:48.9679865Z  The install of innounp was successful.
+2025-11-13T10:04:48.9684501Z   Software install location not explicitly set, it could be in package or
+2025-11-13T10:04:48.9684893Z   default install location of installer.
+2025-11-13T10:04:48.9843518Z 
+2025-11-13T10:04:48.9843943Z Chocolatey installed 1/1 packages. 
+2025-11-13T10:04:48.9845281Z  See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+2025-11-13T10:04:48.9855531Z 
+2025-11-13T10:04:48.9855943Z Enjoy using Chocolatey? Explore more amazing features to take your
+2025-11-13T10:04:48.9856434Z experience to the next level at
+2025-11-13T10:04:48.9856765Z  https://chocolatey.org/compare
+2025-11-13T10:04:49.2469874Z innounp, the Inno Setup Unpacker. Version 0.50
+2025-11-13T10:04:49.2470837Z Usage: innounp [command] [options] <setup.exe or setup.0> [@filelist] [filemask ...]
+2025-11-13T10:04:49.2471565Z Commands:
+2025-11-13T10:04:49.2472164Z   (no)   display general installation info
+2025-11-13T10:04:49.2472751Z   -v     verbosely list the files (with sizes and timestamps)
+2025-11-13T10:04:49.2473429Z   -x     extract the files from the installation (to the current directory, also see -d)
+2025-11-13T10:04:49.2473929Z   -e     extract files without paths
+2025-11-13T10:04:49.2474231Z   -t     test files for integrity
+2025-11-13T10:04:49.2474515Z Options:
+2025-11-13T10:04:49.2474890Z   -b     batch (non-interactive) mode - will not prompt for password or disk changes
+2025-11-13T10:04:49.2475387Z   -q     do not indicate progress while extracting
+2025-11-13T10:04:49.2475847Z   -m     extract internal embedded files (such as license and uninstall.exe)
+2025-11-13T10:04:49.2476341Z   -pPASS decrypt the installation with a password
+2025-11-13T10:04:49.2476787Z   -dDIR  extract the files into DIR (can be absolute or relative path)
+2025-11-13T10:04:49.2477313Z   -cDIR  specifies that DIR is the current directory in the installation
+2025-11-13T10:04:49.2477756Z   -n     don't attempt to unpack new versions
+2025-11-13T10:04:49.2478112Z   -fFILE same as -p but reads the password from FILE
+2025-11-13T10:04:49.2478475Z   -a     extract all copies of duplicate files
+2025-11-13T10:04:49.2478836Z   -y     assume Yes on all queries (e.g. overwrite files)
+2025-11-13T10:04:49.3231534Z ##[error]Process completed with exit code 1.
+2025-11-13T10:04:49.3476150Z Post job cleanup.
+2025-11-13T10:04:49.3628223Z Post job cleanup.
+2025-11-13T10:04:49.5936027Z [command]"C:\Program Files\Git\bin\git.exe" version
+2025-11-13T10:04:49.6228889Z git version 2.51.2.windows.1
+2025-11-13T10:04:49.6299868Z Temporarily overriding HOME='D:\a\_temp\7a855125-e825-483a-889d-1e73c3615816' before making global git config changes
+2025-11-13T10:04:49.6301128Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-13T10:04:49.6311391Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\Earon-2\Earon-2
+2025-11-13T10:04:49.6602096Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2025-11-13T10:04:49.6887692Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2025-11-13T10:04:50.2007043Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-13T10:04:50.2262576Z http.https://github.com/.extraheader
+2025-11-13T10:04:50.2304725Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2025-11-13T10:04:50.2593223Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2025-11-13T10:04:50.7895114Z Cleaning up orphan processes
+2025-11-13T10:04:50.8033438Z Terminate orphan process: pid (4548) (vctip)

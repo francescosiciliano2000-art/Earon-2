@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2025-11-13 — v0.1.6
+
+### Rename & Branding
+- Aggiornato il titolo finestra e i riferimenti di prodotto a "Earon" su Windows, Linux e macOS (menu bar e bundle `.app`).
+- Aggiornato titoli della web app (`index.html`) e manifest PWA (`manifest.json`) a "Earon".
+- UI: aggiornato il nome nell’`app_sidebar.dart` da "Gestionale" a "Earon".
+
+### Funzionalità — Udienze
+- Migliorata la selezione della pratica nel dialog "Nuova udienza": ricerca asincrona con debounce e copertura campi ampliata (`code`, `rg_number`, `client`, `counterparty_name`, `title`) per trovare più pratiche durante la digitazione.
+
+### Versioning
+- Bump versione applicazione a `0.1.6+1` in `pubspec.yaml` (branch `development-v0.1.6`).
+
+### Note
+- Il nome del pacchetto Flutter (`name: gestionale_desktop`) rimane invariato per evitare regressioni sugli import. L’installer Windows è già configurato per rinominare l’eseguibile in `Earon.exe`.
+
 ## 2025-10-17
 
 ### Fix UI (AppSelect)

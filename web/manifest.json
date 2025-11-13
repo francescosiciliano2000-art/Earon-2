@@ -1,6 +1,6 @@
 {
-    "name": "gestionale_desktop",
-    "short_name": "gestionale_desktop",
+  "name": "Earon",
+  "short_name": "Earon",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
