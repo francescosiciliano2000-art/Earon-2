@@ -29,6 +29,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Deriva versione da pubspec.yaml
+        shell: pwsh
+        run: |
+          $match = Select-String -Path "pubspec.yaml" -Pattern '^version:\s*(.+)$' -AllMatches
+          if ($match.Count -eq 0) { Write-Error "version non trovata in pubspec.yaml"; exit 1 }
+          $verFull = $match[0].Matches[0].Groups[1].Value.Trim()
+          $verShort = ($verFull -replace '\+.*','')
+          Write-Host "VERSION_FULL=$verFull"
+          Write-Host "VERSION_SHORT=$verShort"
+          Write-Host "TAG_NAME=v$verShort"
+          echo "VERSION_FULL=$verFull" >> $env:GITHUB_ENV
+          echo "VERSION_SHORT=$verShort" >> $env:GITHUB_ENV
+          echo "TAG_NAME=v$verShort" >> $env:GITHUB_ENV
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -89,7 +103,7 @@ jobs:
         shell: pwsh
         run: |
           $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
-          & "$iscc" "installer/windows/inno.iss"
+          & "$iscc" /DMyAppVersion="${env:VERSION_SHORT}" "installer/windows/inno.iss"
 
       - name: List installer contents (debug)
         shell: pwsh
@@ -125,28 +139,20 @@ jobs:
           name: Earon-installer-extracted
           path: installer/windows/extracted/**
 
-      - name: Upload Windows installer
+      - name: Upload Windows installer (artifact)
         uses: actions/upload-artifact@v4
         with:
           name: Earon-Windows-Installer
           path: installer/windows/output/*.exe
 
-      - name: Upload installer to GitHub Release (on tag)
-        if: github.event_name == 'release'
+      - name: Crea release GitHub e carica installer (tag derivato)
         uses: softprops/action-gh-release@v2
         with:
           files: |
             installer/windows/output/*.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload installer to GitHub Release (manual dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            installer/windows/output/*.exe
-          tag_name: ${{ inputs.tag_name }}
+          tag_name: ${{ env.TAG_NAME }}
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -156,14 +162,56 @@ jobs:
           name: Earon-portable-Release
           path: build/windows/x64/runner/Release/**
 
-      - name: Upload portable build to GitHub Release (on tag)
-        if: github.event_name == 'release'
+      - name: Carica portable build nella release (tag derivato)
         uses: softprops/action-gh-release@v2
         with:
           files: |
             build/windows/x64/runner/Release/**
+          tag_name: ${{ env.TAG_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Aggiorna updates/appcast.xml (Windows v${{ env.VERSION_SHORT }})
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1
+          if ($null -eq $installer) { Write-Error "Installer non trovato"; exit 1 }
+          $sha = (Get-FileHash -Algorithm SHA256 $installer.FullName).Hash.ToLower()
+          $version = "${env:VERSION_SHORT}"
+          $tag = "v$version"
+          $assetUrl = "https://github.com/${{ github.repository }}/releases/download/$tag/Earon-Setup-$version.exe"
+          $releaseNotes = "https://github.com/${{ github.repository }}/releases/tag/$tag"
+          $pubDate = [DateTime]::UtcNow.ToString('ddd, dd MMM yyyy HH:mm:ss +0000')
+          $item = @"
+  <item>
+  <title>v$version (Windows)</title>
+  <sparkle:releaseNotesLink>$releaseNotes</sparkle:releaseNotesLink>
+  <pubDate>$pubDate</pubDate>
+  <enclosure
+    url="$assetUrl"
+    sparkle:os="windows"
+    sparkle:version="$version"
+    sparkle:shortVersionString="$version"
+    type="application/octet-stream"
+    sparkle:sha256="$sha" />
+</item>
+"@
+
+          $path = "updates/appcast.xml"
+          $content = Get-Content -Raw $path
+          $marker = "<!-- Release più recente -->"
+          if (-not ($content.Contains($marker))) {
+            Write-Warning "Marker non trovato in appcast.xml; appendo in testa al canale."
+            $content = $content -replace '(</language>\s*)', "$1`n$marker`n"
+          }
+          $newContent = $content -replace [Regex]::Escape($marker), "$marker`n`n$item"
+          Set-Content -Path $path -Value $newContent
+
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add $path
+          git commit -m "chore(appcast): add Windows v$version entry with sha256"
+          git push
       
       - name: Build Windows Debug (console)
         run: >-

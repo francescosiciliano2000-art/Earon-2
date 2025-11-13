@@ -1,5 +1,8 @@
 #define MyAppName "Earon"
-#define MyAppVersion "0.1.2"   ; <— aggiorna ad ogni release
+; Consenti override da riga di comando (/DMyAppVersion=0.1.5)
+#ifndef MyAppVersion
+#define MyAppVersion "0.1.5"   ; fallback; viene sovrascritto dal workflow
+#endif
 #define MyExeName "Earon.exe"
 ; Percorso di build: forziamo quello x64 (coerente con workflow e rename a Earon.exe)
 #define BuildDir "..\\..\\build\\windows\\x64\\runner\\Release"

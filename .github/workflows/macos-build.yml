@@ -19,6 +19,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Deriva versione da pubspec.yaml
+        run: |
+          VER_FULL=$(grep '^version:' pubspec.yaml | sed 's/version:\s*//')
+          VER_SHORT=${VER_FULL%%+*}
+          echo "VERSION_FULL=$VER_FULL" >> $GITHUB_ENV
+          echo "VERSION_SHORT=$VER_SHORT" >> $GITHUB_ENV
+          echo "TAG_NAME=v$VER_SHORT" >> $GITHUB_ENV
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -51,15 +59,8 @@ jobs:
 
       - name: Create DMG
         run: |
-          # Resolve tag name from event or manual input
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          if [ -z "$TAG_NAME" ]; then TAG_NAME="${{ inputs.tag_name }}"; fi
-
-          # Derive version from tag, fallback to pubspec.yaml
-          VERSION="${TAG_NAME#v}"
-          if [ -z "$VERSION" ]; then
-            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version:\s*//')
-          fi
+          TAG_NAME="${{ env.TAG_NAME }}"
+          VERSION="${{ env.VERSION_SHORT }}"
 
           # Detect built .app dynamically
           APP_PATH=$(ls -d build/macos/Build/Products/Release/*.app 2>/dev/null | head -n 1)
@@ -83,21 +84,39 @@ jobs:
           create-dmg --volname "Earon" "$OUT_DIR/$DMG_NAME" "$APP_PATH"
           echo "DMG created at $OUT_DIR/$DMG_NAME"
 
-      - name: Upload DMG to GitHub Release (on tag)
-        if: github.event_name == 'release'
+      - name: Crea release GitHub e carica DMG (tag derivato)
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/Earon-*.dmg
+          tag_name: ${{ env.TAG_NAME }}
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload DMG to GitHub Release (manual dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            dist/Earon-*.dmg
-          tag_name: ${{ inputs.tag_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Aggiorna updates/appcast.xml (macOS v${{ env.VERSION_SHORT }})
+        run: |
+          DMG_PATH=$(ls dist/Earon-*.dmg | head -n 1)
+          if [ -z "$DMG_PATH" ]; then echo "DMG non trovato"; exit 1; fi
+          SHA=$(shasum -a 256 "$DMG_PATH" | awk '{print tolower($1)}')
+          VERSION="${{ env.VERSION_SHORT }}"
+          TAG="v$VERSION"
+          ASSET_URL="https://github.com/${{ github.repository }}/releases/download/$TAG/Earon-$VERSION.dmg"
+          RELEASE_NOTES="https://github.com/${{ github.repository }}/releases/tag/$TAG"
+          PUB_DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")
+          ITEM="\n  <item>\n  <title>v$VERSION</title>\n  <sparkle:releaseNotesLink>$RELEASE_NOTES</sparkle:releaseNotesLink>\n  <pubDate>$PUB_DATE</pubDate>\n  <enclosure\n    url=\"$ASSET_URL\"\n    sparkle:os=\"macos\"\n    sparkle:version=\"$VERSION\"\n    sparkle:shortVersionString=\"$VERSION\"\n    length=\"\"\n    type=\"application/octet-stream\"\n    sparkle:sha256=\"$SHA\" />\n</item>\n"
+          PATH_XML="updates/appcast.xml"
+          CONTENT=$(cat "$PATH_XML")
+          MARKER='<!-- Release più recente -->'
+          if ! echo "$CONTENT" | grep -q "$MARKER"; then
+            echo "Marker non trovato; aggiungo marker dopo <language>"
+            CONTENT=$(awk '1; /<language>/{print "\n<!-- Release più recente -->"}' "$PATH_XML")
+          fi
+          NEW_CONTENT=$(echo "$CONTENT" | perl -0777 -pe "s/\Q$MARKER\E/$MARKER\n\n$ITEM/")
+          printf "%s" "$NEW_CONTENT" > "$PATH_XML"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add "$PATH_XML"
+          git commit -m "chore(appcast): add macOS v$VERSION entry with sha256"
+          git push

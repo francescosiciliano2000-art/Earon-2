@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "gestionale_desktop" "\0"
+            VALUE "CompanyName", "Earon" "\0"
+            VALUE "FileDescription", "Earon" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "gestionale_desktop" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "gestionale_desktop.exe" "\0"
-            VALUE "ProductName", "gestionale_desktop" "\0"
+            VALUE "InternalName", "Earon" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 Earon. All rights reserved." "\0"
+            VALUE "OriginalFilename", "Earon.exe" "\0"
+            VALUE "ProductName", "Earon" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
