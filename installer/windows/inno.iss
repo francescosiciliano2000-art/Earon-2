@@ -1,12 +1,8 @@
 #define MyAppName "Earon"
 #define MyAppVersion "0.1.2"   ; <— aggiorna ad ogni release
 #define MyExeName "Earon.exe"
-; Selezione percorso di build (x64 preferito, fallback legacy)
-#ifexist "..\\..\\build\\windows\\x64\\runner\\Release\\*"
-  #define BuildDir "..\\..\\build\\windows\\x64\\runner\\Release"
-#else
-  #define BuildDir "..\\..\\build\\windows\\runner\\Release"
-#endif
+; Percorso di build: forziamo quello x64 (coerente con workflow e rename a Earon.exe)
+#define BuildDir "..\\..\\build\\windows\\x64\\runner\\Release"
 
 [Setup]
 AppId={{E3EDC4C9-3C8B-4C8C-9F7D-EE0000E1A1E1}}
