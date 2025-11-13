@@ -109,7 +109,8 @@ jobs:
             echo "Appcast already contains current assets; skipping edit."
             echo "updated=false" >> "$GITHUB_OUTPUT"
           else
-            CONTENT=$(echo "$CONTENT" | perl -0777 -pe "s/\Q$MARKER\E/$MARKER\n\n$ITEM_MAC\n$ITEM_WIN/")
+            # Use a non-slash delimiter to avoid conflicts with '/' in XML (e.g., </title>, URLs)
+            CONTENT=$(echo "$CONTENT" | perl -0777 -pe "s|\Q$MARKER\E|$MARKER\n\n$ITEM_MAC\n$ITEM_WIN|s")
             printf "%s" "$CONTENT" > "$PATH_XML"
             echo "updated=true" >> "$GITHUB_OUTPUT"
           fi
