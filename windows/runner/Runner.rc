@@ -66,11 +66,25 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #define VERSION_AS_NUMBER 1,0,0,0
 #endif
 
-#if defined(FLUTTER_VERSION)
-#define VERSION_AS_STRING FLUTTER_VERSION
-#else
-#define VERSION_AS_STRING "1.0.0"
+// Build a ProductVersion/FileVersion string as "major.minor.patch".
+// We intentionally ignore any "+build" metadata that Flutter may append
+// (e.g., "0.1.5+1") because WinSparkle compares the version string from the
+// executable with the appcast feed, which uses plain semantic versions.
+// Using the numeric components avoids false update prompts.
+#ifndef FLUTTER_VERSION_MAJOR
+#define FLUTTER_VERSION_MAJOR 1
 #endif
+#ifndef FLUTTER_VERSION_MINOR
+#define FLUTTER_VERSION_MINOR 0
+#endif
+#ifndef FLUTTER_VERSION_PATCH
+#define FLUTTER_VERSION_PATCH 0
+#endif
+
+// Helpers to stringify numeric macros
+#define STRINGIZE2(x) #x
+#define STRINGIZE(x) STRINGIZE2(x)
+#define VERSION_AS_STRING STRINGIZE(FLUTTER_VERSION_MAJOR) "." STRINGIZE(FLUTTER_VERSION_MINOR) "." STRINGIZE(FLUTTER_VERSION_PATCH)
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION VERSION_AS_NUMBER
