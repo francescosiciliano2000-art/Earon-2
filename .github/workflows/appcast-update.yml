@@ -84,6 +84,7 @@ jobs:
           echo "WIN_SHA=$WIN_SHA" >> "$GITHUB_ENV"
 
       - name: Update updates/appcast.xml
+        id: update_appcast
         run: |
           set -euo pipefail
           VERSION="$VERSION"
@@ -105,14 +106,16 @@ jobs:
           ITEM_WIN="\n  <item>\n  <title>v$VERSION (Windows)</title>\n  <sparkle:releaseNotesLink>https://github.com/${{ github.repository }}/releases/tag/$TAG</sparkle:releaseNotesLink>\n  <pubDate>$PUB_DATE</pubDate>\n  <enclosure\n    url=\"$EXE_URL\"\n    sparkle:os=\"windows\"\n    sparkle:version=\"$VERSION\"\n    sparkle:shortVersionString=\"$VERSION\"\n    type=\"application/octet-stream\"\n    sparkle:sha256=\"$WIN_SHA\" />\n</item>\n"
           # Avoid duplication: if asset URL already present, skip
           if echo "$CONTENT" | grep -q "$EXE_URL" && echo "$CONTENT" | grep -q "$DMG_URL"; then
-            echo "Appcast already contains current assets; skipping edit." > .appcast_skip
+            echo "Appcast already contains current assets; skipping edit."
+            echo "updated=false" >> "$GITHUB_OUTPUT"
           else
             CONTENT=$(echo "$CONTENT" | perl -0777 -pe "s/\Q$MARKER\E/$MARKER\n\n$ITEM_MAC\n$ITEM_WIN/")
             printf "%s" "$CONTENT" > "$PATH_XML"
+            echo "updated=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create Pull Request
-        if: ${{ !exists('.appcast_skip') }}
+        if: ${{ steps.update_appcast.outputs.updated == 'true' }}
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
