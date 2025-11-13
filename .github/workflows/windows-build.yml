@@ -62,9 +62,24 @@ jobs:
         run: |
           $dir = "build/windows/x64/runner/Release"
           if (!(Test-Path $dir)) { $dir = "build/windows/runner/Release" }
-          $exe = Get-ChildItem -Path $dir -Filter *.exe | Select-Object -First 1
-          if ($null -eq $exe) { Write-Error "EXE not found in $dir"; exit 1 }
-          Rename-Item -Path $exe.FullName -NewName "Earon.exe"
+          $target = $null
+          if (Test-Path "$dir/gestionale_desktop.exe") { $target = "$dir/gestionale_desktop.exe" }
+          elseif (Test-Path "$dir/runner.exe") { $target = "$dir/runner.exe" }
+          else {
+            $exe = Get-ChildItem -Path $dir -Filter *.exe | Where-Object { $_.Name -notmatch '^unins' } | Select-Object -First 1
+            if ($null -eq $exe) { Write-Error "App EXE not found in $dir"; exit 1 }
+            $target = $exe.FullName
+          }
+          Rename-Item -Path $target -NewName "Earon.exe"
+
+      - name: List Release directory (debug)
+        shell: pwsh
+        run: |
+          $dir = "build/windows/x64/runner/Release"
+          if (!(Test-Path $dir)) { $dir = "build/windows/runner/Release" }
+          Write-Host "Listing $dir"
+          Get-ChildItem -Path $dir -Recurse | Format-Table -AutoSize
+          if (!(Test-Path "$dir/Earon.exe")) { Write-Error "Earon.exe not present in $dir after rename"; exit 1 }
 
       - name: Install Inno Setup
         shell: pwsh
@@ -75,6 +90,28 @@ jobs:
         run: |
           $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
           & "$iscc" "installer/windows/inno.iss"
+
+      - name: List installer contents (debug)
+        shell: pwsh
+        run: |
+          choco install innounp -y
+          $installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1
+          if ($null -eq $installer) { Write-Error "Installer not found"; exit 1 }
+          innounp -l $installer.FullName
+
+      - name: Extract installer to artifact (debug)
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1
+          if ($null -eq $installer) { Write-Error "Installer not found"; exit 1 }
+          mkdir -Force installer/windows/extracted | Out-Null
+          innounp -x -d installer/windows/extracted $installer.FullName
+
+      - name: Upload extracted installer files (debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Earon-installer-extracted
+          path: installer/windows/extracted/**
 
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
@@ -106,6 +143,15 @@ jobs:
         with:
           name: Earon-portable-Release
           path: build/windows/x64/runner/Release/**
+
+      - name: Upload portable build to GitHub Release (on tag)
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/windows/x64/runner/Release/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Build Windows Debug (console)
         run: >-

@@ -1,12 +1,22 @@
 #define MyAppName "Earon"
 #define MyAppVersion "0.1.2"   ; <— aggiorna ad ogni release
 #define MyExeName "Earon.exe"
+; Selezione percorso di build (x64 preferito, fallback legacy)
+#ifexist "..\\..\\build\\windows\\x64\\runner\\Release\\*"
+  #define BuildDir "..\\..\\build\\windows\\x64\\runner\\Release"
+#else
+  #define BuildDir "..\\..\\build\\windows\\runner\\Release"
+#endif
 
 [Setup]
 AppId={{E3EDC4C9-3C8B-4C8C-9F7D-EE0000E1A1E1}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-DefaultDirName={pf}\{#MyAppName}
+; Forza installazione a 64 bit e posizione corretta su sistemi x64
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
+DefaultDirName={pf64}\{#MyAppName}
+UsePreviousAppDir=no
 DefaultGroupName={#MyAppName}
 DisableDirPage=no
 DisableProgramGroupPage=yes
@@ -15,7 +25,6 @@ OutputBaseFilename={#MyAppName}-Setup-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 ; SetupIconFile=icon.ico
-ArchitecturesInstallIn64BitMode=x64
 PrivilegesRequired=admin
 
 [Languages]
@@ -26,12 +35,14 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "desktopicon"; Description: "Crea un'icona sul Desktop"; GroupDescription: "Icone:"; Flags: unchecked
 
 [Files]
-; Include only existing build output paths at compile time to avoid errors
-#ifexist "..\\..\\build\\windows\\x64\\runner\\Release\\*"
-Source: "..\\..\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+; Copia tutto dalla cartella di build selezionata
+Source: "{#BuildDir}\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+; Copia esplicita dell’eseguibile (rename a Earon.exe se necessario)
+#ifexist "{#BuildDir}\\Earon.exe"
+Source: "{#BuildDir}\\Earon.exe"; DestDir: "{app}"; DestName: "{#MyExeName}"; Flags: ignoreversion
 #endif
-#ifexist "..\\..\\build\\windows\\runner\\Release\\*"
-Source: "..\\..\\build\\windows\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+#ifexist "{#BuildDir}\\gestionale_desktop.exe"
+Source: "{#BuildDir}\\gestionale_desktop.exe"; DestDir: "{app}"; DestName: "{#MyExeName}"; Flags: ignoreversion
 #endif
 
 [Icons]
@@ -39,4 +50,4 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyExeName}"; Description: "Avvia {#MyAppName}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyExeName}"; Description: "Avvia {#MyAppName}"; Flags: nowait postinstall skipifsilent; Check: FileExists(ExpandConstant("{app}\{#MyExeName}"))
