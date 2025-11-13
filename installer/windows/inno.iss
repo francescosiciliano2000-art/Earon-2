@@ -11,7 +11,10 @@ AppVersion={#MyAppVersion}
 ; Forza installazione a 64 bit e posizione corretta su sistemi x64
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
-DefaultDirName={pf64}\{#MyAppName}
+; Aggiorna identificatori deprecati secondo help Inno Setup
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+DefaultDirName={commonpf64}\{#MyAppName}
 UsePreviousAppDir=no
 DefaultGroupName={#MyAppName}
 DisableDirPage=no

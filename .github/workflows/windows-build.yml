@@ -97,7 +97,11 @@ jobs:
           choco install innounp -y
           $installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1
           if ($null -eq $installer) { Write-Error "Installer not found"; exit 1 }
-          innounp -l $installer.FullName
+          # Esegui innounp in modo non-bloccante: se fallisce, continua il workflow
+          & innounp -l $installer.FullName
+          $code = $LASTEXITCODE
+          if ($code -ne 0) { Write-Warning "innounp -l failed (exit code=$code) for $($installer.FullName). Continuing." }
+          Write-Host "innounp list step completed (exit code=$code)"
 
       - name: Extract installer to artifact (debug)
         shell: pwsh
@@ -105,7 +109,11 @@ jobs:
           $installer = Get-ChildItem -Path "installer/windows/output" -Filter *.exe | Select-Object -First 1
           if ($null -eq $installer) { Write-Error "Installer not found"; exit 1 }
           mkdir -Force installer/windows/extracted | Out-Null
-          innounp -x -d installer/windows/extracted $installer.FullName
+          # Non bloccare il job se innounp non supporta il formato dell'installer
+          & innounp -x -d installer/windows/extracted $installer.FullName
+          $code = $LASTEXITCODE
+          if ($code -ne 0) { Write-Warning "innounp -x failed (exit code=$code) for $($installer.FullName). Uploading installer as-is." }
+          Write-Host "innounp extract step completed (exit code=$code)"
 
       - name: Upload extracted installer files (debug)
         uses: actions/upload-artifact@v4
