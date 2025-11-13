@@ -50,4 +50,5 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyExeName}"; Description: "Avvia {#MyAppName}"; Flags: nowait postinstall skipifsilent; Check: FileExists(ExpandConstant("{app}\{#MyExeName}"))
+; Avvia l'app solo se l'eseguibile è presente. Nota: in espressioni di Check, le stringhe devono usare apici singoli.
+Filename: "{app}\{#MyExeName}"; Description: "Avvia {#MyAppName}"; Flags: nowait postinstall skipifsilent; Check: FileExists(ExpandConstant('{app}\{#MyExeName}'))
