@@ -102,6 +102,8 @@ jobs:
           $code = $LASTEXITCODE
           if ($code -ne 0) { Write-Warning "innounp -l failed (exit code=$code) for $($installer.FullName). Continuing." }
           Write-Host "innounp list step completed (exit code=$code)"
+          # Reset esplicito del codice di uscita del processo per evitare fail del job
+          $global:LASTEXITCODE = 0
 
       - name: Extract installer to artifact (debug)
         shell: pwsh
@@ -114,6 +116,8 @@ jobs:
           $code = $LASTEXITCODE
           if ($code -ne 0) { Write-Warning "innounp -x failed (exit code=$code) for $($installer.FullName). Uploading installer as-is." }
           Write-Host "innounp extract step completed (exit code=$code)"
+          # Reset esplicito del codice di uscita del processo per evitare fail del job
+          $global:LASTEXITCODE = 0
 
       - name: Upload extracted installer files (debug)
         uses: actions/upload-artifact@v4
