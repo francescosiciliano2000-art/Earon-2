@@ -19,13 +19,44 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Inizializza TAG_NAME da evento/dispatch (se presente)
+        env:
+          TAG_EVENT: ${{ github.event.release.tag_name }}
+          TAG_INPUT: ${{ inputs.tag_name }}
+        run: |
+          TAG=""
+          if [ -n "$TAG_EVENT" ]; then
+            TAG="$TAG_EVENT"
+          elif [ -n "$TAG_INPUT" ]; then
+            TAG="$TAG_INPUT"
+          fi
+          if [ -n "$TAG" ]; then
+            # Rimuove eventuali spazi non validi
+            TAG=$(echo "$TAG" | tr -d '[:space:]')
+            echo "TAG_NAME=$TAG" >> "$GITHUB_ENV"
+            echo "Preset TAG_NAME=$TAG"
+          fi
+
       - name: Deriva versione da pubspec.yaml
         run: |
           VER_FULL=$(grep '^version:' pubspec.yaml | sed 's/version:\s*//')
           VER_SHORT=${VER_FULL%%+*}
           echo "VERSION_FULL=$VER_FULL" >> $GITHUB_ENV
           echo "VERSION_SHORT=$VER_SHORT" >> $GITHUB_ENV
-          echo "TAG_NAME=v$VER_SHORT" >> $GITHUB_ENV
+          # Imposta TAG_NAME solo se non già definito da evento/dispatch
+          if ! grep -q '^TAG_NAME=' "$GITHUB_ENV"; then
+            TAG=$(echo "v$VER_SHORT" | tr -d '[:space:]')
+            echo "TAG_NAME=$TAG" >> "$GITHUB_ENV"
+          fi
+
+      - name: Valida TAG_NAME
+        run: |
+          TAG="$TAG_NAME"
+          echo "TAG_NAME=$TAG"
+          if [ -z "$TAG" ]; then echo "TAG_NAME vuoto"; exit 1; fi
+          if echo "$TAG" | grep -q '[[:space:]]'; then echo "TAG_NAME contiene spazi: '$TAG'"; exit 1; fi
+          if ! echo "$TAG" | grep -E '^[A-Za-z0-9._-]+$' >/dev/null; then echo "TAG_NAME non valido: '$TAG'"; exit 1; fi
+          echo "TAG_NAME valido"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
