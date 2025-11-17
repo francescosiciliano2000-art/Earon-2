@@ -164,6 +164,7 @@
     "Procura della Repubblica presso il Tribunale di SANTA MARIA CAPUA VETERE",
     "Procura della Repubblica presso il Tribunale di TORRE ANNUNZIATA",
     "Procura della Repubblica presso il Tribunale di VALLO DELLA LUCANIA",
+    "Tribunale amministrativo regionale di NAPOLI",
     "Tribunale Regionale delle Acque Pubbliche di NAPOLI",
     "Tribunale di AVELLINO",
     "Tribunale di BENEVENTO",
@@ -370,5 +371,24 @@
     "UNEP presso il Tribunale di Mantova",
     "UNEP presso il Tribunale di Monza",
     "UNEP presso il Tribunale di Pavia"
+  ],
+  "Molise": [
+    "Archivio notarile di CAMPOBASSO - distrettuale",
+    "Archivio notarile di ISERNIA - distrettuale",
+    "Commissariato agli usi civici per la CAMPANIA e il MOLISE",
+    "Corte d'Appello di CAMPOBASSO",
+    "Giudice di Pace di CAMPOBASSO",
+    "Giudice di Pace di ISERNIA",
+    "Giudice di Pace di TERMOLI",
+    "Procura Generale della Repubblica presso la Corte d'Appello di CAMPOBASSO",
+    "Procura della Repubblica presso il Tribunale di CAMPOBASSO",
+    "Procura della Repubblica presso il Tribunale di ISERNIA",
+    "Tribunale di CAMPOBASSO",
+    "Tribunale di ISERNIA",
+    "Tribunale di LARINO",
+    "Unep presso il Tribunale di CAMPOBASSO",
+    "Unep presso il Tribunale di ISERNIA",
+    "Unep presso il Tribunale di LARINO",
+    "Unep presso la Corte d'Appello di CAMPOBASSO"
   ]
 }

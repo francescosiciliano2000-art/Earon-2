@@ -98,8 +98,9 @@ class _HearingsListPageState extends State<HearingsListPage> {
 
       final qb = _sb
           .from('hearings')
-          .select('hearing_id, type, ends_at, time, courtroom, notes, matter_id')
+          .select('hearing_id, type, ends_at, time, courtroom, notes, matter_id, status')
           .eq('firm_id', fid)
+          .eq('status', 'active')
           .order('ends_at', ascending: false, nullsFirst: false)
           .order('time', ascending: false, nullsFirst: false)
           .range(0, 499);

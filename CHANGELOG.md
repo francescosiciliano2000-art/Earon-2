@@ -1,3 +1,18 @@
+## 2025-11-17 — v0.1.8
+
+### Funzionalità — Udienze
+- Dialog "Evasione udienza": aggiunta opzione "Eseguita" nello step 1. Se selezionata e confermata, chiude il dialog e imposta `done = TRUE` sull'udienza senza ulteriori passaggi.
+
+### Funzionalità — Pratiche
+- Selezione "Foro/Tribunale": ora alimentata direttamente da `lib/features/courtroom.json` tramite `CourtroomRepo.watchGroups()` e `AppCombobox` in `MatterCreateSheet` e `MatterEditSheet`. Qualsiasi modifica al JSON si riflette automaticamente nelle opzioni.
+
+### Calendario & UI
+- Migliorato il selettore intervallo (CalendarRange) per gli adempimenti post-udienza.
+- Pulizia lint: resta solo un warning informativo su `BuildContext` across async gaps.
+
+### Versioning
+- Bump a `0.1.8+1` in `pubspec.yaml`.
+
 ## 0.1.7+1 - 2025-11-17
 - Sidebar: nascosta voce Dashboard.
 - Post-login: landing direttamente su Clienti.
