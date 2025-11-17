@@ -67,6 +67,25 @@ class _HearingDispositionDialogState extends State<HearingDispositionDialog> {
       return;
     }
     if (_step == 1) {
+      // Opzione semplice: 'Eseguita' → chiudiamo subito e impostiamo done=true
+      if (_outcome == 'eseguita') {
+        setState(() { _saving = true; _error = null; });
+        try {
+          final h = widget.hearing;
+          final hearingId = '${h['hearing_id'] ?? ''}';
+          if (hearingId.isEmpty) throw Exception('Id udienza mancante');
+          await _sb.from('hearings').update({'done': true}).eq('hearing_id', hearingId);
+          if (!mounted) return;
+          Navigator.of(context).pop({'outcome': _outcome, 'message': 'Udienza segnata come eseguita'});
+          return;
+        } catch (e) {
+          if (!mounted) return;
+          AppToaster.of(context).error('Errore salvataggio: ${e.toString()}');
+          setState(() => _error = e.toString());
+        } finally {
+          if (mounted) setState(() => _saving = false);
+        }
+      }
       setState(() => _step = 2);
       return;
     }
@@ -123,8 +142,7 @@ class _HearingDispositionDialogState extends State<HearingDispositionDialog> {
         final adj = _combineDateTime(_date!, _time!);
         await _sb
             .from('hearings')
-            .update({'adjourned_at': adj.toIso8601String()}).eq(
-                'hearing_id', hearingId);
+            .update({'adjourned_at': adj.toIso8601String(), 'done': true}).eq('hearing_id', hearingId);
 
         // 2) Crea nuova udienza con stessi riferimenti nella data scelta
         final hh = _time!.hour.toString().padLeft(2, '0');
@@ -176,6 +194,8 @@ class _HearingDispositionDialogState extends State<HearingDispositionDialog> {
           'due_at': dueAt.toIso8601String(),
         });
         if (!mounted) return;
+        // Marca l'udienza come evasa
+        await _sb.from('hearings').update({'done': true}).eq('hearing_id', hearingId);
         // Messaggio dettagliato per il parent (unico toast)
         String label = _outcome == 'in_riserva'
             ? 'Adempimento di verifica scioglimento'
@@ -277,6 +297,16 @@ class _HearingDispositionDialogState extends State<HearingDispositionDialog> {
                         value: 'a_sentenza',
                         selected: _outcome == 'a_sentenza',
                         onSelect: () => _onOutcomeSelect('a_sentenza'),
+                      ),
+                      // Spaziatura verticale aumentata tra le card
+                      SizedBox(height: su * 1.5),
+                      _OutcomeVerticalCard(
+                        title: 'Eseguita',
+                        description:
+                            'Segna l’udienza come eseguita/evasa e chiude il dialogo senza ulteriori passaggi.',
+                        value: 'eseguita',
+                        selected: _outcome == 'eseguita',
+                        onSelect: () => _onOutcomeSelect('eseguita'),
                       ),
                     ],
                   ),

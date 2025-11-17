@@ -41,8 +41,9 @@ class _HearingsPageState extends State<HearingsPage> {
       }
       final rows = await _sb
           .from('hearings')
-          .select('hearing_id, type, starts_at, courtroom, notes')
+          .select('hearing_id, type, starts_at, courtroom, notes, status')
           .eq('firm_id', fid)
+          .eq('status', 'active')
           .order('starts_at', ascending: true, nullsFirst: true);
       final list = (rows as List).cast<Map<String, dynamic>>();
       setState(() => _hearings = list);

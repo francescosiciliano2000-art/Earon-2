@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:gestionale_desktop/design system/components/button.dart';
 import 'package:gestionale_desktop/design system/components/input.dart';
 import 'package:gestionale_desktop/design system/components/select.dart';
+import 'package:gestionale_desktop/design system/components/combobox.dart';
 import 'package:gestionale_desktop/design system/components/search_select.dart';
 import 'package:gestionale_desktop/design system/components/textarea.dart';
 import 'package:gestionale_desktop/design system/components/date_picker.dart';
@@ -12,6 +13,7 @@ import 'package:gestionale_desktop/design system/theme/themes.dart';
 
 import '../data/matter_repo.dart';
 import '../data/matter_model.dart';
+import '../../courtroom/data/courtroom_repo.dart';
 import '../../clienti/data/cliente_repo.dart';
 import 'package:gestionale_desktop/core/supa_helpers.dart';
 import 'matters_list_page.dart' show ClientOption; // riuso tipo semplice
@@ -50,7 +52,8 @@ class _MatterCreateSheetState extends State<MatterCreateSheet> {
   bool _saving = false;
   String? _error;
   DateTime? _openedAt;
-  List<String> _courtSuggestions = const [];
+  List<ComboboxGroupData> _courtGroups = const [];
+  StreamSubscription<List<ComboboxGroupData>>? _courtGroupsSub;
   List<String> _statusSuggestions = const [];
 
   @override
@@ -60,6 +63,11 @@ class _MatterCreateSheetState extends State<MatterCreateSheet> {
     _repo = MatterRepo(_sb);
     _clientsRepo = ClienteRepo(_sb);
     _bootstrap();
+    // Osserva courtroom.json e aggiorna gruppi foro
+    _courtGroupsSub = CourtroomRepo().watchGroups().listen((groups) {
+      if (!mounted) return;
+      setState(() => _courtGroups = groups);
+    });
     // Precarica i primi 20 clienti all’apertura per evitare elenco vuoto
     scheduleMicrotask(() => _searchClients(''));
   }
@@ -76,6 +84,7 @@ class _MatterCreateSheetState extends State<MatterCreateSheet> {
     _counterpartyCtl.dispose();
     _rgCtl.dispose();
     _notesCtl.dispose();
+    _courtGroupsSub?.cancel();
     super.dispose();
   }
 
@@ -86,12 +95,10 @@ class _MatterCreateSheetState extends State<MatterCreateSheet> {
         _clientId = widget.presetClientId;
       }
       final statuses = await _loadDistinctValues('status');
-      final courts = await _loadDistinctValues('court');
       setState(() {
         _statusSuggestions = statuses.isEmpty
             ? const ['open', 'in_progress', 'closed']
             : statuses;
-        _courtSuggestions = courts;
       });
     } catch (e) {
       setState(() => _error = e.toString());
@@ -326,25 +333,15 @@ class _MatterCreateSheetState extends State<MatterCreateSheet> {
 
             SizedBox(height: spacing * 2),
             // Court (opzionale)
-            AppSelect(
-              placeholder: 'Foro (opzionale)',
+            AppCombobox(
               width: double.infinity,
-              value: _courtSuggestions.contains(_courtCtl.text)
-                  ? _courtCtl.text
-                  : null,
-              groups: [
-                SelectGroupData(
-                  label: 'Foro',
-                  items: [
-                    const SelectItemData(value: '', label: '—'),
-                    ..._courtSuggestions.map(
-                      (c) => SelectItemData(value: c, label: c),
-                    ),
-                  ],
-                ),
-              ],
+              value: _courtCtl.text.isEmpty ? null : _courtCtl.text,
+              placeholder: 'Foro (opzionale)',
+              items: const [],
+              groups: _courtGroups,
+              popoverMatchWidestRow: true,
               onChanged: (v) {
-                setState(() => _courtCtl.text = v.isEmpty ? '' : v);
+                setState(() => _courtCtl.text = (v == null || v.isEmpty) ? '' : v);
               },
             ),
 

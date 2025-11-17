@@ -288,10 +288,11 @@ class _HearingsCalendarPageState extends State<HearingsCalendarPage> {
       final qb = _sb
           .from('hearings')
           .select(
-              'hearing_id, type, ends_at, time, courtroom, notes, matter_id')
+              'hearing_id, type, ends_at, time, courtroom, notes, matter_id, done, status')
           .eq('firm_id', fid)
           .gte('ends_at', dateOnly(start))
           .lte('ends_at', dateOnly(end))
+          .eq('status', 'active')
           .order('ends_at', ascending: true)
           .order('time', ascending: true);
       final rows = await qb;
@@ -581,14 +582,18 @@ class _HearingsCalendarPageState extends State<HearingsCalendarPage> {
     final court = '${m?['court'] ?? ''}';
     final judge = '${m?['judge'] ?? ''}';
     final matterLabel = _buildMatterLabel(m);
+    final dynamic doneVal = h['done'];
+    final bool isDone = (doneVal == true) ||
+        (doneVal is String && (doneVal.toLowerCase() == 't' || doneVal.toLowerCase() == 'true')) ||
+        (doneVal is int && doneVal != 0);
     return GestureDetector(
-      onTap: () => _openDisposition(h),
+      onTap: () { if (isDone) { AppToaster.of(context).warning('Udienza già evasa'); } else { _openDisposition(h); } },
       child: Container(
         // Aumenta leggermente la spaziatura verticale della card
         margin: EdgeInsets.symmetric(vertical: su * 0.75),
         padding: EdgeInsets.all(su),
         decoration: BoxDecoration(
-          border: Border.all(color: _colorFor(h)),
+          border: Border.all(color: isDone ? Theme.of(context).colorScheme.outlineVariant : _colorFor(h)),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -602,7 +607,7 @@ class _HearingsCalendarPageState extends State<HearingsCalendarPage> {
                   // 1) Pratica in alto: stesso container della lista Agenda (Chip)
                   if (matterLabel.isNotEmpty)
                     Chip(
-                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      backgroundColor: isDone ? Colors.transparent : Theme.of(context).colorScheme.tertiary,
                       avatar: Icon(
                         AppIcons.folder,
                         size: 16,
@@ -621,13 +626,22 @@ class _HearingsCalendarPageState extends State<HearingsCalendarPage> {
                     ),
                   if (matterLabel.isNotEmpty) SizedBox(height: su * 0.75),
                   // 2) Tribunale
-                  Text(court.isEmpty ? '—' : court),
+                  Text(court.isEmpty ? '—' : court, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: isDone ? Theme.of(context).disabledColor : null,
+                    decoration: isDone ? TextDecoration.lineThrough : null,
+                  )),
                   SizedBox(height: su * 0.5),
                   // 3) Giudice
-                  Text(judge.isEmpty ? '—' : judge),
+                  Text(judge.isEmpty ? '—' : judge, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: isDone ? Theme.of(context).disabledColor : null,
+                    decoration: isDone ? TextDecoration.lineThrough : null,
+                  )),
                   SizedBox(height: su * 0.5),
                   // 4) Ora udienza (solo HH:mm)
-                  Text(timeOnly, style: Theme.of(context).textTheme.bodyMedium),
+                  Text(timeOnly, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: isDone ? Theme.of(context).disabledColor : null,
+                    decoration: isDone ? TextDecoration.lineThrough : null,
+                  )),
                 ],
               ),
             ),

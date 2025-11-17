@@ -1,16 +1,19 @@
 // lib/features/matters/presentation/matter_edit_sheet.dart
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:gestionale_desktop/design system/components/button.dart';
 import 'package:gestionale_desktop/design system/components/input.dart';
 import 'package:gestionale_desktop/design system/components/textarea.dart';
 import 'package:gestionale_desktop/design system/components/select.dart';
+import 'package:gestionale_desktop/design system/components/combobox.dart';
 import 'package:gestionale_desktop/design system/components/date_picker.dart';
 import 'package:gestionale_desktop/design system/theme/themes.dart';
 import '../../../design system/icons/app_icons.dart';
 
 import '../data/matter_repo.dart';
 import '../data/matter_model.dart';
+import '../../courtroom/data/courtroom_repo.dart';
 import 'package:gestionale_desktop/core/supa_helpers.dart';
 
 /// Bottom sheet per modificare una pratica esistente.
@@ -40,7 +43,8 @@ class _MatterEditSheetState extends State<MatterEditSheet> {
   bool _saving = false;
   String? _error;
   List<String> _statusSuggestions = const [];
-  List<String> _courtSuggestions = const [];
+  List<ComboboxGroupData> _courtGroups = const [];
+  StreamSubscription<List<ComboboxGroupData>>? _courtGroupsSub;
   DateTime? _openedAt;
   DateTime? _closedAt;
 
@@ -61,6 +65,11 @@ class _MatterEditSheetState extends State<MatterEditSheet> {
     _openedAt = widget.matter.openedAt;
     _closedAt = widget.matter.closedAt;
     _bootstrap();
+    // Osserva courtroom.json e aggiorna gruppi foro
+    _courtGroupsSub = CourtroomRepo().watchGroups().listen((groups) {
+      if (!mounted) return;
+      setState(() => _courtGroups = groups);
+    });
   }
 
   @override
@@ -74,6 +83,7 @@ class _MatterEditSheetState extends State<MatterEditSheet> {
     _counterpartyCtl.dispose();
     _rgCtl.dispose();
     _notesCtl.dispose();
+    _courtGroupsSub?.cancel();
     super.dispose();
   }
 
@@ -82,12 +92,10 @@ class _MatterEditSheetState extends State<MatterEditSheet> {
       final fid = await getCurrentFirmId();
       if (fid == null) return;
       final statuses = await _loadDistinctValues('status');
-      final courts = await _loadDistinctValues('court');
       setState(() {
         _statusSuggestions = statuses.isEmpty
             ? const ['open', 'in_progress', 'closed']
             : statuses;
-        _courtSuggestions = courts;
       });
     } catch (_) {}
   }
@@ -220,24 +228,14 @@ class _MatterEditSheetState extends State<MatterEditSheet> {
               hintText: 'Area (opzionale)',
             ),
             SizedBox(height: spacing * 2),
-            AppSelect(
-              value: _courtSuggestions.contains(_courtCtl.text)
-                  ? _courtCtl.text
-                  : null,
-              placeholder: 'Foro (opzionale)',
+            AppCombobox(
               width: double.infinity,
-              groups: [
-                SelectGroupData(
-                  label: 'Foro (opzionale)',
-                  items: [
-                    const SelectItemData(value: '', label: '—'),
-                    ..._courtSuggestions.map(
-                      (c) => SelectItemData(value: c, label: c),
-                    ),
-                  ],
-                ),
-              ],
-              onChanged: (v) => setState(() => _courtCtl.text = v.isEmpty ? '' : v),
+              value: _courtCtl.text.isEmpty ? null : _courtCtl.text,
+              placeholder: 'Foro (opzionale)',
+              items: const [],
+              groups: _courtGroups,
+              popoverMatchWidestRow: true,
+              onChanged: (v) => setState(() => _courtCtl.text = (v == null || v.isEmpty) ? '' : v),
             ),
             SizedBox(height: spacing * 2),
             AppInput(

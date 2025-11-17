@@ -621,8 +621,8 @@ class _MonthCaption extends StatelessWidget {
       // Anni: sempre dall'anno corrente fino a 100 anni indietro.
       // Richiesta: ignoriamo min/max qui e usiamo range fisso [now.year .. now.year-100].
       final int currentYear = DateTime.now().year;
-      final int startYear = currentYear;
-      final int endYear = currentYear - 100;
+      final int startYear = currentYear + 10;
+      final int endYear = currentYear - 50;
       final int count = (startYear - endYear) + 1;
       final years = List.generate(count, (i) => startYear - i);
       final months = List.generate(12, (i) => i + 1);
