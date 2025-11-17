@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
         unawaited(AuditService.logEvent(entity: 'auth', action: 'LOGIN'));
       } else {
         await setCurrentFirmId(firmId);
-        nav?.pushReplacementNamed('/dashboard');
+        nav?.pushReplacementNamed('/clienti');
         // Audit: login riuscito
         unawaited(AuditService.logEvent(entity: 'auth', action: 'LOGIN'));
       }

@@ -41,11 +41,6 @@ class _AdaptiveShellState extends State<AdaptiveShell> {
     final base = <_NavItem>[
       const _NavItem(
           index: 0,
-          label: 'Dashboard',
-          route: '/dashboard',
-          icon: AppIcons.dashboard),
-      const _NavItem(
-          index: 1,
           label: 'Clienti',
           route: '/clienti',
           icon: AppIcons.clients),
@@ -53,17 +48,17 @@ class _AdaptiveShellState extends State<AdaptiveShell> {
     // Voci visibili solo se è selezionata una firm
     final firmRelated = <_NavItem>[
       const _NavItem(
-          index: 2,
+          index: 1,
           label: 'Pratiche',
           route: '/matters/list',
           icon: AppIcons.matters),
       const _NavItem(
-          index: 3,
+          index: 2,
           label: 'Agenda',
           route: '/agenda',
           icon: AppIcons.calendar),
       const _NavItem(
-          index: 4,
+          index: 3,
           label: 'Udienze',
           route: '/agenda/udienze',
           icon: AppIcons.gavel),

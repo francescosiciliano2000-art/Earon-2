@@ -40,6 +40,7 @@ class _ClientiPageState extends State<ClientiPage> {
   final int _pageSize = 10;
   bool _loading = false;
   String? _firmId;
+  bool _firmResolving = true;
   late final _repo = ClienteRepo(Supabase.instance.client);
   List<Map<String, dynamic>> _rows = const [];
   int _total = 0;
@@ -99,6 +100,8 @@ class _ClientiPageState extends State<ClientiPage> {
     await ensureFirmSelected(context);
     final id = await getCurrentFirmId();
     setState(() => _firmId = id);
+  
+    setState(() => _firmResolving = false);
   }
 
   Future<void> _load() async {
@@ -533,9 +536,9 @@ class _ClientiPageState extends State<ClientiPage> {
   @override
   Widget build(BuildContext context) {
     final fid = _firmId ?? '';
-    final body = (fid.isEmpty)
-        ? const SelectFirmPlaceholder()
-        : contentColumn();
+    final body = _firmResolving
+        ? contentColumn()
+        : (fid.isEmpty ? const SelectFirmPlaceholder() : contentColumn());
     return Padding(
       padding: EdgeInsets.all(su * 3),
       child: body,

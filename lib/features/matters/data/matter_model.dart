@@ -13,6 +13,7 @@ class Matter {
   final String? court; // testo (non esiste court_id)
   final String? judge; // testo
   final String? description; // testo descrittivo
+  final String? subtype; // sottocategoria (es. per Groupama)
   // Campi aggiuntivi richiesti lato UI (presi dalla tabella):
   final String? counterpartyName; // controparte
   final String? rgNumber; // numero RG
@@ -37,6 +38,7 @@ class Matter {
     this.court,
     this.judge,
     this.description,
+    this.subtype,
     this.counterpartyName,
     this.rgNumber,
     this.opposingAttorneyName,
@@ -59,6 +61,7 @@ class Matter {
   static const colCourt = 'court';
   static const colJudge = 'judge';
   static const colDescription = 'description';
+  static const colSubtype = 'subtype';
   static const colCounterpartyName = 'counterparty_name';
   static const colRgNumber = 'rg_number';
   static const colOpposingAttorneyName = 'opposing_attorney_name';
@@ -112,6 +115,7 @@ class Matter {
       court: json[colCourt]?.toString(),
       judge: json[colJudge]?.toString(),
       description: json[colDescription]?.toString(),
+      subtype: json[colSubtype]?.toString(),
       counterpartyName: json[colCounterpartyName]?.toString(),
       rgNumber: json[colRgNumber]?.toString(),
       opposingAttorneyName: json[colOpposingAttorneyName]?.toString(),
@@ -138,6 +142,7 @@ class Matter {
       if (court != null) colCourt: court,
       if (judge != null) colJudge: judge,
       if (description != null) colDescription: description,
+      if (subtype != null) colSubtype: subtype,
       if (counterpartyName != null) colCounterpartyName: counterpartyName,
       if (rgNumber != null) colRgNumber: rgNumber,
       if (opposingAttorneyName != null)

@@ -289,6 +289,7 @@ class MatterRepo {
     String? opposingAttorneyName,
     String? registryCode,
     String? courtSection,
+    String? subtype,
     DateTime? openedAt,
     String? responsibleId, // non supportato dallo schema
     String? notes,
@@ -320,6 +321,7 @@ class MatterRepo {
         Matter.colRegistryCode: registryCode,
       if (courtSection != null && courtSection.isNotEmpty)
         Matter.colCourtSection: courtSection,
+      if (subtype != null && subtype.isNotEmpty) Matter.colSubtype: subtype,
       if (notes != null && notes.isNotEmpty) Matter.colDescription: notes,
       Matter.colOpenedAt: dateOnly(openedAt) ?? todayISODate(),
     }..removeWhere((k, v) => v == null);
@@ -349,6 +351,7 @@ class MatterRepo {
     String? opposingAttorneyName,
     String? registryCode,
     String? courtSection,
+    String? subtype,
     DateTime? openedAt,
     DateTime? closedAt,
   }) async {
@@ -370,6 +373,7 @@ class MatterRepo {
         Matter.colOpposingAttorneyName: opposingAttorneyName,
       if (registryCode != null) Matter.colRegistryCode: registryCode,
       if (courtSection != null) Matter.colCourtSection: courtSection,
+      if (subtype != null) Matter.colSubtype: subtype,
       if (openedAt != null) Matter.colOpenedAt: dateOnly(openedAt),
       if (closedAt != null) Matter.colClosedAt: dateOnly(closedAt),
     };

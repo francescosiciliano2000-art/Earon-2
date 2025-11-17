@@ -42,6 +42,8 @@ class _MattersListPageState extends State<MattersListPage> {
   bool _loading = true;
   String? _error;
   String? _firmId; // firm selezionata
+  // ignore: prefer_final_fields
+bool _firmResolving = true;
   List<Matter> _rows = [];
   // Selezione righe + ordinamento
   final Set<String> _selectedIds = <String>{};
@@ -260,9 +262,9 @@ class _MattersListPageState extends State<MattersListPage> {
     final double su =
         Theme.of(context).extension<DefaultTokens>()?.spacingUnit ?? 8.0;
     final fid = _firmId ?? '';
-    final gate = (fid.isEmpty)
-        ? const SelectFirmPlaceholder()
-        : null;
+    final gate = _firmResolving
+        ? null
+        : (fid.isEmpty ? const SelectFirmPlaceholder() : null);
     return Scaffold(
       // rimosso TopBar: titolo, cerca, aggiorna, utente
       body: Padding(

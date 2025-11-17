@@ -39,18 +39,13 @@ class _AppShellState extends State<AppShell> {
     final items = <_NavItem>[
       const _NavItem(
           index: 0,
-          label: 'Dashboard',
-          route: '/dashboard',
-          icon: AppIcons.dashboard),
-      const _NavItem(
-          index: 1,
           label: 'Clienti',
           route: '/clienti',
           icon: AppIcons.clients),
     ];
     if (_hasFirm) {
       items.add(const _NavItem(
-          index: 2,
+          index: 1,
           label: 'Pratiche',
           route: '/matters/list',
           icon: AppIcons.matters));

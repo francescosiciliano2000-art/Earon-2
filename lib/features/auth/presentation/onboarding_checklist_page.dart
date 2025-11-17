@@ -93,8 +93,8 @@ class _OnboardingChecklistPageState extends State<OnboardingChecklistPage> {
           AppButton(
             variant: AppButtonVariant.default_,
             onPressed: () =>
-                Navigator.of(context).pushReplacementNamed('/dashboard'),
-            child: const Text('Vai alla Dashboard'),
+                Navigator.of(context).pushReplacementNamed('/clienti'),
+            child: const Text('Vai ai Clienti'),
           ),
         ],
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/foundation.dart' show kReleaseMode, kIsWeb;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +18,8 @@ import 'design system/components/sonner.dart';
 import 'core/supa_env.dart';
 
 Future<void> setupAutoUpdater() async {
-  if (!(Platform.isMacOS || Platform.isWindows)) return;
+  // Aggiorna solo su desktop; su web non è supportato
+  if (kIsWeb || !(Platform.isMacOS || Platform.isWindows)) return;
 
   const feedURLFromEnv =
       String.fromEnvironment('APPCAST_URL', defaultValue: '');
@@ -56,7 +57,7 @@ Future<bool> _loadDotenvAdaptive() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Inizializza window_manager solo su desktop (macOS/Windows)
-  if (Platform.isMacOS || Platform.isWindows) {
+  if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
     await windowManager.ensureInitialized();
   }
   debugPrint('[App] start');
@@ -103,7 +104,7 @@ Future<void> main() async {
     // In release o debug: mostra una schermata chiara invece di crashare
     runApp(const ConfigErrorApp());
     // Imposta comunque la finestra per evitare schermo nero
-    if (Platform.isMacOS || Platform.isWindows) {
+    if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
       await windowManager.waitUntilReadyToShow(const WindowOptions(
         size: Size(1024, 700),
         center: true,
@@ -144,7 +145,7 @@ Future<void> main() async {
   unawaited(setupAutoUpdater());
 
   // Imposta massimizzazione all'avvio (macOS/Windows)
-  if (Platform.isMacOS || Platform.isWindows) {
+  if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
     await windowManager.waitUntilReadyToShow(const WindowOptions(
       // In caso di fallback, imposta dimensione iniziale e centra
       size: Size(1280, 800),

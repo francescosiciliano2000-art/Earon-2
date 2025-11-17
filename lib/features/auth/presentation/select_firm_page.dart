@@ -113,7 +113,7 @@ class _SelectFirmPageState extends State<SelectFirmPage> {
               final id = f['id'] as String;
               await setCurrentFirmId(id);
               debugPrint('[SelectFirm] firm selezionata: id=$id');
-              appNavigatorKey.currentState?.pushReplacementNamed('/dashboard');
+              appNavigatorKey.currentState?.pushReplacementNamed('/clienti');
             },
           );
         },
