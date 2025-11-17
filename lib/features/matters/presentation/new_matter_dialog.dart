@@ -23,7 +23,7 @@ import '../../clienti/data/cliente_repo.dart';
 import 'package:gestionale_desktop/core/supa_helpers.dart';
 
 /// Dialog unico per creazione e modifica Pratica.
-/// - Se [editing] è null: crea nuova pratica con selezione cliente, oggetto, foro, note
+/// - Se [editing] è null: flusso a 2 step (Step 1: selezione tipologia/area; Step 2: form dati)
 /// - Se [editing] è valorizzato: modifica la pratica (oggetto, stato, area, foro, giudice, note)
 class NewMatterDialog extends StatefulWidget {
   final Matter? editing;
@@ -37,6 +37,10 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
   late final SupabaseClient _sb;
   late final MatterRepo _repo;
   late final ClienteRepo _clientsRepo;
+
+  // Stato flusso step
+  int _step = 1; // 1 = selezione area; 2 = form
+  String? _areaChoice; // area scelta nello step 1
 
   // campi comuni
   final _subjectCtl = TextEditingController();
@@ -56,6 +60,7 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
   final _rgCtl = TextEditingController();
   final _courtSectionCtl = TextEditingController();
   final _oppAttorneyCtl = TextEditingController();
+  final _subtypeCtl = TextEditingController();
 
   bool _saving = false;
   String? _error;
@@ -83,6 +88,9 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
       _rgCtl.text = e.rgNumber ?? '';
       _courtSectionCtl.text = e.courtSection ?? '';
       _oppAttorneyCtl.text = e.opposingAttorneyName ?? '';
+      _step = 2; // in modifica salta lo step 1
+    } else {
+      _step = 1;
     }
 
     _bootstrap();
@@ -112,6 +120,7 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
     _rgCtl.dispose();
     _courtSectionCtl.dispose();
     _oppAttorneyCtl.dispose();
+    _subtypeCtl.dispose();
     _courtGroupsSub?.cancel();
     super.dispose();
   }
@@ -194,6 +203,10 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
     });
   }
 
+  void _onAreaSelect(String value) {
+    setState(() => _areaChoice = value);
+  }
+
   Future<void> _submit() async {
     final isEdit = widget.editing != null;
     final subject = _subjectCtl.text.trim();
@@ -203,7 +216,8 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
     final courtSection = _courtSectionCtl.text.trim();
     final oppAttorney = _oppAttorneyCtl.text.trim();
 
-    if (subject.isEmpty) {
+    final canSkipSubject = (!isEdit && (_areaChoice == 'Curatela' || _areaChoice == 'Delega'));
+    if (!canSkipSubject && subject.isEmpty) {
       setState(() => _error = 'Oggetto obbligatorio');
       return;
     }
@@ -229,6 +243,9 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
           rgNumber: rgNumber.isEmpty ? null : rgNumber,
           courtSection: courtSection.isEmpty ? null : courtSection,
           opposingAttorneyName: oppAttorney.isEmpty ? null : oppAttorney,
+          subtype: ((!isEdit && _areaChoice == 'Groupama') || (isEdit && (_areaCtl.text.trim() == 'Groupama'))) && (_subtypeCtl.text.trim() != '')
+              ? _subtypeCtl.text.trim()
+              : null,
         );
         if (!mounted) return;
         Navigator.pop<Matter>(context, updated);
@@ -240,12 +257,18 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
         final created = await _repo.create(
           clientId: _clientId!,
           subject: subject,
+          status: null,
+          area: _areaChoice,
           courtId: _courtCtl.text.trim().isEmpty ? null : _courtCtl.text.trim(),
+          judge: _judgeCtl.text.trim().isEmpty ? null : _judgeCtl.text.trim(),
           notes: notes.isEmpty ? null : notes,
           counterpartyName: counterparty.isEmpty ? null : counterparty,
           rgNumber: rgNumber.isEmpty ? null : rgNumber,
           courtSection: courtSection.isEmpty ? null : courtSection,
           opposingAttorneyName: oppAttorney.isEmpty ? null : oppAttorney,
+          subtype: ((!isEdit && _areaChoice == 'Groupama') || (isEdit && (_areaCtl.text.trim() == 'Groupama'))) && (_subtypeCtl.text.trim() != '')
+              ? _subtypeCtl.text.trim()
+              : null,
         );
         if (!mounted) return;
         Navigator.pop<Matter>(context, created);
@@ -261,17 +284,23 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
   Widget build(BuildContext context) {
     final isEdit = widget.editing != null;
     final su = Theme.of(context).extension<DefaultTokens>()?.spacingUnit ?? 8.0;
+    final isCuratelaSelected = (!isEdit && _areaChoice == 'Curatela');
+    final isDelegaSelected = (!isEdit && _areaChoice == 'Delega');
+    final isGroupamaSelected = ((!isEdit && _areaChoice == 'Groupama') || (isEdit && (_areaCtl.text.trim() == 'Groupama')));
+
+
+    final headerDescription = isEdit
+        ? 'Aggiorna le informazioni della pratica.'
+        : (_step == 1
+            ? 'Seleziona la tipologia della pratica.'
+            : 'Compila i dati per aggiungere una nuova pratica.');
 
     return AppDialogContent(
       showCloseButton: true,
       children: [
         AppDialogHeader(
           title: AppDialogTitle(isEdit ? 'Modifica pratica' : 'Nuova pratica'),
-          description: AppDialogDescription(
-            isEdit
-                ? 'Aggiorna le informazioni della pratica.'
-                : 'Compila i dati per aggiungere una nuova pratica.',
-          ),
+          description: AppDialogDescription(headerDescription),
         ),
         SizedBox(height: 6),
         SizedBox(
@@ -280,203 +309,256 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (!isEdit) ...[
-                  AppLabel(text: 'Cliente'),
-                  SizedBox(height: su * 1.5),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AppCombobox(
-                          width: double.infinity,
-                          placeholder: 'Seleziona cliente…',
-                          items: _clientOptions
-                              .map((o) =>
-                                  ComboboxItem(value: o.id, label: o.label))
-                              .toList(),
-                          value: _clientId,
-                          // La lista si adatta alla riga più lunga
-                          popoverMatchWidestRow: true,
-                          onQueryChanged: _onClientQueryChanged,
-                          onChanged: (value) =>
-                              setState(() => _clientId = value),
-                        ),
-                      ),
-                      if (_clientId != null)
-                        Padding(
-                          padding: EdgeInsets.only(left: su),
-                          child: AppButton(
-                            variant: AppButtonVariant.ghost,
-                            size: AppButtonSize.icon,
-                            onPressed: () {
-                              setState(() {
-                                _clientId = null;
-                                _clientOptions = const [];
-                              });
-                            },
-                            child: const Icon(AppIcons.clear, size: 16),
-                          ),
-                        ),
-                    ],
+                // STEP 1: selezione tipologia/area (solo creazione)
+                if (!isEdit && _step == 1) ...[
+                  _AreasGrid(
+                    selected: _areaChoice,
+                    onSelect: _onAreaSelect,
                   ),
-                  SizedBox(height: su * 2),
+                  SizedBox(height: su * 1.25),
                 ],
 
-                AppLabel(text: 'Oggetto'),
-                SizedBox(height: su * 1.5),
-                AppInput(
-                  controller: _subjectCtl,
-                  hintText: '',
-                ),
-
-                SizedBox(height: su * 2),
-                // Controparte e Avvocato controparte sulla stessa riga
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Controparte
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppLabel(text: 'Controparte'),
-                          SizedBox(height: su * 1.5),
-                          AppInput(
-                            controller: _counterpartyCtl,
-                            hintText: '',
+                // STEP 2: form di creazione/modifica
+                if (isEdit || _step == 2) ...[
+                  if (!isEdit) ...[
+                    AppLabel(text: 'Cliente'),
+                    SizedBox(height: su * 1.5),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AppCombobox(
+                            width: double.infinity,
+                            placeholder: 'Seleziona cliente…',
+                            items: _clientOptions
+                                .map((o) =>
+                                    ComboboxItem(value: o.id, label: o.label))
+                                .toList(),
+                            value: _clientId,
+                            // La lista si adatta alla riga più lunga
+                            popoverMatchWidestRow: true,
+                            onQueryChanged: _onClientQueryChanged,
+                            onChanged: (value) =>
+                                setState(() => _clientId = value),
                           ),
-                        ],
-                      ),
+                        ),
+                        if (_clientId != null)
+                          Padding(
+                            padding: EdgeInsets.only(left: su),
+                            child: AppButton(
+                              variant: AppButtonVariant.ghost,
+                              size: AppButtonSize.icon,
+                              onPressed: () {
+                                setState(() {
+                                  _clientId = null;
+                                  _clientOptions = const [];
+                                });
+                              },
+                              child: const Icon(AppIcons.clear, size: 16),
+                            ),
+                          ),
+                      ],
                     ),
-                    SizedBox(width: su * 2),
-                    // Avvocato controparte
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppLabel(text: 'Avvocato controparte'),
-                          SizedBox(height: su * 1.5),
-                          AppInput(
-                            controller: _oppAttorneyCtl,
-                            hintText: '',
-                          ),
-                        ],
-                      ),
+                    SizedBox(height: su * 2),
+                  ],  if (!isCuratelaSelected && !isDelegaSelected) ...[
+    // Oggetto + Sottocategoria (solo Groupama) sulla stessa riga
+    Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: isGroupamaSelected ? 7 : 10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppLabel(text: 'Oggetto'),
+              SizedBox(height: su * 1.5),
+              AppInput(
+                controller: _subjectCtl,
+                hintText: '',
+              ),
+            ],
+          ),
+        ),
+        if (isGroupamaSelected) ...[
+          SizedBox(width: su * 2),
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppLabel(text: 'Sottocategoria'),
+                SizedBox(height: su * 1.5),
+                AppSelect(
+                  value: _subtypeCtl.text.isEmpty ? null : _subtypeCtl.text,
+                  placeholder: 'Seleziona…',
+                  width: double.infinity,
+                  groups: const [
+                    SelectGroupData(
+                      label: 'Sottocategoria',
+                      items: [
+                        SelectItemData(value: 'Alto valore', label: 'Alto valore'),
+                        SelectItemData(value: 'Anti frode', label: 'Anti frode'),
+                      ],
                     ),
                   ],
+                  onChanged: (v) => setState(() => _subtypeCtl.text = v.isEmpty ? '' : v),
                 ),
-
-                SizedBox(height: su * 2),
-                // Stato (solo edit)
-                if (isEdit) ...[
-                  AppLabel(text: 'Stato'),
-                  SizedBox(height: su * 1.5),
-                  AppSelect(
-                    value: _statusSuggestions.contains(_statusCtl.text)
-                        ? _statusCtl.text
-                        : null,
-                    placeholder: 'Stato',
-                    width: double.infinity,
-                    groups: [
-                      SelectGroupData(
-                        label: 'Stato',
-                        items: [
-                          const SelectItemData(value: '', label: '—'),
-                          ..._statusSuggestions
-                              .map((s) => SelectItemData(value: s, label: s)),
-                        ],
+              ],
+            ),
+          ),
+        ],
+      ],
+    ),
+    SizedBox(height: su * 2),
+                  // Controparte e Avvocato controparte sulla stessa riga
+                  if (!isCuratelaSelected) Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Controparte
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppLabel(text: 'Controparte'),
+                            SizedBox(height: su * 1.5),
+                            AppInput(
+                              controller: _counterpartyCtl,
+                              hintText: '',
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: su * 2),
+                      // Avvocato controparte
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppLabel(text: 'Avvocato controparte'),
+                            SizedBox(height: su * 1.5),
+                            AppInput(
+                              controller: _oppAttorneyCtl,
+                              hintText: '',
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                    onChanged: (v) =>
-                        setState(() => _statusCtl.text = v.isEmpty ? '' : v),
                   ),
+
                   SizedBox(height: su * 2),
-                  AppLabel(text: 'Area'),
+                  ],
+                  // Stato (solo edit)
+                  if (isEdit) ...[
+                    AppLabel(text: 'Stato'),
+                    SizedBox(height: su * 1.5),
+                    AppSelect(
+                      value: _statusSuggestions.contains(_statusCtl.text)
+                          ? _statusCtl.text
+                          : null,
+                      placeholder: 'Stato',
+                      width: double.infinity,
+                      groups: [
+                        SelectGroupData(
+                          label: 'Stato',
+                          items: [
+                            const SelectItemData(value: '', label: '—'),
+                            ..._statusSuggestions
+                                .map((s) => SelectItemData(value: s, label: s)),
+                          ],
+                        ),
+                      ],
+                      onChanged: (v) =>
+                          setState(() => _statusCtl.text = v.isEmpty ? '' : v),
+                    ),
+                    SizedBox(height: su * 2),
+                    AppLabel(text: 'Area'),
+                    SizedBox(height: su * 1.5),
+                    AppInput(
+                      controller: _areaCtl,
+                      hintText: 'Area',
+                    ),
+                    SizedBox(height: su * 2),
+                  ],
+
+                  // Foro, Sezione e Giudice sulla stessa riga
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Foro
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppLabel(text: 'Foro'),
+                            SizedBox(height: su * 1.5),
+                            AppCombobox(
+                              value:
+                                  _courtCtl.text.isEmpty ? null : _courtCtl.text,
+                              placeholder: 'Seleziona foro...',
+                              width: double.infinity,
+                              groups: _courtGroups,
+                              popoverMatchWidestRow: true,
+                              items: const [],
+                              onChanged: (v) =>
+                                  setState(() => _courtCtl.text = v ?? ''),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: su * 2),
+                      // Sezione
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppLabel(text: 'Sezione'),
+                            SizedBox(height: su * 1.5),
+                            AppInput(
+                              controller: _courtSectionCtl,
+                              hintText: '',
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: su * 2),
+                      // Giudice
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppLabel(text: 'Giudice'),
+                            SizedBox(height: su * 1.5),
+                            AppInput(
+                              controller: _judgeCtl,
+                              hintText: '',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: su * 2),
+                  // Numero RG
+                  AppLabel(text: 'Numero RG'),
                   SizedBox(height: su * 1.5),
                   AppInput(
-                    controller: _areaCtl,
-                    hintText: 'Area',
+                    controller: _rgCtl,
+                    hintText: '',
                   ),
+
                   SizedBox(height: su * 2),
+
+                  AppLabel(text: 'Note'),
+                  SizedBox(height: su * 1.5),
+                  AppTextarea(
+                    controller: _notesCtl,
+                    minLines: 3,
+                    maxLines: 6,
+                    hintText: '',
+                  ),
                 ],
-
-                // Foro, Sezione e Giudice sulla stessa riga
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Foro
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppLabel(text: 'Foro'),
-                          SizedBox(height: su * 1.5),
-                          AppCombobox(
-                            value:
-                                _courtCtl.text.isEmpty ? null : _courtCtl.text,
-                            placeholder: 'Seleziona foro...',
-                            width: double.infinity,
-                            groups: _courtGroups,
-                            popoverMatchWidestRow: true,
-                            items: const [],
-                            onChanged: (v) =>
-                                setState(() => _courtCtl.text = v ?? ''),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: su * 2),
-                    // Sezione
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppLabel(text: 'Sezione'),
-                          SizedBox(height: su * 1.5),
-                          AppInput(
-                            controller: _courtSectionCtl,
-                            hintText: '',
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: su * 2),
-                    // Giudice
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppLabel(text: 'Giudice'),
-                          SizedBox(height: su * 1.5),
-                          AppInput(
-                            controller: _judgeCtl,
-                            hintText: '',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: su * 2),
-                // Numero RG
-                AppLabel(text: 'Numero RG'),
-                SizedBox(height: su * 1.5),
-                AppInput(
-                  controller: _rgCtl,
-                  hintText: '',
-                ),
-
-                SizedBox(height: su * 2),
-
-                AppLabel(text: 'Note'),
-                SizedBox(height: su * 1.5),
-                AppTextarea(
-                  controller: _notesCtl,
-                  minLines: 3,
-                  maxLines: 6,
-                  hintText: '',
-                ),
 
                 if (_error != null) ...[
                   SizedBox(height: su * 2),
@@ -495,17 +577,32 @@ class _NewMatterDialogState extends State<NewMatterDialog> {
         SizedBox(height: su * 2),
         AppDialogFooter(
           children: [
+            // Bottone Indietro (solo step 2 in creazione)
+            if (!isEdit && _step == 2)
+              AppButton(
+                variant: AppButtonVariant.ghost,
+                onPressed: () => setState(() => _step = 1),
+                child: const Text('Indietro'),
+              ),
             AppButton(
               variant: AppButtonVariant.outline,
               onPressed: () => Navigator.pop(context),
               child: const Text('Annulla'),
             ),
-            AppButton(
-              onPressed: _saving ? null : _submit,
-              child: _saving
-                  ? const Spinner(size: 18)
-                  : Text(isEdit ? 'Salva' : 'Crea'),
-            ),
+            if (!isEdit && _step == 1)
+              AppButton(
+                onPressed: (_areaChoice == null)
+                    ? null
+                    : () => setState(() => _step = 2),
+                child: const Text('Avanti'),
+              )
+            else
+              AppButton(
+                onPressed: _saving ? null : _submit,
+                child: _saving
+                    ? const Spinner(size: 18)
+                    : Text(isEdit ? 'Salva' : 'Crea'),
+              ),
           ],
         ),
       ],
@@ -520,3 +617,145 @@ class _ClientOption {
   @override
   String toString() => label;
 }
+
+class _AreasGrid extends StatelessWidget {
+  final String? selected;
+  final void Function(String value) onSelect;
+  const _AreasGrid({required this.selected, required this.onSelect});
+
+  @override
+  Widget build(BuildContext context) {
+    final su = Theme.of(context).extension<DefaultTokens>()?.spacingUnit ?? 8.0;
+    final items = <_AreaCardData>[
+            _AreaCardData('Curatela', 'Gestione curatele e tutele'),
+      _AreaCardData('Custodia', 'Custodie giudiziarie e amministrative'),
+      _AreaCardData('Delega', 'Deleghe e incarichi'),
+      _AreaCardData('Ordinaria', 'Attività ordinaria civile/penale'),
+      _AreaCardData('Groupama', 'Pratiche assicurative Groupama'),
+    ];
+
+    final half = (items.length + 1) ~/ 2;
+    final left = items.sublist(0, half);
+    final right = items.sublist(half);
+
+    Widget buildColumn(List<_AreaCardData> col) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (int i = 0; i < col.length; i++) ...[
+              _AreaVerticalCard(
+                title: col[i].title,
+                subtitle: col[i].subtitle,
+                selected: selected == col[i].title,
+                onTap: () => onSelect(col[i].title),
+              ),
+              if (i != col.length - 1) SizedBox(height: su),
+            ],
+          ],
+        );
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: buildColumn(left)),
+        SizedBox(width: su),
+        Expanded(child: buildColumn(right)),
+      ],
+    );
+  }
+}
+
+
+class _AreaCardData {
+  final String title;
+  final String subtitle;
+  const _AreaCardData(this.title, this.subtitle);
+}
+
+/// Card verticale con radio bullet a destra (stile simile a HearingDispositionDialog)
+class _AreaVerticalCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final bool selected;
+  final VoidCallback onTap;
+  const _AreaVerticalCard({
+    required this.title,
+    required this.subtitle,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final su = Theme.of(context).extension<DefaultTokens>()?.spacingUnit ?? 8.0;
+    final cs = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: su * 2, vertical: su * 1.5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: selected ? cs.primary : cs.outlineVariant),
+          color: selected ? cs.primary.withValues(alpha: 0.06) : null,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppLabel(text: title),
+                  SizedBox(height: su * 0.5),
+                  AppDialogDescription(subtitle),
+                ],
+              ),
+            ),
+            SizedBox(width: su),
+            _RightRadioBullet(selected: selected),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class _RightRadioBullet extends StatelessWidget {
+  const _RightRadioBullet({required this.selected});
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final primary = cs.primary;
+    final border = cs.outlineVariant;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+      alignment: Alignment.topRight,
+      child: Container(
+        width: 16,
+        height: 16,
+        decoration: BoxDecoration(
+          color: isDark ? cs.surface.withValues(alpha: 0.30) : Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: selected ? primary : border, width: 1.0),
+        ),
+        child: Center(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 120),
+            width: selected ? 8 : 0,
+            height: selected ? 8 : 0,
+            decoration: BoxDecoration(
+              color: selected ? primary : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

@@ -1,3 +1,8 @@
+## 0.1.7+1 - 2025-11-17
+- Sidebar: nascosta voce Dashboard.
+- Post-login: landing direttamente su Clienti.
+- Pulizia lint: flutter analyze senza issue.
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

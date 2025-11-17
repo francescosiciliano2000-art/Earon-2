@@ -88,9 +88,7 @@ class _TasksPageState extends State<TasksPage> {
         final code = m.code;
         final client = (m.clientDisplayName ?? '').trim();
         final counter = (m.counterpartyName ?? '').trim();
-        final right = [client, counter]
-            .where((s) => s.isNotEmpty)
-            .join(' / ');
+        final right = [client, counter].where((s) => s.isNotEmpty).join(' / ');
         String label;
         if (code.isNotEmpty) {
           if (right.isNotEmpty) {
@@ -98,16 +96,12 @@ class _TasksPageState extends State<TasksPage> {
           } else {
             // m.title è non-nullabile nel modello: rimuovi null-coalescing ridondante
             final title = m.title.trim();
-            label = [code, title]
-                .where((s) => s.isNotEmpty)
-                .join(' — ');
+            label = [code, title].where((s) => s.isNotEmpty).join(' — ');
           }
         } else {
           // m.title è non-nullabile nel modello: rimuovi null-coalescing ridondante
           final title = m.title.trim();
-          label = [title, right]
-              .where((s) => s.isNotEmpty)
-              .join(' — ');
+          label = [title, right].where((s) => s.isNotEmpty).join(' — ');
         }
         if (id.isNotEmpty) mLabels[id] = label.isNotEmpty ? label : id;
       }
@@ -165,9 +159,7 @@ class _TasksPageState extends State<TasksPage> {
                 if (kind == 'person') {
                   final name = '${c['name'] ?? ''}'.trim();
                   final surname = '${c['surname'] ?? ''}'.trim();
-                  return [name, surname]
-                      .where((e) => e.isNotEmpty)
-                      .join(' ');
+                  return [name, surname].where((e) => e.isNotEmpty).join(' ');
                 } else if (kind == 'company') {
                   final companyName = '${c['name'] ?? ''}'.trim();
                   final companyType = '${c['company_type'] ?? ''}'.trim();
@@ -178,24 +170,21 @@ class _TasksPageState extends State<TasksPage> {
               }
               return '';
             }
+
             final client = clientName();
-            final right = [client, counter]
-                .where((s) => s.isNotEmpty)
-                .join(' / ');
+            final right =
+                [client, counter].where((s) => s.isNotEmpty).join(' / ');
             String label;
             if (code.isNotEmpty) {
               label = right.isNotEmpty
                   ? '$code — $right'
-                  : [code, title]
-                      .where((s) => s.isNotEmpty)
-                      .join(' — ');
+                  : [code, title].where((s) => s.isNotEmpty).join(' — ');
             } else {
-              label = [title, right]
-                  .where((s) => s.isNotEmpty)
-                  .join(' — ');
+              label = [title, right].where((s) => s.isNotEmpty).join(' — ');
             }
             return label;
           }
+
           final label = buildLabel(m);
           if (id.isNotEmpty) _matterLabels[id] = label.isNotEmpty ? label : id;
         }
@@ -238,8 +227,10 @@ class _TasksPageState extends State<TasksPage> {
       //    → start_at <= fine_giornata && due_at >= inizio_giornata
       // 2) Mostra tutte le task con due_at nel passato e done = FALSE (overdue non completate)
       final nowLocal = DateTime.now();
-      final startOfTodayLocal = DateTime(nowLocal.year, nowLocal.month, nowLocal.day);
-      final endOfTodayLocal = DateTime(nowLocal.year, nowLocal.month, nowLocal.day, 23, 59, 59, 999);
+      final startOfTodayLocal =
+          DateTime(nowLocal.year, nowLocal.month, nowLocal.day);
+      final endOfTodayLocal = DateTime(
+          nowLocal.year, nowLocal.month, nowLocal.day, 23, 59, 59, 999);
       final startIso = startOfTodayLocal.toUtc().toIso8601String();
       final endIso = endOfTodayLocal.toUtc().toIso8601String();
       // Limiti locali (senza conversione a UTC) — usati per done_at per evitare mismatch di timezone
@@ -250,8 +241,7 @@ class _TasksPageState extends State<TasksPage> {
       // Se il toggle "Mostra completati" è ON, non filtriamo done=false ma NON includiamo
       // tutte le completate fuori finestra.
       qb = qb.or(
-        'and(start_at.lte.$endIso,due_at.gte.$startIso),and(due_at.lt.$nowIso,done.eq.false)'
-      );
+          'and(start_at.lte.$endIso,due_at.gte.$startIso),and(due_at.lt.$nowIso,done.eq.false)');
       if (!_showCompleted) {
         qb = qb.eq('done', false);
       }
@@ -277,7 +267,8 @@ class _TasksPageState extends State<TasksPage> {
         try {
           var extrasQb = _sb
               .from('tasks')
-              .select('task_id, title, start_at, due_at, done, priority, assigned_to, matter_id, type, done_at')
+              .select(
+                  'task_id, title, start_at, due_at, done, priority, assigned_to, matter_id, type, done_at')
               .eq('firm_id', fid)
               .eq('done', true)
               .gte('done_at', startIsoLocal)
@@ -294,10 +285,12 @@ class _TasksPageState extends State<TasksPage> {
             extrasQb = extrasQb.eq('priority', pv ?? _filterPriority!);
           }
           final extra2 = await extrasQb;
-          extras.addAll(((extra2 as List?) ?? const []).cast<Map<String, dynamic>>());
+          extras.addAll(
+              ((extra2 as List?) ?? const []).cast<Map<String, dynamic>>());
         } catch (_) {}
         // Unisci evitando duplicati su task_id
-        final existingIds = list.map((e) => (e['task_id'] ?? '').toString()).toSet();
+        final existingIds =
+            list.map((e) => (e['task_id'] ?? '').toString()).toSet();
         for (final e in extras) {
           final id = (e['task_id'] ?? '').toString();
           if (id.isEmpty) continue;
@@ -336,7 +329,8 @@ class _TasksPageState extends State<TasksPage> {
     await AppAlertDialog.show<void>(
       ctx,
       title: 'Elimina task',
-      description: 'Confermi l\'eliminazione di questa task?\nL\'operazione non può essere annullata.',
+      description:
+          'Confermi l\'eliminazione di questa task?\nL\'operazione non può essere annullata.',
       cancelText: 'Annulla',
       confirmText: 'Elimina',
       destructive: true,
@@ -357,7 +351,6 @@ class _TasksPageState extends State<TasksPage> {
       },
     );
   }
-
 
   Future<void> _openEditTask(Map<String, dynamic> t) async {
     final id = (t['task_id'] ?? '').toString();
@@ -483,7 +476,8 @@ class _TasksPageState extends State<TasksPage> {
                                   ),
                                 ],
                               ),
-                              if (type.isNotEmpty) _buildTypeBadge(type, done: done),
+                              if (type.isNotEmpty)
+                                _buildTypeBadge(type, done: done),
                               if (assigneeLabel.isNotEmpty)
                                 Chip(
                                   backgroundColor:
@@ -632,79 +626,88 @@ class _TasksPageState extends State<TasksPage> {
                       child: Row(
                         children: [
                           AppCombobox(
-                              width: 190,
-                              value: _filterMatterId,
-                              placeholder: 'Pratica',
-                              popoverWidthFactor: 1.6,
-                              popoverMatchWidestRow: true,
-                              items: [
-                                const ComboboxItem(value: '', label: 'Tutte'),
-                                ..._matterLabels.entries.map(
-                                  (e) => ComboboxItem(value: e.key, label: e.value),
-                                ),
-                              ],
-                              onChanged: (v) {
-                                setState(() => _filterMatterId = (v == null || v.isEmpty) ? null : v);
-                                _loadTasks();
-                              },
-                            ),
-                            SizedBox(width: spacing),
-                            AppSelect(
-                              placeholder: 'Assegnatario',
-                              width: 200,
-                              value: _filterAssigneeId,
-                              groups: [
-                                SelectGroupData(
-                                  label: 'Assegnatario',
-                                  items: [
-                                    const SelectItemData(value: '', label: 'Tutti'),
-                                    ..._assigneeLabels.entries.map(
-                                      (e) => SelectItemData(value: e.key, label: e.value),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                              onChanged: (v) {
-                                setState(() => _filterAssigneeId = v.isEmpty ? null : v);
-                                _loadTasks();
-                              },
-                            ),
-                            SizedBox(width: spacing),
-                            AppSelect(
-                              placeholder: 'Priorità',
-                              width: 140,
-                              value: _filterPriority,
-                              groups: const [
-                                SelectGroupData(
-                                  label: 'Priorità',
-                                  items: [
-                                    SelectItemData(value: '', label: 'Tutte'),
-                                    SelectItemData(value: 'high', label: 'Alta'),
-                                    SelectItemData(value: 'normal', label: 'Normale'),
-                                    SelectItemData(value: 'low', label: 'Bassa'),
-                                  ],
-                                ),
-                              ],
-                              onChanged: (v) {
-                                setState(() => _filterPriority = v.isEmpty ? null : v);
-                                _loadTasks();
-                              },
-                            ),
-                            SizedBox(width: spacing),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                AppSwitch(
-                                  value: _showCompleted,
-                                  onChanged: (value) {
-                                    setState(() => _showCompleted = value);
-                                    _loadTasks();
-                                  },
-                                ),
-                                const SizedBox(width: 8),
-                                Text('Completati', style: Theme.of(context).textTheme.bodyMedium),
-                              ],
-                            ),
+                            width: 190,
+                            value: _filterMatterId,
+                            placeholder: 'Pratica',
+                            popoverWidthFactor: 1.6,
+                            popoverMatchWidestRow: true,
+                            items: [
+                              const ComboboxItem(value: '', label: 'Tutte'),
+                              ..._matterLabels.entries.map(
+                                (e) =>
+                                    ComboboxItem(value: e.key, label: e.value),
+                              ),
+                            ],
+                            onChanged: (v) {
+                              setState(() => _filterMatterId =
+                                  (v == null || v.isEmpty) ? null : v);
+                              _loadTasks();
+                            },
+                          ),
+                          SizedBox(width: spacing),
+                          AppSelect(
+                            placeholder: 'Assegnatario',
+                            width: 200,
+                            value: _filterAssigneeId,
+                            groups: [
+                              SelectGroupData(
+                                label: 'Assegnatario',
+                                items: [
+                                  const SelectItemData(
+                                      value: '', label: 'Tutti'),
+                                  ..._assigneeLabels.entries.map(
+                                    (e) => SelectItemData(
+                                        value: e.key, label: e.value),
+                                  ),
+                                ],
+                              ),
+                            ],
+                            onChanged: (v) {
+                              setState(() =>
+                                  _filterAssigneeId = v.isEmpty ? null : v);
+                              _loadTasks();
+                            },
+                          ),
+                          SizedBox(width: spacing),
+                          AppSelect(
+                            placeholder: 'Priorità',
+                            width: 140,
+                            value: _filterPriority,
+                            groups: const [
+                              SelectGroupData(
+                                label: 'Priorità',
+                                items: [
+                                  SelectItemData(value: '', label: 'Tutte'),
+                                  SelectItemData(value: 'high', label: 'Alta'),
+                                  SelectItemData(
+                                      value: 'normal', label: 'Normale'),
+                                  SelectItemData(value: 'low', label: 'Bassa'),
+                                ],
+                              ),
+                            ],
+                            onChanged: (v) {
+                              setState(
+                                  () => _filterPriority = v.isEmpty ? null : v);
+                              _loadTasks();
+                            },
+                          ),
+                          SizedBox(width: spacing),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AppSwitch(
+                                value: _showCompleted,
+                                onChanged: (value) {
+                                  setState(() => _showCompleted = value);
+                                  _loadTasks();
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Text('Completati',
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -728,8 +731,8 @@ class _TasksPageState extends State<TasksPage> {
                 if (_error != null) ...[
                   SizedBox(height: spacing),
                   Text('Errore: $_error',
-                      style:
-                          TextStyle(color: Theme.of(context).colorScheme.error)),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error)),
                 ],
                 // (Diagnostica rimossa su richiesta)
                 // Due sezioni con altezza fissa ciascuna a metà dello spazio disponibile,
@@ -748,13 +751,17 @@ class _TasksPageState extends State<TasksPage> {
                               child: Scrollbar(
                                 controller: _scrivereScroll,
                                 thumbVisibility: true,
-                                child: (scrivere.isEmpty && !_loading && _error == null)
+                                child: (scrivere.isEmpty &&
+                                        !_loading &&
+                                        _error == null)
                                     ? _buildSectionEmptyState(spacing)
                                     : ListView.separated(
                                         controller: _scrivereScroll,
                                         itemCount: scrivere.length,
-                                        separatorBuilder: (_, __) => SizedBox(height: spacing * 1.5),
-                                        itemBuilder: (_, i) => _taskAppListTile(scrivere[i]),
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: spacing * 1.5),
+                                        itemBuilder: (_, i) =>
+                                            _taskAppListTile(scrivere[i]),
                                       ),
                               ),
                             ),
@@ -775,13 +782,17 @@ class _TasksPageState extends State<TasksPage> {
                               child: Scrollbar(
                                 controller: _onereScroll,
                                 thumbVisibility: true,
-                                child: (onere.isEmpty && !_loading && _error == null)
+                                child: (onere.isEmpty &&
+                                        !_loading &&
+                                        _error == null)
                                     ? _buildSectionEmptyState(spacing)
                                     : ListView.separated(
                                         controller: _onereScroll,
                                         itemCount: onere.length,
-                                        separatorBuilder: (_, __) => SizedBox(height: spacing * 1.5),
-                                        itemBuilder: (_, i) => _taskAppListTile(onere[i]),
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: spacing * 1.5),
+                                        itemBuilder: (_, i) =>
+                                            _taskAppListTile(onere[i]),
                                       ),
                               ),
                             ),
@@ -898,12 +909,8 @@ class _TasksPageState extends State<TasksPage> {
       final bDoneWindow = b['done'] == true && _isInWindow(b);
       final aDoneToday = a['done'] == true && _isCompletedToday(a);
       final bDoneToday = b['done'] == true && _isCompletedToday(b);
-      groupA = (aDoneWindow || aDoneToday)
-          ? 0
-          : (_isOverdue(a) ? 1 : 2);
-      groupB = (bDoneWindow || bDoneToday)
-          ? 0
-          : (_isOverdue(b) ? 1 : 2);
+      groupA = (aDoneWindow || aDoneToday) ? 0 : (_isOverdue(a) ? 1 : 2);
+      groupB = (bDoneWindow || bDoneToday) ? 0 : (_isOverdue(b) ? 1 : 2);
     } else {
       groupA = _isOverdue(a) ? 1 : 2;
       groupB = _isOverdue(b) ? 1 : 2;
@@ -929,8 +936,10 @@ class _TasksPageState extends State<TasksPage> {
   bool _isCompletedToday(Map<String, dynamic> t) {
     try {
       final nowLocal = DateTime.now();
-      final startOfTodayLocal = DateTime(nowLocal.year, nowLocal.month, nowLocal.day);
-      final endOfTodayLocal = DateTime(nowLocal.year, nowLocal.month, nowLocal.day, 23, 59, 59, 999);
+      final startOfTodayLocal =
+          DateTime(nowLocal.year, nowLocal.month, nowLocal.day);
+      final endOfTodayLocal = DateTime(
+          nowLocal.year, nowLocal.month, nowLocal.day, 23, 59, 59, 999);
       DateTime? comp;
       final c2 = t['done_at'];
       if (c2 != null) {
@@ -948,6 +957,7 @@ class _TasksPageState extends State<TasksPage> {
   String _typeCanonical(dynamic v) {
     return (v ?? '').toString().trim().toLowerCase();
   }
+
   int? _priorityToInt(String? p) {
     if (p == null) return null; // 0=bassa, 1=normale, 2=alta
     switch (p) {
@@ -985,9 +995,11 @@ class _TasksPageState extends State<TasksPage> {
       final dLocal = DateTime.parse('$due').toLocal();
       final nowLocal = DateTime.now();
       final todayStart = DateTime(nowLocal.year, nowLocal.month, nowLocal.day);
-      final todayEnd = DateTime(nowLocal.year, nowLocal.month, nowLocal.day, 23, 59, 59, 999);
+      final todayEnd = DateTime(
+          nowLocal.year, nowLocal.month, nowLocal.day, 23, 59, 59, 999);
       // Intersezione tra [sLocal..dLocal] e [todayStart..todayEnd]
-      final intersects = (sLocal.isBefore(todayEnd) || sLocal.isAtSameMomentAs(todayEnd)) &&
+      final intersects = (sLocal.isBefore(todayEnd) ||
+              sLocal.isAtSameMomentAs(todayEnd)) &&
           (dLocal.isAfter(todayStart) || dLocal.isAtSameMomentAs(todayStart));
       return intersects;
     } catch (_) {
@@ -1058,7 +1070,6 @@ class _TasksPageState extends State<TasksPage> {
       ),
     );
   }
-
 
   Future<void> _openCreateTask() async {
     final ctx = context;

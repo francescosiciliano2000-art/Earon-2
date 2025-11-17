@@ -71,7 +71,9 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
     final counter = (m.counterpartyName ?? '').trim();
     String right = '';
     if (client.isNotEmpty) right = client;
-    if (counter.isNotEmpty) right = right.isNotEmpty ? '$right / $counter' : counter;
+    if (counter.isNotEmpty) {
+      right = right.isNotEmpty ? '$right / $counter' : counter;
+    }
     if (right.isEmpty) {
       // fallback: usa il titolo della pratica
       right = (m.title).trim();
@@ -147,7 +149,6 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
     });
   }
 
-
   Future<void> _submit() async {
     final title = _titleCtl.text.trim();
     if (title.isEmpty) {
@@ -201,7 +202,7 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
     return AppDialogContent(
       children: [
         const AppDialogHeader(
-          title: AppDialogTitle('Nuova task'),
+          title: AppDialogTitle('Nuovo adempimento'),
           description: AppDialogDescription(
             'Compila i dettagli per aggiungere un’attività alla agenda.',
           ),
@@ -288,7 +289,8 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
                             initialDate: _startDate,
                             firstDate: DateTime(2000, 1, 1),
                             lastDate: DateTime(2100, 12, 31),
-                            onDateSubmitted: (d) => setState(() => _startDate = d),
+                            onDateSubmitted: (d) =>
+                                setState(() => _startDate = d),
                           ),
                         ],
                       ),
@@ -306,7 +308,8 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
                             initialDate: _dueDate,
                             firstDate: DateTime(2000, 1, 1),
                             lastDate: DateTime(2100, 12, 31),
-                            onDateSubmitted: (d) => setState(() => _dueDate = d),
+                            onDateSubmitted: (d) =>
+                                setState(() => _dueDate = d),
                           ),
                         ],
                       ),
@@ -328,12 +331,15 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
                               SelectGroupData(
                                 label: 'Tipo',
                                 items: [
-                                  SelectItemData(value: 'onere', label: 'Onere'),
-                                  SelectItemData(value: 'scrivere', label: 'Scrivere'),
+                                  SelectItemData(
+                                      value: 'onere', label: 'Onere'),
+                                  SelectItemData(
+                                      value: 'scrivere', label: 'Scrivere'),
                                 ],
                               ),
                             ],
-                            onChanged: (v) => setState(() => _type = v.isEmpty ? null : v),
+                            onChanged: (v) =>
+                                setState(() => _type = v.isEmpty ? null : v),
                           ),
                         ],
                       ),
@@ -360,12 +366,14 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
                                 items: [
                                   SelectItemData(value: '', label: '—'),
                                   SelectItemData(value: 'low', label: 'Bassa'),
-                                  SelectItemData(value: 'normal', label: 'Normale'),
+                                  SelectItemData(
+                                      value: 'normal', label: 'Normale'),
                                   SelectItemData(value: 'high', label: 'Alta'),
                                 ],
                               ),
                             ],
-                            onChanged: (v) => setState(() => _priority = v.isEmpty ? null : v),
+                            onChanged: (v) => setState(
+                                () => _priority = v.isEmpty ? null : v),
                           ),
                         ],
                       ),
@@ -399,14 +407,15 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
             AppButton(
               onPressed: _saving ? null : _submit,
               leading: Icon(AppIcons.save),
-              child: _saving ? const Spinner(size: 18) : const Text('Crea task'),
+              child: _saving
+                  ? const Spinner(size: 18)
+                  : const Text('Crea adempimento'),
             ),
           ],
         ),
       ],
     );
   }
-
 
   int? _priorityToInt(String? p) {
     if (p == null) return null; // 0=bassa, 1=normale, 2=alta
@@ -421,7 +430,6 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
         return int.tryParse(p);
     }
   }
-
 }
 
 class MatterOption {

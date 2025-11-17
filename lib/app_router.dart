@@ -32,7 +32,7 @@ final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: appNavigatorKey,
-  initialLocation: '/dashboard',
+  initialLocation: '/clienti',
   refreshListenable: authStateNotifier,
   // Redirect minimale: se non autenticato vai a /auth/login
   redirect: (context, state) {
@@ -46,7 +46,7 @@ final GoRouter appRouter = GoRouter(
 
     // Se autenticato, evita di restare sulle pagine di login/forgot
     if (loggingIn && state.matchedLocation != '/auth/select_firm') {
-      return '/dashboard';
+      return '/clienti';
     }
 
     // Redirect di default: la pagina Udienze apre la vista Calendario
